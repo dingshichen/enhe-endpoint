@@ -115,7 +115,7 @@ class ControllerNode(
             it.findSuperMethods().forEach { superMethod ->
                 superMethod.annotations.forEach { an ->
                     if (an.qualifiedName in REST_MAPPINGS) {
-                        endpointNodes += EndpointNode(this, project, parentPath, an)
+                        endpointNodes += EndpointNode(this, project, parentPath, an, it)
                     }
                 }
             }
@@ -150,7 +150,8 @@ class EndpointNode(
     private val parentNode: SimpleNode,
     private val project: Project,
     private val parentPath: String,
-    private val restAnnotation: PsiAnnotation
+    private val restAnnotation: PsiAnnotation,
+    val method: PsiMethod
 ) : BaseNode(parentNode) {
 
     init {
@@ -172,14 +173,7 @@ class EndpointNode(
             val ed = restAnnotation.text.indexOf("\"}")
             childPath = restAnnotation.text.substring(st, ed)
         }
-        return "$childPath - ${getMethodName()}"
-    }
-
-    private fun getMethodName(): String {
-        return when (val method = restAnnotation.parent.parent) {
-            is PsiMethod -> method.name
-            else -> ""
-        }
+        return childPath
     }
 
 }

@@ -23,7 +23,6 @@ import com.intellij.ui.PopupHandler
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.tree.AsyncTreeModel
 import com.intellij.ui.tree.StructureTreeModel
-import com.intellij.ui.treeStructure.SimpleTree
 import com.intellij.ui.treeStructure.SimpleTreeStructure
 import javax.swing.BorderFactory
 import javax.swing.tree.TreeSelectionModel
@@ -37,7 +36,7 @@ class EndpointPanel(
 
     private var treeModel : StructureTreeModel<AbstractTreeStructure>
 
-    private var catalogTree: SimpleTree
+    private var catalogTree: EndpointTree
 
     init {
         val actionManager = ActionManager.getInstance()
@@ -48,7 +47,7 @@ class EndpointPanel(
         treeModel = StructureTreeModel(object : SimpleTreeStructure() {
             override fun getRootElement() = rootNode
         }, null, this)
-        catalogTree = SimpleTree(AsyncTreeModel(treeModel, this))
+        catalogTree = EndpointTree(AsyncTreeModel(treeModel, this))
         initCatalogTree()
         setContent(ScrollPaneFactory.createScrollPane(catalogTree))
         updateCatalogTree()

@@ -31,7 +31,6 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <toolWindow id="Enhe Endpoint"
-                    icon="com.enhe.endpoint.EnheIcons.endpoint"
                     anchor="right"
                     secondary="false"
                     doNotActivateOnStart="true"
