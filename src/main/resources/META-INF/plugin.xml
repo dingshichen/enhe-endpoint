@@ -8,16 +8,22 @@
     <name>Enhe Endpoint</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="foreverhuiqiao@126.com" url="http://www.eh-data.com/">Enhe</vendor>
+    <vendor email="foreverhuiqiao@126.com" url="https://github.com/dingshichen">ding.shichen</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
-    <description><![CDATA[
-    钟山风雨起苍黄，百万雄师过大江。<br>
-    虎踞龙盘今胜昔，天翻地覆慨而慷。<br>
-    宜将胜勇追穷寇，不可沽名学霸王。<br>
-    天若有情天亦老，人间正道是沧桑。]]></description>
+    <description><![CDATA[Adapt to the Enhe Framework RestFull endpoint definition, provides a tool window to display the project controller tree, and can be quickly searched and navigated. <br> <br>
+        适配 Enhe Framework RestFull 端点定义，提供一个工具栏窗口来展示项目控制器树，并且还可以快速的搜索与导航。]]></description>
+
+    <change-notes><![CDATA[
+      <h4>0.3</h4>
+      <ul>
+          <li>Add icon display</li>
+          <li>Use compatibility apis/li>
+      </ul>
+      ]]>
+    </change-notes>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
@@ -32,6 +38,7 @@
 
         <toolWindow id="Enhe Endpoint"
                     anchor="right"
+                    icon="AllIcons.Actions.Colors"
                     secondary="false"
                     doNotActivateOnStart="true"
                     order="last"
@@ -44,12 +51,6 @@
             <action id="endpoint.window.toolbar.action.refresh"
                     class="com.enhe.endpoint.action.WindowRefreshAction"
                     text="Refresh" description="Refresh" icon="AllIcons.Actions.Refresh"/>
-        </group>
-
-        <group id="enhe.endpoint.window.tree.action">
-            <action id="endpoint.window.tree.action.click"
-                    class="com.enhe.endpoint.action.EndpointClickAction"
-                    text="Goto" description="Goto" icon="AllIcons.Actions.Find"/>
         </group>
     </actions>
 </idea-plugin>

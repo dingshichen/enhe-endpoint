@@ -4,17 +4,21 @@
 
 package com.enhe.endpoint.window
 
-import com.enhe.endpoint.FEIGN_CLIENT
-import com.enhe.endpoint.REST_MAPPINGS
+import com.enhe.endpoint.*
 import com.enhe.endpoint.psi.findAttributeRealValue
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
-import com.intellij.psi.*
+import com.intellij.openapi.util.IconLoader
+import com.intellij.psi.PsiAnnotation
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiMethod
 import com.intellij.psi.impl.java.stubs.index.JavaAnnotationIndex
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.ui.treeStructure.CachingSimpleNode
 import com.intellij.ui.treeStructure.SimpleNode
+import javax.swing.Icon
 
 /**
  * 节点
@@ -31,10 +35,14 @@ class RootNode : BaseNode() {
 
     private val moduleNodes = mutableListOf<ModuleNode>()
 
+    init {
+        myClosedIcon = AllIcons.Actions.Colors
+    }
+
     override fun updateNode(project: Project) {
         cleanUpCache()
         moduleNodes.clear()
-        ModuleManager.getInstance(project).modules.forEach {
+        project.getService(ModuleManager::class.java).modules.forEach {
             val moduleNode = ModuleNode(this, it, project)
             if (moduleNode.childCount > 0) {
                 moduleNodes.add(moduleNode)
@@ -60,6 +68,7 @@ class ModuleNode(
     private val controllerNodes = mutableListOf<ControllerNode>()
 
     init {
+        myClosedIcon = AllIcons.Actions.ModuleDirectory
         updateNode(project)
     }
 
@@ -103,6 +112,7 @@ class ControllerNode(
     private val endpointNodes = mutableListOf<EndpointNode>()
 
     init {
+        myClosedIcon = AllIcons.General.ImplementingMethod
         updateNode(project)
     }
 
@@ -155,6 +165,7 @@ class EndpointNode(
 ) : BaseNode(parentNode) {
 
     init {
+        myClosedIcon = getMethodIcon()
         updateNode(project)
     }
 
@@ -165,7 +176,6 @@ class EndpointNode(
 
     override fun buildChildren() = emptyArray<SimpleNode>()
 
-    // (an.attributes[0] as ClsNameValuePairImpl).children[0].children[0].resolveRealValue()
     override fun getName(): String {
         var childPath = restAnnotation.findAttributeRealValue("value")
         if (childPath.isNullOrBlank()) {
@@ -174,6 +184,19 @@ class EndpointNode(
             childPath = restAnnotation.text.substring(st, ed)
         }
         return childPath
+    }
+
+    /**
+     * 根据请求类型选择不同的图标
+     */
+    private fun getMethodIcon(): Icon {
+        return when (restAnnotation.qualifiedName) {
+            GET_MAPPING -> IconLoader.getIcon("/icons/GET.svg", this.javaClass)
+            POST_MAPPING -> IconLoader.getIcon("/icons/POST.svg", this.javaClass)
+            PUT_MAPPING -> IconLoader.getIcon("/icons/PUT.svg", this.javaClass)
+            DELETE_MAPPING -> IconLoader.getIcon("/icons/DELETE.svg", this.javaClass)
+            else -> IconLoader.getIcon("/icons/REQUEST.svg", this.javaClass)
+        }
     }
 
 }
