@@ -1,0 +1,56 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.enhe.enhe-endpoint</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>Enhe Endpoint</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="foreverhuiqiao@126.com" url="http://www.eh-data.com/">Enhe</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
+    钟山风雨起苍黄，百万雄师过大江。<br>
+    虎踞龙盘今胜昔，天翻地覆慨而慷。<br>
+    宜将胜勇追穷寇，不可沽名学霸王。<br>
+    天若有情天亦老，人间正道是沧桑。]]></description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+
+    <idea-version since-build="213"/>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+
+        <toolWindow id="Enhe Endpoint"
+                    icon="com.enhe.endpoint.EnheIcons.endpoint"
+                    anchor="right"
+                    secondary="false"
+                    doNotActivateOnStart="true"
+                    order="last"
+                    factoryClass="com.enhe.endpoint.window.EndpointToolWindowFactory"/>
+
+    </extensions>
+
+    <actions>
+        <group id="enhe.endpoint.window.toolbar.action">
+            <action id="endpoint.window.toolbar.action.refresh"
+                    class="com.enhe.endpoint.action.WindowRefreshAction"
+                    text="Refresh" description="Refresh" icon="AllIcons.Actions.Refresh"/>
+        </group>
+
+        <group id="enhe.endpoint.window.tree.action">
+            <action id="endpoint.window.tree.action.click"
+                    class="com.enhe.endpoint.action.EndpointClickAction"
+                    text="Goto" description="Goto" icon="AllIcons.Actions.Find"/>
+        </group>
+    </actions>
+</idea-plugin>
