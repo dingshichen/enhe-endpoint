@@ -1,11 +1,11 @@
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.7.20"
-    id("org.jetbrains.intellij") version "1.10.0"
+    id("org.jetbrains.intellij") version "1.10.1"
 }
 
 group = "com.enhe"
-version = "0.3"
+version = "0.4"
 
 repositories {
     mavenCentral()
@@ -31,9 +31,9 @@ tasks {
         kotlinOptions.jvmTarget = "11"
     }
 
-//    patchPluginXml {
-//
-//    }
+    patchPluginXml {
+        sinceBuild.set("213")
+    }
 
 //    signPlugin {
 //        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))

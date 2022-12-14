@@ -20,7 +20,7 @@
       <h4>0.3</h4>
       <ul>
           <li>Add icon display</li>
-          <li>Use compatibility apis/li>
+          <li>Use compatibility apis</li>
       </ul>
       ]]>
     </change-notes>
@@ -29,8 +29,6 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
-
-    <idea-version since-build="213"/>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
