@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.enhe"
-version = "0.4"
+version = "0.5"
 
 repositories {
     mavenCentral()
@@ -32,7 +32,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("211")
+        sinceBuild.set("212")
     }
 
 //    signPlugin {
