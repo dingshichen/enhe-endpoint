@@ -17,7 +17,11 @@
         适配 Enhe Framework RestFull 端点定义，提供一个工具栏窗口来展示项目控制器树，并且还可以快速的搜索与导航。]]></description>
 
     <change-notes><![CDATA[
-      <h4>0.3</h4>
+      <h3>0.4</h3>
+      <ul>
+          <li>Find controller in library</li>
+      </ul>
+      <h3>0.3</h3>
       <ul>
           <li>Add icon display</li>
           <li>Use compatibility apis</li>
@@ -33,6 +37,9 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+
+        <applicationService serviceInterface="com.enhe.endpoint.LibraryControlService"
+                serviceImplementation="com.enhe.endpoint.LibraryControlServiceImpl" />
 
         <toolWindow id="Enhe Endpoint"
                     anchor="right"

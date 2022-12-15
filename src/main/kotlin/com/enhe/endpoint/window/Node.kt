@@ -9,7 +9,9 @@ import com.enhe.endpoint.psi.findAttributeRealValue
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
+import com.intellij.openapi.module.impl.scopes.LibraryScope
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
@@ -48,6 +50,7 @@ class RootNode : BaseNode() {
                 moduleNodes.add(moduleNode)
             }
         }
+        moduleNodes.sortBy { it.name }
         update()
     }
 
@@ -75,7 +78,8 @@ class ModuleNode(
     override fun updateNode(project: Project) {
         cleanUpCache()
         controllerNodes.clear()
-        val psiAnnotations = JavaAnnotationIndex.getInstance()["Service", module.project, GlobalSearchScope.moduleScope(module)]
+        val psiAnnotations = mutableListOf<PsiAnnotation>()
+        LibraryControlService.getInstance(project).addPsiAnnotations(psiAnnotations, module, project)
         psiAnnotations.forEach {
             when (val serviceClass = it.parent.parent) {
                 is PsiClass -> {
