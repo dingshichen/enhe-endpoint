@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.enhe"
-version = "0.5"
+version = "1.0"
 
 repositories {
     mavenCentral()

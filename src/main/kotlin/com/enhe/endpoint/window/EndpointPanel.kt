@@ -5,6 +5,8 @@
 package com.enhe.endpoint.window
 
 import com.enhe.endpoint.WINDOW_PANE
+import com.enhe.endpoint.window.tree.EndpointTree
+import com.enhe.endpoint.window.tree.RootNode
 import com.intellij.ide.util.treeView.AbstractTreeStructure
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.actionSystem.ActionGroup

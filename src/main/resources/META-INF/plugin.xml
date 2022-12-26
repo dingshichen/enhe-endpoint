@@ -17,6 +17,10 @@
         适配 Enhe Framework RestFull 端点定义，提供一个工具栏窗口来展示项目控制器树，并且还可以快速的搜索与导航。]]></description>
 
     <change-notes><![CDATA[
+      <h3>1.0</h3>
+      <ul>
+          <li>Endpoint sort by name</li>
+      </ul>
       <h3>0.5</h3>
       <ul>
           <li>Fix bug</li>
@@ -61,6 +65,9 @@
             <action id="endpoint.window.toolbar.action.refresh"
                     class="com.enhe.endpoint.action.WindowRefreshAction"
                     text="Refresh" description="Refresh" icon="AllIcons.Actions.Refresh"/>
+<!--            <action id="endpoint.window.toolbar.action.generator"-->
+<!--                    class="com.enhe.endpoint.action.OpenEndpointGeneratorAction"-->
+<!--                    text="Generator" description="Open endpoint generator dialog" icon="AllIcons.FileTypes.UiForm"/>-->
         </group>
     </actions>
 </idea-plugin>
