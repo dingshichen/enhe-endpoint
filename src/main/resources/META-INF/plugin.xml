@@ -17,6 +17,10 @@
         适配 Enhe Framework RestFull 端点定义，提供一个工具栏窗口来展示项目控制器树，并且还可以快速的搜索与导航。]]></description>
 
     <change-notes><![CDATA[
+      <h3>1.1</h3>
+      <ul>
+          <li>TaskEvent and listener support navigation</li>
+      </ul>
       <h3>1.0</h3>
       <ul>
           <li>Endpoint sort by name</li>
@@ -47,8 +51,8 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
 
-        <projectService serviceInterface="com.enhe.endpoint.LibraryControlService"
-                serviceImplementation="com.enhe.endpoint.LibraryControlServiceImpl" />
+        <projectService serviceInterface="com.enhe.endpoint.window.LibraryControlService"
+                serviceImplementation="com.enhe.endpoint.window.LibraryControlServiceImpl" />
 
         <toolWindow id="Enhe Endpoint"
                     anchor="right"
@@ -58,6 +62,11 @@
                     order="last"
                     factoryClass="com.enhe.endpoint.window.EndpointToolWindowFactory"/>
 
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.enhe.endpoint.provider.EventLineMarkerProvider" />
+
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.enhe.endpoint.provider.ListenerLineMarkerProvider" />
     </extensions>
 
     <actions>
