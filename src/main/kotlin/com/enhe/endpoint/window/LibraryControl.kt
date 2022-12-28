@@ -2,7 +2,7 @@
 // @email   foreverhuiqiao@126.com
 // @date    2022-12-15
 
-package com.enhe.endpoint
+package com.enhe.endpoint.window
 
 import com.intellij.openapi.module.impl.scopes.LibraryScope
 import com.intellij.openapi.project.Project
