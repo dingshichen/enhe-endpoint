@@ -16,36 +16,6 @@
     <description><![CDATA[Adapt to the Enhe Framework RestFull endpoint definition, provides a tool window to display the project controller tree, and can be quickly searched and navigated. <br> <br>
         适配 Enhe Framework RestFull 端点定义，提供一个工具栏窗口来展示项目控制器树，并且还可以快速的搜索与导航。]]></description>
 
-    <change-notes><![CDATA[
-      <h3>1.2</h3>
-      <ul>
-          <li>Entity support navigate to mapper</li>
-      </ul>
-      <h3>1.1</h3>
-      <ul>
-          <li>TaskEvent and listener support navigation</li>
-      </ul>
-      <h3>1.0</h3>
-      <ul>
-          <li>Endpoint sort by name</li>
-      </ul>
-      <h3>0.5</h3>
-      <ul>
-          <li>Fix bug</li>
-          <li>Since 212</li>
-      </ul>
-      <h3>0.4</h3>
-      <ul>
-          <li>Find controller in library</li>
-      </ul>
-      <h3>0.3</h3>
-      <ul>
-          <li>Add icon display</li>
-          <li>Use compatibility apis</li>
-      </ul>
-      ]]>
-    </change-notes>
-
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
