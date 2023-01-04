@@ -17,7 +17,6 @@ import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.*
-import com.intellij.psi.impl.compiled.ClsMethodImpl
 import com.intellij.psi.impl.source.PsiClassReferenceType
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.ReferencesSearch
@@ -75,7 +74,7 @@ class ListenerLineMarkerProvider : LineMarkerProvider {
             methods += findMethods[2]
         }
         methods.forEach { method ->
-            if (method !is ClsMethodImpl) {
+            if (method !is PsiMethod) {
                 return@forEach
             }
             ReferencesSearch.search(method.originalElement).find {
