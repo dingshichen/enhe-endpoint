@@ -36,7 +36,7 @@ class ControllerNode(
             it.findSuperMethods().forEach { superMethod ->
                 superMethod.annotations.forEach { an ->
                     if (an.qualifiedName in REST_MAPPINGS) {
-                        endpointNodes += EndpointNode(this, project, parentPath, an, it)
+                        endpointNodes += EndpointNode(this, project, an, it)
                     }
                 }
             }

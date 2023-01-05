@@ -41,13 +41,6 @@ class ListenerLineMarkerProvider : LineMarkerProvider {
             return null
         }
         val adapter = psiClass.findAdapterValue() ?: return null
-
-        // 暂时不检查泛型
-//        val psiType = psiClass.superClassType?.typeArguments()?.firstOrNull() ?: return null
-//        if (psiType !is PsiType) {
-//            return null
-//        }
-
         return LineMarkerInfo(element,
             element.textRange,
             AllIcons.CodeWithMe.CwmForceFollowMe,
