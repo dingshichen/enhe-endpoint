@@ -4,13 +4,9 @@
 
 package com.enhe.endpoint.window.tree
 
-import com.enhe.endpoint.DELETE_MAPPING
-import com.enhe.endpoint.GET_MAPPING
-import com.enhe.endpoint.POST_MAPPING
-import com.enhe.endpoint.PUT_MAPPING
+import com.enhe.endpoint.*
 import com.enhe.endpoint.psi.findAttributeRealValue
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
 import com.intellij.ui.treeStructure.SimpleNode
@@ -19,9 +15,8 @@ import javax.swing.Icon
 class EndpointNode(
     private val parentNode: SimpleNode,
     private val project: Project,
-    private val parentPath: String,
     private val restAnnotation: PsiAnnotation,
-    val method: PsiMethod
+    private val method: PsiMethod
 ) : BaseNode(parentNode) {
 
     init {
@@ -46,16 +41,18 @@ class EndpointNode(
         return childPath
     }
 
+    fun getMethod() = method
+
     /**
      * 根据请求类型选择不同的图标
      */
     private fun getMethodIcon(): Icon {
         return when (restAnnotation.qualifiedName) {
-            GET_MAPPING -> IconLoader.getIcon("/icons/GET.svg", this.javaClass)
-            POST_MAPPING -> IconLoader.getIcon("/icons/POST.svg", this.javaClass)
-            PUT_MAPPING -> IconLoader.getIcon("/icons/PUT.svg", this.javaClass)
-            DELETE_MAPPING -> IconLoader.getIcon("/icons/DELETE.svg", this.javaClass)
-            else -> IconLoader.getIcon("/icons/REQUEST.svg", this.javaClass)
+            GET_MAPPING -> PluginIcons.getMapping
+            POST_MAPPING -> PluginIcons.postMapping
+            PUT_MAPPING -> PluginIcons.putMapping
+            DELETE_MAPPING -> PluginIcons.deleteMapping
+            else -> PluginIcons.requestMapping
         }
     }
 

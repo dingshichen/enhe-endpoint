@@ -17,7 +17,7 @@ class EndpointTree(treeModel: TreeModel) : SimpleTree(treeModel) {
 
             override fun mouseClicked(e: MouseEvent?) {
                 when (val selected = selectedNode) {
-                    is EndpointNode -> PsiNavigateUtil.navigate(selected.method)
+                    is EndpointNode -> PsiNavigateUtil.navigate(selected.getMethod())
                 }
             }
 
