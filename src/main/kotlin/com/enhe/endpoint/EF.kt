@@ -6,3 +6,5 @@ package com.enhe.endpoint
 
 const val BKG_TASK_EXECUTOR = "com.enhe.dagp.system.api.service.BkgTaskExecutor"
 const val ANNOTATION_TASK_SERVICE = "com.enhe.dagp.job.api.annotation.AnnotationTaskService"
+
+val BASE_MODULES = listOf("parent", "bom", "common", "commons", "core", "swagger", "tools", "adapter");

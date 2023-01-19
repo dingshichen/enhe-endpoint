@@ -20,6 +20,7 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.database</depends>
 
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
@@ -44,6 +45,8 @@
 
         <codeInsight.lineMarkerProvider language="JAVA"
                                         implementationClass="com.enhe.endpoint.provider.EntityLineMarkerProvider" />
+
+        <notificationGroup id="Enhe.Notification.Group" displayType="BALLOON"/>
     </extensions>
 
     <actions>
@@ -51,9 +54,11 @@
             <action id="endpoint.window.toolbar.action.refresh"
                     class="com.enhe.endpoint.action.WindowRefreshAction"
                     text="Refresh" description="Refresh" icon="AllIcons.Actions.Refresh"/>
-<!--            <action id="endpoint.window.toolbar.action.generator"-->
-<!--                    class="com.enhe.endpoint.action.OpenEndpointGeneratorAction"-->
-<!--                    text="Generator" description="Open endpoint generator dialog" icon="AllIcons.FileTypes.UiForm"/>-->
         </group>
+        <action id="com.enhe.endpoint.action.MybatisGenerateAction"
+                class="com.enhe.endpoint.action.MybatisGenerateAction" text="EF-Mybatis-Generator"
+                description="Enhe framework Mybatis generator">
+            <add-to-group group-id="DatabaseViewPopupMenu" anchor="first"/>
+        </action>
     </actions>
 </idea-plugin>

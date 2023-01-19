@@ -9,12 +9,12 @@ import com.enhe.endpoint.BKG_TASK_EXECUTOR
 import com.enhe.endpoint.PLUGIN_NAME
 import com.enhe.endpoint.SERVICE
 import com.enhe.endpoint.psi.findAdapterValue
+import com.enhe.endpoint.psi.getModules
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.icons.AllIcons
 import com.intellij.lang.jvm.JvmMethod
 import com.intellij.openapi.editor.markup.GutterIconRenderer
-import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.PsiClassReferenceType
@@ -57,7 +57,7 @@ class ListenerLineMarkerProvider : LineMarkerProvider {
     private fun gotoTaskPublisher(project: Project, adapter: String) {
         val javaPsiFacade = JavaPsiFacade.getInstance(project)
         val methods = mutableSetOf<JvmMethod>()
-        project.getService(ModuleManager::class.java).modules.forEach {
+        project.getModules().forEach {
             val findMethods = javaPsiFacade.findClass(BKG_TASK_EXECUTOR, GlobalSearchScope.moduleWithLibrariesScope(it))
                     ?.findMethodsByName("doTask") ?: return@forEach
             if (findMethods.size != 3) {

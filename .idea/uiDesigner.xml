@@ -120,5 +120,10 @@
         <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
       </item>
     </group>
+    <group name="Jetbrains">
+      <item class="com.intellij.openapi.ui.ComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.svg" removable="true" auto-create-binding="true" can-attach-label="false" is-container="true">
+        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="0" />
+      </item>
+    </group>
   </component>
 </project>

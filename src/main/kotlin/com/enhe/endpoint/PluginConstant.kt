@@ -6,7 +6,9 @@ package com.enhe.endpoint
 
 import com.intellij.openapi.util.IconLoader
 
+const val PLUGIN_ID = "com.enhe.enhe-endpoint"
 const val PLUGIN_NAME = "Enhe Endpoint"
+const val MYBATIS_GENERATOR = "EF Mybatis 生成器"
 
 object PluginIcons {
 

@@ -3,7 +3,7 @@ fun properties(key: String) = project.findProperty(key).toString()
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.7.20"
-    id("org.jetbrains.intellij") version "1.10.1"
+    id("org.jetbrains.intellij") version "1.11.0"
     id("org.jetbrains.changelog") version "2.0.0"
 }
 
@@ -25,7 +25,7 @@ intellij {
     type.set(properties("platformType")) // Target IDE Platform
 //    localPath.set("/Users/dingshichen/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/223.7571.182/IntelliJ IDEA.app")
 
-    plugins.set(listOf("com.intellij.java"))
+    plugins.set(listOf("com.intellij.java", "com.intellij.database"))
 }
 
 changelog {
@@ -33,11 +33,13 @@ changelog {
 }
 
 tasks {
-    patchPluginXml {
-        sinceBuild.set(properties("pluginSinceBuild"))
+
+    buildSearchableOptions {
+        enabled = false
     }
 
     patchPluginXml {
+        sinceBuild.set(properties("pluginSinceBuild"))
         changeNotes.set(provider {
             with(changelog) {
                 renderItem(

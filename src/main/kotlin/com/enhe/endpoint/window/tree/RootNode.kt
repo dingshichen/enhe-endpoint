@@ -4,8 +4,8 @@
 
 package com.enhe.endpoint.window.tree
 
+import com.enhe.endpoint.psi.getModules
 import com.intellij.icons.AllIcons
-import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 
 /**
@@ -22,7 +22,7 @@ class RootNode : BaseNode() {
     override fun updateNode(project: Project) {
         cleanUpCache()
         moduleNodes.clear()
-        project.getService(ModuleManager::class.java).modules.forEach {
+        project.getModules().forEach {
             val moduleNode = ModuleNode(this, it, project)
             if (moduleNode.childCount > 0) {
                 moduleNodes.add(moduleNode)

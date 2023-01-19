@@ -1,0 +1,15 @@
+// @author  ding.shichen
+// @email   foreverhuiqiao@126.com
+// @date    2023-01-09
+
+package com.enhe.endpoint.psi
+
+import com.intellij.openapi.module.Module
+
+fun Module.getSimpleName() = this.name.replace("module:", "")
+
+data class ModuleItem(
+    val module: Module
+) {
+    override fun toString() = module.getSimpleName()
+}
