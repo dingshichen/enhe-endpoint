@@ -42,7 +42,7 @@ class MybatisGeneratorDialog(
         return arrayOf(okAction, cancelAction)
     }
 
-    fun getTableId(): EFColumn = form.selectedTableId
+    fun getTableId(): EFColumn? = form.selectedTableId
 
     fun isEnableControlService(): Boolean = form.isEnableControlService
 

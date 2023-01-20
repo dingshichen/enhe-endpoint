@@ -68,7 +68,7 @@ class MybatisGenerateAction : AnAction() {
                 val entityDir = findOrCreateDir(project, persistentModule, entityPackageName, sourceDir) ?: return
                 val mapperDir = findOrCreateDir(project, persistentModule, mapperPackageName, sourceDir) ?: return
 
-                val tableId = getTableId()
+                val tableId: EFColumn? = getTableId()
 
                 val upperCamelCaseName = NameCaseUtils.toUpperCamelCase(table.name)
                 val entityName = "${upperCamelCaseName}Entity"

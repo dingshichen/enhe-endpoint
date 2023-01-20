@@ -138,7 +138,8 @@ public class MybatisGeneratorForm {
     }
 
     public EFColumn getSelectedTableId() {
-        return (EFColumn) pkComboBox.getSelectedItem();
+        Object selected = pkComboBox.getSelectedItem();
+        return selected == null ? null : (EFColumn) selected;
     }
 
     public ModuleItem getSelectedModuleItem() {

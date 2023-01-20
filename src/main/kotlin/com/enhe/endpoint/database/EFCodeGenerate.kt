@@ -34,7 +34,7 @@ interface EFCodeGenerateService {
     fun executeGenerateEntity(project: Project,
         directory: PsiDirectory,
         table: EFTable,
-        tableId: EFColumn,
+        tableId: EFColumn?,
         entityPackageName: String,
         entityName: String
     )
@@ -56,7 +56,7 @@ interface EFCodeGenerateService {
         mapperName: String,
         directory: PsiDirectory,
         table: EFTable,
-        tableId: EFColumn
+        tableId: EFColumn?
     )
 
     fun executeGenerateClient(
@@ -99,7 +99,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         project: Project,
         directory: PsiDirectory,
         table: EFTable,
-        tableId: EFColumn,
+        tableId: EFColumn?,
         entityPackageName: String,
         entityName: String
     ) {
@@ -130,7 +130,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
 
         psiFile.children.find { it is PsiClass }?.let {
             table.columns.forEach { column ->
-                val columnAnnotationText = if (column.name == tableId.name) {
+                val columnAnnotationText = if (column.name == tableId?.name) {
                     "@com.baomidou.mybatisplus.annotation.TableId(value = \"${column.name}\", type = com.baomidou.mybatisplus.annotation.IdType.ASSIGN_ID)"
                 } else "@com.baomidou.mybatisplus.annotation.TableField(\"${column.name}\")"
                 val field = JavaPsiFacade.getInstance(project).parserFacade.createFieldFromText(
@@ -139,7 +139,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                                      * ${column.comment}
                                      */
                                     $columnAnnotationText 
-                                    private ${column.type.toJavaType().canonicalName} ${if (column.name == tableId.name) "id" else NameCaseUtils.toCamelCase(column.name)};
+                                    private ${column.type.toJavaType().canonicalName} ${if (column.name == tableId?.name) "id" else NameCaseUtils.toCamelCase(column.name)};
                             """.trimIndent(), it
                 )
                 it.add(field)
@@ -186,13 +186,13 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         mapperName: String,
         directory: PsiDirectory,
         table: EFTable,
-        tableId: EFColumn
+        tableId: EFColumn?
     ) {
 
-        val idTag = "<id column=\"${tableId.getWrapName()}\" jdbcType=\"${tableId.type}\" property=\"id\"/>"
+        val idTag = tableId?.let { "<id column=\"${it.getWrapName()}\" jdbcType=\"${it.type}\" property=\"id\"/>" }.orEmpty()
         val resultTag = buildString {
-            table.columns.filter { it.name != tableId.name }.forEach {
-                this.append("\n<result column=\"${it.getWrapName()}\" jdbcType=\"${it.type}\" property=\"${NameCaseUtils.toCamelCase(it.name)}\"/>")
+            table.columns.filter { it.name != tableId?.name }.forEach {
+                this.append("<result column=\"${it.getWrapName()}\" jdbcType=\"${it.type}\" property=\"${NameCaseUtils.toCamelCase(it.name)}\"/>\n")
             }
         }.replaceFirstToEmpty("\n")
         val columnTag = table.columns.joinToString(", ") { it.getWrapName() }
