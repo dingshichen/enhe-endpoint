@@ -11,7 +11,6 @@ import com.enhe.endpoint.database.MysqlColumnType
 import com.enhe.endpoint.dialog.MybatisGeneratorDialog
 import com.enhe.endpoint.notifier.EnheNotifier
 import com.intellij.database.psi.DbTable
-import com.intellij.database.types.typeName
 import com.intellij.database.util.DasUtil
 import com.intellij.ide.util.PackageUtil
 import com.intellij.openapi.actionSystem.AnAction
@@ -22,7 +21,6 @@ import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ModuleRootManager
-import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiManager
 import org.jetbrains.jps.model.java.JavaSourceRootType
@@ -41,7 +39,7 @@ class MybatisGenerateAction : AnAction() {
                 DasUtil.getColumns(table).map {
                     EFColumn(
                         it.name,
-                        MysqlColumnType.of(it.dasType.typeName),
+                        MysqlColumnType.of(it.dataType.typeName),
                         it.isNotNull,
                         it.comment.orEmpty(),
                         resolveObjects?.any { pk -> pk.name == it.name } ?: false,
@@ -58,7 +56,7 @@ class MybatisGenerateAction : AnAction() {
     private fun showGeneratorDialog(project: Project, table: EFTable) {
         MybatisGeneratorDialog(project, table).apply {
             if (showAndGet()) {
-                val javaPsiFacade = JavaPsiFacade.getInstance(project)
+//                val javaPsiFacade = JavaPsiFacade.getInstance(project)
                 val persistentModule = getPersistentModule()
 
                 val entityPackageName = getEntityPackageName()

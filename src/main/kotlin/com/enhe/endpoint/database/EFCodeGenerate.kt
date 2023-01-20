@@ -5,10 +5,10 @@
 package com.enhe.endpoint.database
 
 import com.enhe.endpoint.psi.findStringFieldRealValue
+import com.enhe.endpoint.psi.lowerCamel
 import com.enhe.endpoint.psi.replaceFirstToEmpty
 import com.enhe.endpoint.util.PluginVersionUtil
 import com.enhe.endpoint.util.SerialVersionUtil
-import com.intellij.database.util.common.lastChar
 import com.intellij.ide.highlighter.JavaFileType
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.lang.java.JavaLanguage
@@ -22,7 +22,6 @@ import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.codeStyle.JavaCodeStyleManager
 import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.webSymbols.utils.NameCaseUtils
 
 interface EFCodeGenerateService {
 
@@ -140,7 +139,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                                      * ${column.comment}
                                      */
                                     $columnAnnotationText 
-                                    private ${column.type.toJavaType().canonicalName} ${if (column.name == tableId?.name) "id" else NameCaseUtils.toCamelCase(column.name)};
+                                    private ${column.type.toJavaType().canonicalName} ${if (column.name == tableId?.name) "id" else column.name.lowerCamel()};
                             """.trimIndent(), it
                 )
                 it.add(field)
@@ -193,7 +192,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         val idTag = tableId?.let { "<id column=\"${it.getWrapName()}\" jdbcType=\"${it.type}\" property=\"id\"/>" }.orEmpty()
         val resultTag = buildString {
             table.columns.filter { it.name != tableId?.name }.forEach {
-                this.append("<result column=\"${it.getWrapName()}\" jdbcType=\"${it.type}\" property=\"${NameCaseUtils.toCamelCase(it.name)}\"/>\n")
+                this.append("<result column=\"${it.getWrapName()}\" jdbcType=\"${it.type}\" property=\"${it.name.lowerCamel()}\"/>\n")
             }
         }.replaceFirstToEmpty("\n")
         val columnTag = table.columns.joinToString(", ") { it.getWrapName() }
@@ -277,7 +276,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
             public class $serviceImplName implements $clientPackageName.$clientName {
 
                 @org.springframework.beans.factory.annotation.Autowired
-                private $mapperPackageName.$mapperName ${NameCaseUtils.toCamelCase(mapperName)};
+                private $mapperPackageName.$mapperName ${mapperName.lowerCamel()};
             }
         """.trimIndent()
 
@@ -299,7 +298,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         table: EFTable,
     ) {
         // 表注释截取作为接口注释
-        val apiDesc = if (table.comment.lastChar == '表') table.comment.substring(0, table.comment.length - 1) else table.comment
+        val apiDesc = if (table.comment.endsWith("表")) table.comment.substring(0, table.comment.length - 1) else table.comment
         val controllerText = """
             package $controllerPackageName;
 
