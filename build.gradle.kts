@@ -28,6 +28,7 @@ intellij {
 
 changelog {
     path.set(file("CHANGELOG.md").canonicalPath)
+    header.set(provider { version.get() })
 }
 
 tasks {

@@ -14,7 +14,12 @@
 
 ### Security
 
-## 1.2.1 - 2023-01-04
+## 1.3.0
+
+### Added
+- EF code generate
+
+## 1.2.1
 
 ### Added
 - Entity support navigate to mapper
