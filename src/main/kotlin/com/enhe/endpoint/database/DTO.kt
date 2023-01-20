@@ -21,7 +21,11 @@ data class EFColumn(
     val isAutoIncrement: Boolean,
     val isLeftPrimaryKey: Boolean,
 ) {
-    override fun toString() = name
+    /**
+     * 包装保留字
+     */
+    fun getWrapName() = MySQLReservedWord.wrapReservedWord(name)
+
 }
 
 /**

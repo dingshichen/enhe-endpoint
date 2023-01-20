@@ -189,13 +189,13 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         tableId: EFColumn
     ) {
 
-        val idTag = "<id column=\"${tableId.name}\" jdbcType=\"${tableId.type}\" property=\"id\"/>"
+        val idTag = "<id column=\"${tableId.getWrapName()}\" jdbcType=\"${tableId.type}\" property=\"id\"/>"
         val resultTag = buildString {
             table.columns.filter { it.name != tableId.name }.forEach {
-                this.append("\n<result column=\"${it.name}\" jdbcType=\"${it.type}\" property=\"${NameCaseUtils.toCamelCase(it.name)}\"/>")
+                this.append("\n<result column=\"${it.getWrapName()}\" jdbcType=\"${it.type}\" property=\"${NameCaseUtils.toCamelCase(it.name)}\"/>")
             }
         }.replaceFirstToEmpty("\n")
-        val columnTag = table.columns.joinToString(", ")
+        val columnTag = table.columns.joinToString(", ") { it.getWrapName() }
         val xmlText = """
             <?xml version="1.0" encoding="UTF-8"?>
             <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
