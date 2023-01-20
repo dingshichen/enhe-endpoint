@@ -61,9 +61,9 @@ class ControllerNode(
     private fun subParentPath(): String {
         val index = parentPath.indexOf("/")
         if (index == -1) {
-            return parentPath
+            return parentPath.replace("//", "/")
         }
-        return parentPath.substring(index + 1)
+        return parentPath.substring(index + 1).replace("//", "/")
     }
 
 }
