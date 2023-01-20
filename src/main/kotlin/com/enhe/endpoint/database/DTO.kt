@@ -26,6 +26,7 @@ data class EFColumn(
      */
     fun getWrapName() = MySQLReservedWord.wrapReservedWord(name)
 
+    override fun toString() = name
 }
 
 /**

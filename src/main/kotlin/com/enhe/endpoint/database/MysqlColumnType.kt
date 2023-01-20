@@ -9,6 +9,7 @@ enum class MysqlColumnType {
     TINYINT,
     SMALLINT,
     MEDIUMINT,
+    INT,
     INTEGER,
     BIGINT,
     FLOAT,
@@ -49,6 +50,7 @@ enum class MysqlColumnType {
             TINYINT -> JavaMapperType.INTEGER
             SMALLINT -> JavaMapperType.INTEGER
             MEDIUMINT -> JavaMapperType.INTEGER
+            INT -> JavaMapperType.INTEGER
             INTEGER -> JavaMapperType.INTEGER
             BIGINT -> JavaMapperType.LONG
             FLOAT -> JavaMapperType.FLOAT

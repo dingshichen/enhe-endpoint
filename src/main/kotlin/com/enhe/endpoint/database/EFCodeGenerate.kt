@@ -4,6 +4,7 @@
 
 package com.enhe.endpoint.database
 
+import com.enhe.endpoint.psi.findStringFieldRealValue
 import com.enhe.endpoint.psi.replaceFirstToEmpty
 import com.enhe.endpoint.util.PluginVersionUtil
 import com.enhe.endpoint.util.SerialVersionUtil
@@ -231,7 +232,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         val moduleApiClass = findModuleDefinitionApiClass(project, module, clientPackageName)
         val serviceNamePrefix = moduleApiClass?.let { "${it.qualifiedName}.SERVER_NAME + " } ?: "/* TODO 未找到规则匹配的模块 API 定义 */ "
         val apiPrefix = moduleApiClass?.let { "${it.qualifiedName}.API_PREFIX + " } ?: "/* TODO 未找到规则匹配的模块 API 定义 */ "
-        val clientPath = getClientPath(apiPrefix, table)
+        val clientPath = getClientPath(moduleApiClass, table)
         val controllerText = """
             package $clientPackageName;
 
@@ -346,16 +347,17 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
     }
 
     /**
-     * 获取客户端请求路径
+     * 获取控制路由
      */
-    private fun getClientPath(apiPrefix: String, table: EFTable): String {
-        return if (apiPrefix.isEmpty()) {
+    private fun getClientPath(moduleApiClass: PsiClass?, table: EFTable): String {
+        val apiPrefixValue = moduleApiClass?.findStringFieldRealValue("API_PREFIX").orEmpty()
+        return if (apiPrefixValue.isEmpty()) {
             table.getPath()
         } else {
-            if (apiPrefix.startsWith("/api/")) {
-                table.getPath().replaceFirstToEmpty(apiPrefix.replaceFirstToEmpty("/api/"))
+            if (apiPrefixValue.startsWith("/api/")) {
+                table.getPath().replaceFirstToEmpty(apiPrefixValue.replaceFirstToEmpty("/api"))
             } else {
-                table.getPath().replaceFirstToEmpty(apiPrefix)
+                table.getPath().replaceFirstToEmpty(apiPrefixValue)
             }
         }
     }

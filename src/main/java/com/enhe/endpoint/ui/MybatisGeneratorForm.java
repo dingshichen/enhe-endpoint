@@ -3,6 +3,7 @@ package com.enhe.endpoint.ui;
 import com.enhe.endpoint.database.EFColumn;
 import com.enhe.endpoint.database.EFTable;
 import com.enhe.endpoint.psi.ModuleItem;
+import com.google.common.base.CaseFormat;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
@@ -38,6 +39,8 @@ public class MybatisGeneratorForm {
     private JTextField serviceImplPackage;
     private JCheckBox enableControlServiceCheckBox;
     private JTextField tableName;
+    private JLabel entityNameLabel;
+    private JTextField entityName;
     private EFTable table;
     private List<ModuleItem> modules;
 
@@ -54,7 +57,7 @@ public class MybatisGeneratorForm {
     private void init() {
         tableName.setText(table.getName());
         table.getPrimaryKeys().forEach(pk -> pkComboBox.addItem(pk));
-        // TODO 增加 Entity 输入框，根据表名生成，支持自定义
+        entityName.setText(CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, table.getName()) + "Entity");
 
         // 控制器开关联动
         enableControlServiceCheckBox.addItemListener(e -> {
@@ -160,6 +163,10 @@ public class MybatisGeneratorForm {
 
     public ModuleItem getSelectedServiceImplModuleItem() {
         return (ModuleItem) serviceImplModuleComboBox.getSelectedItem();
+    }
+
+    public String getEntityName() {
+        return entityName.getText();
     }
 
     public String getEntityPackageName() {

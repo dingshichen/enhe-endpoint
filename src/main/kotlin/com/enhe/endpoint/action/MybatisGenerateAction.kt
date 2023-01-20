@@ -10,7 +10,6 @@ import com.enhe.endpoint.database.EFTable
 import com.enhe.endpoint.database.MysqlColumnType
 import com.enhe.endpoint.dialog.MybatisGeneratorDialog
 import com.enhe.endpoint.notifier.EnheNotifier
-import com.enhe.endpoint.util.toUpperCamelCase
 import com.intellij.database.psi.DbTable
 import com.intellij.database.types.typeName
 import com.intellij.database.util.DasUtil
@@ -23,9 +22,9 @@ import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ModuleRootManager
+import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiManager
-import com.intellij.webSymbols.utils.NameCaseUtils
 import org.jetbrains.jps.model.java.JavaSourceRootType
 
 /**
@@ -59,6 +58,7 @@ class MybatisGenerateAction : AnAction() {
     private fun showGeneratorDialog(project: Project, table: EFTable) {
         MybatisGeneratorDialog(project, table).apply {
             if (showAndGet()) {
+                val javaPsiFacade = JavaPsiFacade.getInstance(project)
                 val persistentModule = getPersistentModule()
 
                 val entityPackageName = getEntityPackageName()
@@ -70,9 +70,8 @@ class MybatisGenerateAction : AnAction() {
 
                 val tableId: EFColumn? = getTableId()
 
-                val upperCamelCaseName = NameCaseUtils.toUpperCamelCase(table.name)
-                val entityName = "${upperCamelCaseName}Entity"
-                val mapperName = "${upperCamelCaseName}Mapper"
+                val entityName = getEntityName()
+                val mapperName = entityName.replace("Entity", "Mapper")
 
                 ApplicationManager.getApplication().runWriteAction {
                     CommandProcessor.getInstance().executeCommand(project, {
@@ -81,6 +80,7 @@ class MybatisGenerateAction : AnAction() {
                             executeGenerateMapper(project, mapperDir, mapperPackageName, entityPackageName, entityName, mapperName)
                             executeGenerateXml(project, entityPackageName, entityName, mapperPackageName, mapperName, mapperDir, table, tableId)
                         }
+                        EnheNotifier.info(project, "持久层生成成功")
                     }, "MybatisPlusGeneratePersistent", null)
                 }
 
@@ -101,9 +101,9 @@ class MybatisGenerateAction : AnAction() {
                     val clientDir = findOrCreateDir(project, clientModule, clientPackageName, clientSourceDir) ?: return
                     val serviceImplDir = findOrCreateDir(project, serviceImplModule, serviceImplPackageName, serviceImplSourceDir) ?: return
 
-                    val controlName = "${upperCamelCaseName}Controller"
-                    val clientName = "${upperCamelCaseName}Service"
-                    val serviceImplName = "${upperCamelCaseName}ServiceImpl"
+                    val controlName = entityName.replace("Entity", "Controller")
+                    val clientName = entityName.replace("Entity", "Service")
+                    val serviceImplName = entityName.replace("Entity", "ServiceImpl")
 
                     ApplicationManager.getApplication().runWriteAction {
                         CommandProcessor.getInstance().executeCommand(project, {
@@ -112,6 +112,7 @@ class MybatisGenerateAction : AnAction() {
                                 executeGenerateServiceImpl(project, serviceImplPackageName, serviceImplName,
                                     clientPackageName, clientName, mapperPackageName, mapperName, serviceImplDir)
                                 executeGenerateController(project, controlPackageName, controlName, clientPackageName, clientName, controlDir, table)
+                                EnheNotifier.info(project, "控制层与服务层生成成功")
                             }
                         }, "MybatisPlusGenerateControlService", null)
                     }

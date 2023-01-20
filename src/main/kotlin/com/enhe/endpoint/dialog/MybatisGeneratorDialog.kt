@@ -56,6 +56,8 @@ class MybatisGeneratorDialog(
 
     fun getServiceImplModule(): Module = form.selectedServiceImplModuleItem.module
 
+    fun getEntityName(): String = form.entityName
+
     fun getEntityPackageName(): String = form.entityPackageName
 
     fun getMapperPackageName(): String = form.mapperPackageName
