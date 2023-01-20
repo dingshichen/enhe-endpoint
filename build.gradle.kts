@@ -18,11 +18,9 @@ kotlin {
     jvmToolchain(11)
 }
 
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
     version.set(properties("platformVersion"))
-    type.set(properties("platformType")) // Target IDE Platform
+    type.set(properties("platformType"))
 //    localPath.set("/Users/dingshichen/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/223.7571.182/IntelliJ IDEA.app")
 
     plugins.set(listOf("com.intellij.java", "com.intellij.database"))

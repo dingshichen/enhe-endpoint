@@ -44,17 +44,28 @@ class MybatisGeneratorDialog(
 
     fun getTableId(): EFColumn = form.selectedTableId
 
+    fun isEnableControlService(): Boolean = form.isEnableControlService
+
     fun getModule(): Module = form.selectedModuleItem.module
 
     fun getPersistentModule(): Module = form.selectedPersistentModuleItem.module
+
+    fun getControlModule(): Module = form.selectedControlModuleItem.module
+
+    fun getClientModule(): Module = form.selectedClientModuleItem.module
+
+    fun getServiceImplModule(): Module = form.selectedServiceImplModuleItem.module
 
     fun getEntityPackageName(): String = form.entityPackageName
 
     fun getMapperPackageName(): String = form.mapperPackageName
 
-    /**
-     * 过滤掉基础模块和子模块
-     */
+    fun getControlPackageName(): String = form.controlPackageName
+
+    fun getClientPackageName(): String = form.clientPackageName
+
+    fun getServiceImplPackageName(): String = form.serviceImplPackageName
+
     private fun servicesModules(): List<ModuleItem> {
         return modules
             .map { ModuleItem(it) }

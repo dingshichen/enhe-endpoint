@@ -4,10 +4,13 @@
 
 package com.enhe.endpoint.psi
 
+import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiReturnStatement
 
-
+/**
+ * 获取 adapter 方法的返回值
+ */
 fun PsiClass.findAdapterValue(): String? {
     return this.findMethodRealReturnValue("adapter")
 }
@@ -25,4 +28,11 @@ fun PsiClass.findMethodRealReturnValue(methodName: String): String? {
         ?.statements
         ?.find { it is PsiReturnStatement } as PsiReturnStatement
     return returnStatement.returnValue?.resolveRealValue()
+}
+
+/**
+ * 获取字符串类型的属性的值
+ */
+fun PsiClass.findStringFieldRealValue(fieldName: String): String? {
+    return findFieldByName(fieldName, false)?.children?.find { it is PsiBinaryExpression }?.resolveRealValue()
 }

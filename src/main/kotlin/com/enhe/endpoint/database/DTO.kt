@@ -24,3 +24,9 @@ data class EFColumn(
     override fun toString() = name
 }
 
+/**
+ * 表名转换成接口路径
+ */
+fun EFTable.getPath(): String {
+    return "/" + name.replace("_", "/")
+}

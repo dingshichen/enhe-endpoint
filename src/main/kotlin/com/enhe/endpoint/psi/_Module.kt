@@ -6,7 +6,7 @@ package com.enhe.endpoint.psi
 
 import com.intellij.openapi.module.Module
 
-fun Module.getSimpleName() = this.name.replace("module:", "")
+fun Module.getSimpleName() = this.name.replaceToEmpty("module:")
 
 data class ModuleItem(
     val module: Module
