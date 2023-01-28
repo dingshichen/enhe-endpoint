@@ -136,6 +136,30 @@ public class MybatisGeneratorForm {
 
     }
 
+    public JTextField getEntityName() {
+        return entityName;
+    }
+
+    public JTextField getEntityPackage() {
+        return entityPackage;
+    }
+
+    public JTextField getMapperPackage() {
+        return mapperPackage;
+    }
+
+    public JTextField getControlPackage() {
+        return controlPackage;
+    }
+
+    public JTextField getClientPackage() {
+        return clientPackage;
+    }
+
+    public JTextField getServiceImplPackage() {
+        return serviceImplPackage;
+    }
+
     public boolean isEnableControlService() {
         return enableControlServiceCheckBox.isSelected();
     }
@@ -165,7 +189,7 @@ public class MybatisGeneratorForm {
         return (ModuleItem) serviceImplModuleComboBox.getSelectedItem();
     }
 
-    public String getEntityName() {
+    public String getEntityNameText() {
         return entityName.getText();
     }
 
