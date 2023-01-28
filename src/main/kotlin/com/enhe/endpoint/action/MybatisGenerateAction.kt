@@ -35,6 +35,10 @@ class MybatisGenerateAction : AnAction() {
         val table = e.getData(LangDataKeys.PSI_ELEMENT) ?: return
         when (table) {
             is DbTable -> {
+                if (table.dataSource.databaseVersion.name != "MySQL") {
+                    EnheNotifier.error(project, "目前仅支持 MySQL 数据库")
+                    return
+                }
                 val resolveObjects = DasUtil.getPrimaryKey(table)?.columnsRef?.resolveObjects()
                 DasUtil.getColumns(table).map {
                     EFColumn(
