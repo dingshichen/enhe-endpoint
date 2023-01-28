@@ -14,6 +14,19 @@
 
 ### Security
 
+## 1.3.1
+
+### Added
+- Mybatis generator datasource validate
+- Mybatis generator input validate
+- Mybatis generate success notifier navigate
+
+### Changed
+- git ignore
+
+### Fixed
+- Endpoint path "//" bug
+
 ## 1.3.0
 
 ### Added
