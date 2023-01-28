@@ -10,7 +10,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.psi.PsiElement
 import com.intellij.util.PsiNavigateUtil
 
-class ViewFileNotificationAction(private val text: String, private val psiElement: PsiElement) : NotificationAction(text) {
+open class ViewFileNotificationAction(private val text: String, private val psiElement: PsiElement) : NotificationAction(text) {
 
     override fun actionPerformed(e: AnActionEvent, notification: Notification) {
         PsiNavigateUtil.navigate(psiElement)
