@@ -2,7 +2,7 @@
 // @email   foreverhuiqiao@126.com
 // @date    2022-12-08
 
-package com.enhe.endpoint.psi
+package com.enhe.endpoint.extend
 
 import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiElement

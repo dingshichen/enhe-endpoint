@@ -2,7 +2,7 @@ package com.enhe.endpoint.ui;
 
 import com.enhe.endpoint.database.EFColumn;
 import com.enhe.endpoint.database.EFTable;
-import com.enhe.endpoint.psi.ModuleItem;
+import com.enhe.endpoint.extend.ModuleItem;
 import com.google.common.base.CaseFormat;
 
 import javax.swing.*;

@@ -8,8 +8,8 @@ import com.enhe.endpoint.ANNOTATION_TASK_SERVICE
 import com.enhe.endpoint.BKG_TASK_EXECUTOR
 import com.enhe.endpoint.PLUGIN_NAME
 import com.enhe.endpoint.SERVICE
-import com.enhe.endpoint.psi.findAdapterValue
-import com.enhe.endpoint.psi.getModules
+import com.enhe.endpoint.extend.findAdapterValue
+import com.enhe.endpoint.extend.getModules
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.icons.AllIcons

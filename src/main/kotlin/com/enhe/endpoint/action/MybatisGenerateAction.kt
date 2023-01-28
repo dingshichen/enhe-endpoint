@@ -9,10 +9,10 @@ import com.enhe.endpoint.database.EFColumn
 import com.enhe.endpoint.database.EFTable
 import com.enhe.endpoint.database.MysqlColumnType
 import com.enhe.endpoint.dialog.MybatisGeneratorDialog
+import com.enhe.endpoint.extend.or
 import com.enhe.endpoint.notifier.EnheNotifier
 import com.intellij.database.psi.DbTable
 import com.intellij.database.util.DasUtil
-import com.intellij.database.util.common.or
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.ide.util.PackageUtil
 import com.intellij.openapi.actionSystem.AnAction

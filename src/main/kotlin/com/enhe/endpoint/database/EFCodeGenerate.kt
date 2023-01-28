@@ -4,9 +4,10 @@
 
 package com.enhe.endpoint.database
 
-import com.enhe.endpoint.psi.findStringFieldRealValue
-import com.enhe.endpoint.psi.lowerCamel
-import com.enhe.endpoint.psi.replaceFirstToEmpty
+import com.enhe.endpoint.extend.findStringFieldRealValue
+import com.enhe.endpoint.extend.lowerCamel
+import com.enhe.endpoint.extend.or
+import com.enhe.endpoint.extend.replaceFirstToEmpty
 import com.enhe.endpoint.util.PluginVersionUtil
 import com.enhe.endpoint.util.SerialVersionUtil
 import com.intellij.ide.highlighter.JavaFileType
@@ -229,8 +230,8 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
     ) {
         // 前缀、路径
         val moduleApiClass = findModuleDefinitionApiClass(project, module, clientPackageName)
-        val serviceNamePrefix = moduleApiClass?.let { "${it.qualifiedName}.SERVER_NAME + " } ?: "/* TODO 未找到规则匹配的模块 API 定义 */ "
-        val apiPrefix = moduleApiClass?.let { "${it.qualifiedName}.API_PREFIX + " } ?: "/* TODO 未找到规则匹配的模块 API 定义 */ "
+        val serviceNamePrefix = moduleApiClass?.let { "${it.qualifiedName}.SERVER_NAME + " }.or("/* TODO 未找到规则匹配的模块 API 定义 */ ")
+        val apiPrefix = moduleApiClass?.let { "${it.qualifiedName}.API_PREFIX + " }.or("/* TODO 未找到规则匹配的模块 API 定义 */ ")
         val clientPath = getClientPath(moduleApiClass, table)
         val controllerText = """
             package $clientPackageName;

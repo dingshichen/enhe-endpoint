@@ -7,8 +7,8 @@ package com.enhe.endpoint.dialog
 import com.enhe.endpoint.MYBATIS_GENERATOR
 import com.enhe.endpoint.database.EFColumn
 import com.enhe.endpoint.database.EFTable
-import com.enhe.endpoint.psi.ModuleItem
-import com.enhe.endpoint.psi.getModules
+import com.enhe.endpoint.extend.ModuleItem
+import com.enhe.endpoint.extend.getModules
 import com.enhe.endpoint.ui.MybatisGeneratorForm
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project

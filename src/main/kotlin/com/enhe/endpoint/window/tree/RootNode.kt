@@ -4,7 +4,7 @@
 
 package com.enhe.endpoint.window.tree
 
-import com.enhe.endpoint.psi.getModules
+import com.enhe.endpoint.extend.getModules
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.Project
 

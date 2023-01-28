@@ -5,7 +5,7 @@
 package com.enhe.endpoint.window.tree
 
 import com.enhe.endpoint.*
-import com.enhe.endpoint.psi.findAttributeRealValue
+import com.enhe.endpoint.extend.findAttributeRealValue
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
