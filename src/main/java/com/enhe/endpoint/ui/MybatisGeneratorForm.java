@@ -41,6 +41,18 @@ public class MybatisGeneratorForm {
     private JTextField tableName;
     private JLabel entityNameLabel;
     private JTextField entityName;
+    private JCheckBox enableTempImplCheckBox;
+    private JCheckBox existCheckBox;
+    private JCheckBox pageCheckBox;
+    private JCheckBox listAllCheckBox;
+    private JCheckBox selectCheckBox;
+    private JCheckBox fillCheckBox;
+    private JCheckBox loadCheckBox;
+    private JCheckBox insertCheckBox;
+    private JCheckBox updateCheckBox;
+    private JCheckBox deleteCheckBox;
+    private JCheckBox impCheckBox;
+    private JCheckBox expCheckBox;
     private EFTable table;
     private List<ModuleItem> modules;
 
@@ -75,6 +87,35 @@ public class MybatisGeneratorForm {
                 clientPackage.setEnabled(false);
                 serviceImplModuleComboBox.setEnabled(false);
                 serviceImplPackage.setEnabled(false);
+            }
+        });
+
+        // 实现模版接口开关联动
+        enableTempImplCheckBox.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                existCheckBox.setEnabled(true);
+                pageCheckBox.setEnabled(true);
+                listAllCheckBox.setEnabled(true);
+                selectCheckBox.setEnabled(true);
+                fillCheckBox.setEnabled(true);
+                loadCheckBox.setEnabled(true);
+                insertCheckBox.setEnabled(true);
+                updateCheckBox.setEnabled(true);
+                deleteCheckBox.setEnabled(true);
+                impCheckBox.setEnabled(true);
+                expCheckBox.setEnabled(true);
+            } else {
+                existCheckBox.setEnabled(false);
+                pageCheckBox.setEnabled(false);
+                listAllCheckBox.setEnabled(false);
+                selectCheckBox.setEnabled(false);
+                fillCheckBox.setEnabled(false);
+                loadCheckBox.setEnabled(false);
+                insertCheckBox.setEnabled(false);
+                updateCheckBox.setEnabled(false);
+                deleteCheckBox.setEnabled(false);
+                impCheckBox.setEnabled(false);
+                expCheckBox.setEnabled(false);
             }
         });
 
