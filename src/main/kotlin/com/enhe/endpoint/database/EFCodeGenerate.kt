@@ -190,34 +190,34 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         tableId: EFColumn?
     ) {
 
-        val idTag = tableId?.let { "<id column=\"${it.getWrapName()}\" jdbcType=\"${it.type}\" property=\"id\"/>" }.orEmpty()
+        val idTag = tableId?.let { "<id column=\"${it.getWrapName()}\" property=\"id\"/>" }.orEmpty()
         val resultTag = buildString {
             table.columns.filter { it.name != tableId?.name }.forEach {
-                this.append("<result column=\"${it.getWrapName()}\" jdbcType=\"${it.type}\" property=\"${it.name.lowerCamel()}\"/>\n")
+                this.append("<result column=\"${it.getWrapName()}\" property=\"${it.name.lowerCamel()}\"/>\n        ")
             }
         }.replaceFirstToEmpty("\n")
         val columnTag = table.columns.joinToString(", ") { it.getWrapName() }
         val xmlText = """
-            <?xml version="1.0" encoding="UTF-8"?>
-            <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-            <!-- Created By Enhe-Endpoint ${PluginVersionUtil.getVersion()} -->
-            <mapper namespace="$mapperPackageName.$mapperName">
-                <resultMap id="defaultResultMap" type="$entityPackageName.$entityName" autoMapping="true">
-                    <!--@Table ${table.name}-->
-                    $idTag
-                    $resultTag
-                </resultMap>
-                <sql id="Base_Column_List">
-                    $columnTag
-                </sql>
-            </mapper>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Created By Enhe-Endpoint ${PluginVersionUtil.getVersion()} -->
+<mapper namespace="$mapperPackageName.$mapperName">
+    <resultMap id="defaultResultMap" type="$entityPackageName.$entityName" autoMapping="true">
+        <!--@Table ${table.name}-->
+        $idTag
+        $resultTag
+    </resultMap>
+    <sql id="Base_Column_List">
+        $columnTag
+    </sql>
+</mapper>
         """.trimIndent()
 
         val psiFile = PsiFileFactory.getInstance(project)
             .createFileFromText("$mapperName.${XmlFileType.INSTANCE.defaultExtension}", XMLLanguage.INSTANCE, xmlText)
 
-        val reformattedFile = CodeStyleManager.getInstance(project).reformat(psiFile)
-        directory.add(reformattedFile)
+//        val reformattedFile = CodeStyleManager.getInstance(project).reformat(psiFile)
+        directory.add(psiFile)
     }
 
     override fun executeGenerateClient(

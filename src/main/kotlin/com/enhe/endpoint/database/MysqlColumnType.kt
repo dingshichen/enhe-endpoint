@@ -76,4 +76,35 @@ enum class MysqlColumnType {
         }
     }
 
+    fun toMybatisJdbcType(): MybatisJdbcType {
+        return when(this) {
+            TINYINT -> MybatisJdbcType.TINYINT
+            SMALLINT -> MybatisJdbcType.SMALLINT
+            MEDIUMINT -> MybatisJdbcType.INTEGER
+            INT -> MybatisJdbcType.INTEGER
+            INTEGER -> MybatisJdbcType.INTEGER
+            BIGINT -> MybatisJdbcType.BIGINT
+            FLOAT -> MybatisJdbcType.FLOAT
+            DOUBLE -> MybatisJdbcType.DOUBLE
+            DECIMAL -> MybatisJdbcType.DECIMAL
+            DATE -> MybatisJdbcType.DATE
+            TIME -> MybatisJdbcType.TIME
+            YEAR -> MybatisJdbcType.TIMESTAMP
+            DATETIME -> MybatisJdbcType.TIMESTAMP
+            TIMESTAMP -> MybatisJdbcType.TIMESTAMP
+            CHAR -> MybatisJdbcType.CHAR
+            VARCHAR -> MybatisJdbcType.VARCHAR
+            TINYBLOB -> MybatisJdbcType.BLOB
+            TINYTEXT -> MybatisJdbcType.LONGNVARCHAR
+            BLOB -> MybatisJdbcType.BLOB
+            TEXT -> MybatisJdbcType.LONGNVARCHAR
+            MEDIUMBLOB -> MybatisJdbcType.BLOB
+            MEDIUMTEXT -> MybatisJdbcType.LONGNVARCHAR
+            LONGBLOB -> MybatisJdbcType.BLOB
+            LONGTEXT -> MybatisJdbcType.LONGNVARCHAR
+            BIT -> MybatisJdbcType.BIT
+            JSON -> MybatisJdbcType.JAVA_OBJECT
+        }
+    }
+
 }
