@@ -12,6 +12,7 @@ import com.enhe.endpoint.dialog.MybatisGeneratorDialog
 import com.enhe.endpoint.notifier.EnheNotifier
 import com.intellij.database.psi.DbTable
 import com.intellij.database.util.DasUtil
+import com.intellij.database.util.common.or
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.ide.util.PackageUtil
 import com.intellij.openapi.actionSystem.AnAction
@@ -19,6 +20,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
+import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ModuleRootManager
@@ -56,7 +58,12 @@ class MybatisGenerateAction : AnAction() {
                         resolveObjects?.first()?.name == it.name
                     )
                 }.toList().run {
-                    showGeneratorDialog(project, EFTable(table.name, table.comment.orEmpty(), this))
+                    try {
+                        showGeneratorDialog(project, EFTable(table.name, table.comment.orEmpty(), this))
+                    } catch (e: Throwable) {
+                        thisLogger().error("生成失败", e)
+                        EnheNotifier.error(project, e.message.or("生成失败"))
+                    }
                 }
             }
         }
