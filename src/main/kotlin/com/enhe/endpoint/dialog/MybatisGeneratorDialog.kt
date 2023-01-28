@@ -13,6 +13,8 @@ import com.enhe.endpoint.ui.MybatisGeneratorForm
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
+import com.intellij.openapi.ui.ValidationInfo
+import java.util.regex.Pattern
 import javax.swing.Action
 import javax.swing.JComponent
 
@@ -24,6 +26,9 @@ class MybatisGeneratorDialog(
     private lateinit var modules: List<Module>
 
     private lateinit var form: MybatisGeneratorForm
+
+    private val entityNamePattern: Pattern = Pattern.compile("[A-Z][A-Za-z]*Entity")
+    private val packagePattern: Pattern = Pattern.compile("[a-z][a-z.]+[a-z]")
 
     init {
         title = MYBATIS_GENERATOR
@@ -42,6 +47,29 @@ class MybatisGeneratorDialog(
         return arrayOf(okAction, cancelAction)
     }
 
+    override fun doValidateAll(): MutableList<ValidationInfo> {
+        val result = mutableListOf<ValidationInfo>()
+        if (!entityNamePattern.matcher(getEntityName()).matches()) {
+            result += ValidationInfo("Entity 命名必须是以 Entity 结尾的大驼峰格式", form.entityName)
+        }
+        if (!packagePattern.matcher(getEntityPackageName()).matches()) {
+            result += ValidationInfo("Entity 包目录不符合规范", form.entityPackage)
+        }
+        if (!packagePattern.matcher(getMapperPackageName()).matches()) {
+            result += ValidationInfo("Mapper 目录不符合规范", form.mapperPackage)
+        }
+        if (!packagePattern.matcher(getControlPackageName()).matches()) {
+            result += ValidationInfo("Controller 包目录不符合规范", form.controlPackage)
+        }
+        if (!packagePattern.matcher(getClientPackageName()).matches()) {
+            result += ValidationInfo("Client 包目录不符合规范", form.clientPackage)
+        }
+        if (!packagePattern.matcher(getServiceImplPackageName()).matches()) {
+            result += ValidationInfo("ServiceImpl 包目录不符合规范", form.serviceImplPackage)
+        }
+        return result
+    }
+
     fun getTableId(): EFColumn? = form.selectedTableId
 
     fun isEnableControlService(): Boolean = form.isEnableControlService
@@ -56,7 +84,7 @@ class MybatisGeneratorDialog(
 
     fun getServiceImplModule(): Module = form.selectedServiceImplModuleItem.module
 
-    fun getEntityName(): String = form.entityName
+    fun getEntityName(): String = form.entityNameText
 
     fun getEntityPackageName(): String = form.entityPackageName
 
