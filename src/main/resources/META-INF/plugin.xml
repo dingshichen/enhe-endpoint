@@ -48,6 +48,7 @@
         </group>
         <action id="com.enhe.endpoint.action.MybatisGenerateAction"
                 class="com.enhe.endpoint.action.MybatisGenerateAction" text="EF-Mybatis-Generator"
+                icon="AllIcons.Actions.Colors"
                 description="Enhe framework Mybatis generator">
             <add-to-group group-id="DatabaseViewPopupMenu" anchor="first"/>
         </action>
