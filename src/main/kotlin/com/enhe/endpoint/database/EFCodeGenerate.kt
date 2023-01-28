@@ -15,10 +15,7 @@ import com.intellij.lang.java.JavaLanguage
 import com.intellij.lang.xml.XMLLanguage
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
-import com.intellij.psi.JavaPsiFacade
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiDirectory
-import com.intellij.psi.PsiFileFactory
+import com.intellij.psi.*
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.codeStyle.JavaCodeStyleManager
 import com.intellij.psi.search.GlobalSearchScope

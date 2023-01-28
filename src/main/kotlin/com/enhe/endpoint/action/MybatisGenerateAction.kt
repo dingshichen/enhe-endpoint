@@ -12,6 +12,7 @@ import com.enhe.endpoint.dialog.MybatisGeneratorDialog
 import com.enhe.endpoint.notifier.EnheNotifier
 import com.intellij.database.psi.DbTable
 import com.intellij.database.util.DasUtil
+import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.ide.util.PackageUtil
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -21,8 +22,11 @@ import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ModuleRootManager
+import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiManager
+import com.intellij.psi.search.FilenameIndex
+import com.intellij.psi.search.GlobalSearchScope
 import org.jetbrains.jps.model.java.JavaSourceRootType
 
 /**
@@ -30,6 +34,7 @@ import org.jetbrains.jps.model.java.JavaSourceRootType
  */
 class MybatisGenerateAction : AnAction() {
 
+    @Suppress("removal")
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
         val table = e.getData(LangDataKeys.PSI_ELEMENT) ?: return
@@ -56,7 +61,6 @@ class MybatisGenerateAction : AnAction() {
     private fun showGeneratorDialog(project: Project, table: EFTable) {
         MybatisGeneratorDialog(project, table).apply {
             if (showAndGet()) {
-//                val javaPsiFacade = JavaPsiFacade.getInstance(project)
                 val persistentModule = getPersistentModule()
 
                 val entityPackageName = getEntityPackageName()
@@ -66,20 +70,30 @@ class MybatisGenerateAction : AnAction() {
                 val entityDir = findOrCreateDir(project, persistentModule, entityPackageName, sourceDir) ?: return
                 val mapperDir = findOrCreateDir(project, persistentModule, mapperPackageName, sourceDir) ?: return
 
-                val tableId: EFColumn? = getTableId()
-
                 val entityName = getEntityName()
                 val mapperName = entityName.replace("Entity", "Mapper")
 
                 ApplicationManager.getApplication().runWriteAction {
                     CommandProcessor.getInstance().executeCommand(project, {
                         EFCodeGenerateService.getInstance(project).run {
-                            executeGenerateEntity(project, entityDir, table, tableId, entityPackageName, entityName)
+                            executeGenerateEntity(project, entityDir, table, getTableId(), entityPackageName, entityName)
                             executeGenerateMapper(project, mapperDir, mapperPackageName, entityPackageName, entityName, mapperName)
-                            executeGenerateXml(project, entityPackageName, entityName, mapperPackageName, mapperName, mapperDir, table, tableId)
+                            executeGenerateXml(project, entityPackageName, entityName, mapperPackageName, mapperName, mapperDir, table, getTableId())
                         }
-                        EnheNotifier.info(project, "持久层生成成功")
                     }, "MybatisPlusGeneratePersistent", null)
+                }
+
+                val javaPsiFacade = JavaPsiFacade.getInstance(project)
+                val goToEntity = javaPsiFacade.toViewAction("$entityPackageName.$entityName", persistentModule, "Entity")
+                val goToMapper = javaPsiFacade.toViewAction("$mapperPackageName.$mapperName", persistentModule, "Mapper")
+                val goToXml = FilenameIndex.getVirtualFilesByName(
+                    "$mapperName.${XmlFileType.INSTANCE.defaultExtension}",
+                    GlobalSearchScope.moduleScope(persistentModule)
+                ).first().let { vf ->
+                    PsiManager.getInstance(project).findFile(vf)?.let { ViewFileNotificationAction("Xml", it) }
+                }
+                if (goToEntity != null && goToMapper != null && goToXml != null) {
+                    EnheNotifier.info(project, "持久层生成成功", goToEntity, goToMapper, goToXml)
                 }
 
                 if (isEnableControlService()) {
@@ -110,9 +124,15 @@ class MybatisGenerateAction : AnAction() {
                                 executeGenerateServiceImpl(project, serviceImplPackageName, serviceImplName,
                                     clientPackageName, clientName, mapperPackageName, mapperName, serviceImplDir)
                                 executeGenerateController(project, controlPackageName, controlName, clientPackageName, clientName, controlDir, table)
-                                EnheNotifier.info(project, "控制层与服务层生成成功")
                             }
                         }, "MybatisPlusGenerateControlService", null)
+                    }
+
+                    val goToClient = javaPsiFacade.toViewAction("$clientPackageName.$clientName", clientModule, "FeignClient")
+                    val goToServiceImpl = javaPsiFacade.toViewAction("$serviceImplPackageName.$serviceImplName", serviceImplModule, "ServiceImpl")
+                    val goToController = javaPsiFacade.toViewAction("$controlPackageName.$controlName", controlModule, "Controller")
+                    if (goToClient != null && goToServiceImpl != null && goToController != null ) {
+                        EnheNotifier.info(project, "控制层服务层生成成功", goToClient, goToServiceImpl, goToController)
                     }
                 }
             }
@@ -148,6 +168,11 @@ class MybatisGenerateAction : AnAction() {
         return dir
     }
 
-
+    /**
+     * 找到 PsiClass 返回一个查看按钮
+     */
+    private fun JavaPsiFacade.toViewAction(qualifiedName: String, module: Module, actionText: String): ViewFileNotificationAction? {
+        return findClass(qualifiedName, GlobalSearchScope.moduleScope(module))?.let { ViewFileNotificationAction(actionText, it) }
+    }
 
 }

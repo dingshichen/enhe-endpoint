@@ -4,7 +4,6 @@
 
 package com.enhe.endpoint.notifier
 
-import com.intellij.notification.BrowseNotificationAction
 import com.intellij.notification.NotificationAction
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
@@ -15,11 +14,9 @@ object EnheNotifier {
     private val NOTIFIER = NotificationGroupManager.getInstance().getNotificationGroup("Enhe.Notification.Group")
 
     @JvmStatic
-    fun info(project: Project, content: String, action: NotificationAction? = null) {
+    fun info(project: Project, content: String, vararg actions: NotificationAction = emptyArray()) {
         NOTIFIER.createNotification(content, NotificationType.INFORMATION).run {
-            action?.let {
-                addAction(it)
-            }
+            actions.forEach { addAction(it) }
             notify(project)
         }
     }
