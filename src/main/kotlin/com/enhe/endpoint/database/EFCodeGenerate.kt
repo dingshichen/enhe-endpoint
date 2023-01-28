@@ -15,7 +15,10 @@ import com.intellij.lang.java.JavaLanguage
 import com.intellij.lang.xml.XMLLanguage
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
-import com.intellij.psi.*
+import com.intellij.psi.JavaPsiFacade
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.codeStyle.JavaCodeStyleManager
 import com.intellij.psi.search.GlobalSearchScope
@@ -320,7 +323,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
     }
 
     /**
-     * 查找模块里定义 API 的那个类
+     * 查找模块里定义 API 的那个类 TODO 后续改造 EF 框架，利用申明的符号精确查找
      */
     private fun findModuleDefinitionApiClass(project: Project, module: Module, clientPackageName: String): PsiClass? {
         // 1 通过全限定名直接查找
