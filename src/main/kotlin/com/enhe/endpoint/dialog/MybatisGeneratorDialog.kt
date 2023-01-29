@@ -5,8 +5,10 @@
 package com.enhe.endpoint.dialog
 
 import com.enhe.endpoint.MYBATIS_GENERATOR
-import com.enhe.endpoint.database.EFColumn
+import com.enhe.endpoint.database.ControlServiceState
 import com.enhe.endpoint.database.EFTable
+import com.enhe.endpoint.database.ImplTempState
+import com.enhe.endpoint.database.PersistentState
 import com.enhe.endpoint.extend.ModuleItem
 import com.enhe.endpoint.extend.getModules
 import com.enhe.endpoint.ui.MybatisGeneratorForm
@@ -49,52 +51,38 @@ class MybatisGeneratorDialog(
 
     override fun doValidateAll(): MutableList<ValidationInfo> {
         val result = mutableListOf<ValidationInfo>()
-        if (!entityNamePattern.matcher(getEntityName()).matches()) {
+        val persistent = getPersistentState()
+        if (!entityNamePattern.matcher(persistent.entityName).matches()) {
             result += ValidationInfo("Entity 命名必须是以 Entity 结尾的大驼峰格式", form.entityName)
         }
-        if (!packagePattern.matcher(getEntityPackageName()).matches()) {
+        if (!packagePattern.matcher(persistent.entityPackageName).matches()) {
             result += ValidationInfo("Entity 包目录不符合规范", form.entityPackage)
         }
-        if (!packagePattern.matcher(getMapperPackageName()).matches()) {
+        if (!packagePattern.matcher(persistent.mapperPackageName).matches()) {
             result += ValidationInfo("Mapper 目录不符合规范", form.mapperPackage)
         }
-        if (!packagePattern.matcher(getControlPackageName()).matches()) {
-            result += ValidationInfo("Controller 包目录不符合规范", form.controlPackage)
-        }
-        if (!packagePattern.matcher(getClientPackageName()).matches()) {
-            result += ValidationInfo("Client 包目录不符合规范", form.clientPackage)
-        }
-        if (!packagePattern.matcher(getServiceImplPackageName()).matches()) {
-            result += ValidationInfo("ServiceImpl 包目录不符合规范", form.serviceImplPackage)
+        if (isEnableControlService()) {
+            val controlService = getControlServiceState()
+            if (!packagePattern.matcher(controlService.controlPackageName).matches()) {
+                result += ValidationInfo("Controller 包目录不符合规范", form.controlPackage)
+            }
+            if (!packagePattern.matcher(controlService.clientPackageName).matches()) {
+                result += ValidationInfo("Client 包目录不符合规范", form.clientPackage)
+            }
+            if (!packagePattern.matcher(controlService.serviceImplPackageName).matches()) {
+                result += ValidationInfo("ServiceImpl 包目录不符合规范", form.serviceImplPackage)
+            }
         }
         return result
     }
 
-    fun getTableId(): EFColumn? = form.selectedTableId
-
     fun isEnableControlService(): Boolean = form.isEnableControlService
 
-    fun getModule(): Module = form.selectedModuleItem.module
+    fun getPersistentState(): PersistentState = form.persistentState
 
-    fun getPersistentModule(): Module = form.selectedPersistentModuleItem.module
+    fun getControlServiceState(): ControlServiceState = form.controlServiceState
 
-    fun getControlModule(): Module = form.selectedControlModuleItem.module
-
-    fun getClientModule(): Module = form.selectedClientModuleItem.module
-
-    fun getServiceImplModule(): Module = form.selectedServiceImplModuleItem.module
-
-    fun getEntityName(): String = form.entityNameText
-
-    fun getEntityPackageName(): String = form.entityPackageName
-
-    fun getMapperPackageName(): String = form.mapperPackageName
-
-    fun getControlPackageName(): String = form.controlPackageName
-
-    fun getClientPackageName(): String = form.clientPackageName
-
-    fun getServiceImplPackageName(): String = form.serviceImplPackageName
+    fun getImplTempState(): ImplTempState = form.implTempState
 
     private fun servicesModules(): List<ModuleItem> {
         return modules

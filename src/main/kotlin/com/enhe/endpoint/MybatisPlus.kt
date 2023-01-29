@@ -4,4 +4,7 @@
 
 package com.enhe.endpoint
 
-const val TABLE_NAME = "com.baomidou.mybatisplus.annotation.TableName"
+const val MP_TABLE_NAME = "com.baomidou.mybatisplus.annotation.TableName"
+const val MP_TABLE_ID = "com.baomidou.mybatisplus.annotation.TableId"
+const val MP_TABLE_ID_TYPE_ASS = "com.baomidou.mybatisplus.annotation.IdType.ASSIGN_ID"
+const val MP_TABLE_FIELD = "com.baomidou.mybatisplus.annotation.TableField"

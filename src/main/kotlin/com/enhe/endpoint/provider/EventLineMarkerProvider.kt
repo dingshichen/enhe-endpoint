@@ -34,7 +34,7 @@ class EventLineMarkerProvider : LineMarkerProvider {
             if (psiType !is PsiClassReferenceType) {
                 return null
             }
-            if (psiType.reference.qualifiedName != BKG_TASK_EXECUTOR) {
+            if (psiType.reference.Qualified != BKG_TASK_EXECUTOR) {
                 return null
             }
             val eventMetadata = loadEventMetadata(element) ?: return null

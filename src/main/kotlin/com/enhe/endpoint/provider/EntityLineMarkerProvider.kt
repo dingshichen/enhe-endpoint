@@ -5,7 +5,7 @@
 package com.enhe.endpoint.provider
 
 import com.enhe.endpoint.PLUGIN_NAME
-import com.enhe.endpoint.TABLE_NAME
+import com.enhe.endpoint.MP_TABLE_NAME
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.icons.AllIcons
@@ -33,12 +33,12 @@ class EntityLineMarkerProvider : LineMarkerProvider {
         if (psiClass !is PsiClass) {
             return null
         }
-        val hasTable = psiClass.hasAnnotation(TABLE_NAME)
+        val hasTable = psiClass.hasAnnotation(MP_TABLE_NAME)
         if (!hasTable) {
             return null
         }
-        val qualifiedName = psiClass.qualifiedName
-        if (qualifiedName.isNullOrBlank()) {
+        val Qualified = psiClass.Qualified
+        if (Qualified.isNullOrBlank()) {
             return null
         }
         val module = ModuleUtil.findModuleForPsiElement(element)
@@ -46,7 +46,7 @@ class EntityLineMarkerProvider : LineMarkerProvider {
             element.textRange,
             AllIcons.Javaee.PersistenceEntity,
             { "Go to mapper" },
-            {_,_ -> gotoMapper(element.project, module, qualifiedName) },
+            {_,_ -> gotoMapper(element.project, module, Qualified) },
             GutterIconRenderer.Alignment.LEFT,
             { PLUGIN_NAME }
         )
@@ -55,12 +55,12 @@ class EntityLineMarkerProvider : LineMarkerProvider {
     /**
      * 跳转到 mapper
      */
-    private fun gotoMapper(project: Project, module: Module?, qualifiedName: String) {
+    private fun gotoMapper(project: Project, module: Module?, Qualified: String) {
         // TODO 正则校验检查一次
-        val mapperQualifiedName = qualifiedName.replace(".entity.", ".mapper.")
+        val mapperQualified = Qualified.replace(".entity.", ".mapper.")
             .replace("Entity", "Mapper")
         val scope = module?.let { GlobalSearchScope.moduleScope(module) } ?: GlobalSearchScope.projectScope(project)
-        val mapperClass = JavaPsiFacade.getInstance(project).findClass(mapperQualifiedName, scope)
+        val mapperClass = JavaPsiFacade.getInstance(project).findClass(mapperQualified, scope)
         PsiNavigateUtil.navigate(mapperClass)
     }
 }

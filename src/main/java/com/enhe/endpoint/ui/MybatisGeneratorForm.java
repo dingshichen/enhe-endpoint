@@ -1,7 +1,6 @@
 package com.enhe.endpoint.ui;
 
-import com.enhe.endpoint.database.EFColumn;
-import com.enhe.endpoint.database.EFTable;
+import com.enhe.endpoint.database.*;
 import com.enhe.endpoint.extend.ModuleItem;
 import com.google.common.base.CaseFormat;
 
@@ -42,7 +41,6 @@ public class MybatisGeneratorForm {
     private JLabel entityNameLabel;
     private JTextField entityName;
     private JCheckBox enableTempImplCheckBox;
-    private JCheckBox existCheckBox;
     private JCheckBox pageCheckBox;
     private JCheckBox listAllCheckBox;
     private JCheckBox selectCheckBox;
@@ -93,7 +91,6 @@ public class MybatisGeneratorForm {
         // 实现模版接口开关联动
         enableTempImplCheckBox.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                existCheckBox.setEnabled(true);
                 pageCheckBox.setEnabled(true);
                 listAllCheckBox.setEnabled(true);
                 selectCheckBox.setEnabled(true);
@@ -105,7 +102,6 @@ public class MybatisGeneratorForm {
                 impCheckBox.setEnabled(true);
                 expCheckBox.setEnabled(true);
             } else {
-                existCheckBox.setEnabled(false);
                 pageCheckBox.setEnabled(false);
                 listAllCheckBox.setEnabled(false);
                 selectCheckBox.setEnabled(false);
@@ -205,52 +201,66 @@ public class MybatisGeneratorForm {
         return enableControlServiceCheckBox.isSelected();
     }
 
-    public EFColumn getSelectedTableId() {
+    public PersistentState getPersistentState() {
+        return new PersistentState(getSelectedTableId(), getSelectedPersistentModuleItem(), getEntityNameText(),
+                getEntityPackageName(), getMapperPackageName());
+    }
+
+    public ControlServiceState getControlServiceState() {
+        return new ControlServiceState(getPersistentState(), getSelectedControlModuleItem(), getSelectedClientModuleItem(), getSelectedServiceImplModuleItem(),
+                getControlPackageName(), getClientPackageName(), getServiceImplPackageName());
+    }
+
+    public ImplTempState getImplTempState() {
+        return new ImplTempState(getPersistentState(), getControlServiceState(), enableTempImplCheckBox.isSelected(),
+                pageCheckBox.isSelected(), listAllCheckBox.isSelected(), selectCheckBox.isSelected(),
+                fillCheckBox.isSelected(), loadCheckBox.isSelected(), insertCheckBox.isSelected(),
+                updateCheckBox.isSelected(), deleteCheckBox.isSelected(), impCheckBox.isSelected(),
+                expCheckBox.isSelected());
+    }
+
+    private EFColumn getSelectedTableId() {
         Object selected = pkComboBox.getSelectedItem();
         return selected == null ? null : (EFColumn) selected;
     }
 
-    public ModuleItem getSelectedModuleItem() {
-        return (ModuleItem) moduleComboBox.getSelectedItem();
-    }
-
-    public ModuleItem getSelectedPersistentModuleItem() {
+    private ModuleItem getSelectedPersistentModuleItem() {
         return (ModuleItem) persistentModuleComboBox.getSelectedItem();
     }
 
-    public ModuleItem getSelectedControlModuleItem() {
+    private ModuleItem getSelectedControlModuleItem() {
         return (ModuleItem) controlModuleComboBox.getSelectedItem();
     }
 
-    public ModuleItem getSelectedClientModuleItem() {
+    private ModuleItem getSelectedClientModuleItem() {
         return (ModuleItem) clientModuleComboBox.getSelectedItem();
     }
 
-    public ModuleItem getSelectedServiceImplModuleItem() {
+    private ModuleItem getSelectedServiceImplModuleItem() {
         return (ModuleItem) serviceImplModuleComboBox.getSelectedItem();
     }
 
-    public String getEntityNameText() {
+    private String getEntityNameText() {
         return entityName.getText();
     }
 
-    public String getEntityPackageName() {
+    private String getEntityPackageName() {
         return entityPackage.getText();
     }
 
-    public String getMapperPackageName() {
+    private String getMapperPackageName() {
         return mapperPackage.getText();
     }
 
-    public String getControlPackageName() {
+    private String getControlPackageName() {
         return controlPackage.getText();
     }
 
-    public String getClientPackageName() {
+    private String getClientPackageName() {
         return clientPackage.getText();
     }
 
-    public String getServiceImplPackageName() {
+    private String getServiceImplPackageName() {
         return serviceImplPackage.getText();
     }
 }

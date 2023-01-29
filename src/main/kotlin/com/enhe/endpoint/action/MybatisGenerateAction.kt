@@ -13,7 +13,6 @@ import com.enhe.endpoint.extend.or
 import com.enhe.endpoint.notifier.EnheNotifier
 import com.intellij.database.psi.DbTable
 import com.intellij.database.util.DasUtil
-import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.ide.util.PackageUtil
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -72,33 +71,26 @@ class MybatisGenerateAction : AnAction() {
     private fun showGeneratorDialog(project: Project, table: EFTable) {
         MybatisGeneratorDialog(project, table).apply {
             if (showAndGet()) {
-                val persistentModule = getPersistentModule()
-
-                val entityPackageName = getEntityPackageName()
-                val mapperPackageName = getMapperPackageName()
+                val persistent = getPersistentState()
+                val persistentModule = persistent.persistentModule
 
                 val sourceDir = findSourceDir(project, persistentModule) ?: return
-                val entityDir = findOrCreateDir(project, persistentModule, entityPackageName, sourceDir) ?: return
-                val mapperDir = findOrCreateDir(project, persistentModule, mapperPackageName, sourceDir) ?: return
+                val entityDir = findOrCreateDir(project, persistentModule, persistent.entityPackageName, sourceDir) ?: return
+                val mapperDir = findOrCreateDir(project, persistentModule, persistent.mapperPackageName, sourceDir) ?: return
 
-                val entityName = getEntityName()
-                val mapperName = entityName.replace("Entity", "Mapper")
-
-                ApplicationManager.getApplication().runWriteAction {
-                    CommandProcessor.getInstance().executeCommand(project, {
-                        EFCodeGenerateService.getInstance(project).run {
-                            executeGenerateEntity(project, entityDir, table, getTableId(), entityPackageName, entityName)
-                            executeGenerateMapper(project, mapperDir, mapperPackageName, entityPackageName, entityName, mapperName)
-                            executeGenerateXml(project, entityPackageName, entityName, mapperPackageName, mapperName, mapperDir, table, getTableId())
-                        }
-                    }, "MybatisPlusGeneratePersistent", null)
+                runWriteCommand(project, "MybatisPlusGeneratePersistent") {
+                    EFCodeGenerateService.getInstance(project).run {
+                        executeGenerateEntity(project, entityDir, table, persistent)
+                        executeGenerateMapper(project, mapperDir, persistent)
+                        executeGenerateXml(project, mapperDir, table, persistent)
+                    }
                 }
 
                 val javaPsiFacade = JavaPsiFacade.getInstance(project)
-                val goToEntity = javaPsiFacade.toViewAction("$entityPackageName.$entityName", persistentModule, "Entity")
-                val goToMapper = javaPsiFacade.toViewAction("$mapperPackageName.$mapperName", persistentModule, "Mapper")
+                val goToEntity = javaPsiFacade.toViewAction(persistent.entityQualified, persistentModule, "Entity")
+                val goToMapper = javaPsiFacade.toViewAction(persistent.mapperQualified, persistentModule, "Mapper")
                 val goToXml = FilenameIndex.getVirtualFilesByName(
-                    "$mapperName.${XmlFileType.INSTANCE.defaultExtension}",
+                    persistent.xmlFileName,
                     GlobalSearchScope.moduleScope(persistentModule)
                 ).first().let { vf ->
                     PsiManager.getInstance(project).findFile(vf)?.let { ViewFileNotificationAction("Xml", it) }
@@ -108,40 +100,28 @@ class MybatisGenerateAction : AnAction() {
                 }
 
                 if (isEnableControlService()) {
-                    val controlModule = getControlModule()
-                    val clientModule = getClientModule()
-                    val serviceImplModule = getServiceImplModule()
+                    val controlService = getControlServiceState()
+                    val implTempState = getImplTempState()
 
-                    val controlPackageName = getControlPackageName()
-                    val clientPackageName = getClientPackageName()
-                    val serviceImplPackageName = getServiceImplPackageName()
+                    val controlSourceDir = findSourceDir(project, controlService.controlModule) ?: return
+                    val clientSourceDir = findSourceDir(project, controlService.clientModule) ?: return
+                    val serviceImplSourceDir = findSourceDir(project, controlService.serviceImplModule) ?: return
 
-                    val controlSourceDir = findSourceDir(project, controlModule) ?: return
-                    val clientSourceDir = findSourceDir(project, clientModule) ?: return
-                    val serviceImplSourceDir = findSourceDir(project, serviceImplModule) ?: return
+                    val controlDir = findOrCreateDir(project, controlService.controlModule, controlService.controlPackageName, controlSourceDir) ?: return
+                    val clientDir = findOrCreateDir(project, controlService.clientModule, controlService.clientPackageName, clientSourceDir) ?: return
+                    val serviceImplDir = findOrCreateDir(project, controlService.serviceImplModule, controlService.serviceImplPackageName, serviceImplSourceDir) ?: return
 
-                    val controlDir = findOrCreateDir(project, controlModule, controlPackageName, controlSourceDir) ?: return
-                    val clientDir = findOrCreateDir(project, clientModule, clientPackageName, clientSourceDir) ?: return
-                    val serviceImplDir = findOrCreateDir(project, serviceImplModule, serviceImplPackageName, serviceImplSourceDir) ?: return
-
-                    val controlName = entityName.replace("Entity", "Controller")
-                    val clientName = entityName.replace("Entity", "Service")
-                    val serviceImplName = entityName.replace("Entity", "ServiceImpl")
-
-                    ApplicationManager.getApplication().runWriteAction {
-                        CommandProcessor.getInstance().executeCommand(project, {
-                            EFCodeGenerateService.getInstance(project).run {
-                                executeGenerateClient(project, clientModule, clientPackageName, clientName, clientDir, table)
-                                executeGenerateServiceImpl(project, serviceImplPackageName, serviceImplName,
-                                    clientPackageName, clientName, mapperPackageName, mapperName, serviceImplDir)
-                                executeGenerateController(project, controlPackageName, controlName, clientPackageName, clientName, controlDir, table)
-                            }
-                        }, "MybatisPlusGenerateControlService", null)
+                    runWriteCommand(project, "MybatisPlusGenerateControlService") {
+                        EFCodeGenerateService.getInstance(project).run {
+                            executeGenerateClient(project, clientSourceDir, clientDir, table, controlService, implTempState)
+                            executeGenerateServiceImpl(project, serviceImplDir, controlService, implTempState)
+                            executeGenerateController(project, controlDir, table, controlService)
+                        }
                     }
 
-                    val goToClient = javaPsiFacade.toViewAction("$clientPackageName.$clientName", clientModule, "FeignClient")
-                    val goToServiceImpl = javaPsiFacade.toViewAction("$serviceImplPackageName.$serviceImplName", serviceImplModule, "ServiceImpl")
-                    val goToController = javaPsiFacade.toViewAction("$controlPackageName.$controlName", controlModule, "Controller")
+                    val goToClient = javaPsiFacade.toViewAction(controlService.clientQualified, controlService.clientModule, "FeignClient")
+                    val goToServiceImpl = javaPsiFacade.toViewAction(controlService.serviceImplQualified, controlService.serviceImplModule, "ServiceImpl")
+                    val goToController = javaPsiFacade.toViewAction(controlService.controlQualified, controlService.controlModule, "Controller")
                     if (goToClient != null && goToServiceImpl != null && goToController != null ) {
                         EnheNotifier.info(project, "控制层服务层生成成功", goToClient, goToServiceImpl, goToController)
                     }
@@ -182,8 +162,14 @@ class MybatisGenerateAction : AnAction() {
     /**
      * 找到 PsiClass 返回一个查看按钮
      */
-    private fun JavaPsiFacade.toViewAction(qualifiedName: String, module: Module, actionText: String): ViewFileNotificationAction? {
-        return findClass(qualifiedName, GlobalSearchScope.moduleScope(module))?.let { ViewFileNotificationAction(actionText, it) }
+    private fun JavaPsiFacade.toViewAction(Qualified: String, module: Module, actionText: String): ViewFileNotificationAction? {
+        return findClass(Qualified, GlobalSearchScope.moduleScope(module))?.let { ViewFileNotificationAction(actionText, it) }
+    }
+
+    private fun runWriteCommand(project: Project, command: String, runnable: () -> Unit) {
+        ApplicationManager.getApplication().runWriteAction {
+            CommandProcessor.getInstance().executeCommand(project, runnable, command, null)
+        }
     }
 
 }

@@ -15,5 +15,7 @@ const val GET_MAPPING = "org.springframework.web.bind.annotation.GetMapping"
 
 // Spring
 const val SERVICE = "org.springframework.stereotype.Service"
+const val PRIMARY = "org.springframework.context.annotation.Primary"
+const val AUTOWIRED = "org.springframework.beans.factory.annotation.Autowired"
 
 val REST_MAPPINGS = listOf(POST_MAPPING, DELETE_MAPPING, PUT_MAPPING, GET_MAPPING)
