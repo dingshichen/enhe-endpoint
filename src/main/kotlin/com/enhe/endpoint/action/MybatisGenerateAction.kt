@@ -162,8 +162,8 @@ class MybatisGenerateAction : AnAction() {
     /**
      * 找到 PsiClass 返回一个查看按钮
      */
-    private fun JavaPsiFacade.toViewAction(Qualified: String, module: Module, actionText: String): ViewFileNotificationAction? {
-        return findClass(Qualified, GlobalSearchScope.moduleScope(module))?.let { ViewFileNotificationAction(actionText, it) }
+    private fun JavaPsiFacade.toViewAction(qualifiedName: String, module: Module, actionText: String): ViewFileNotificationAction? {
+        return findClass(qualifiedName, GlobalSearchScope.moduleScope(module))?.let { ViewFileNotificationAction(actionText, it) }
     }
 
     private fun runWriteCommand(project: Project, command: String, runnable: () -> Unit) {

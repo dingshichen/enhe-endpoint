@@ -47,7 +47,7 @@ class EndpointNode(
      * 根据请求类型选择不同的图标
      */
     private fun getMethodIcon(): Icon {
-        return when (restAnnotation.Qualified) {
+        return when (restAnnotation.qualifiedName) {
             GET_MAPPING -> PluginIcons.getMapping
             POST_MAPPING -> PluginIcons.postMapping
             PUT_MAPPING -> PluginIcons.putMapping

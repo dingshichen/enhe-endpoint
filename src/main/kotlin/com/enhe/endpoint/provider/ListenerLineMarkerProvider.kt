@@ -36,7 +36,7 @@ class ListenerLineMarkerProvider : LineMarkerProvider {
         if (psiClass !is PsiClass) {
             return null
         }
-        psiClass.supers.find { it.Qualified == ANNOTATION_TASK_SERVICE } ?: return null
+        psiClass.supers.find { it.qualifiedName == ANNOTATION_TASK_SERVICE } ?: return null
         if (!psiClass.hasAnnotation(SERVICE)) {
             return null
         }

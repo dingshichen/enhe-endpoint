@@ -4,14 +4,14 @@
 
 package com.enhe.endpoint.provider
 
-import com.enhe.endpoint.PLUGIN_NAME
 import com.enhe.endpoint.MP_TABLE_NAME
+import com.enhe.endpoint.PLUGIN_NAME
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.editor.markup.GutterIconRenderer
-import com.intellij.openapi.module.ModuleUtil
 import com.intellij.openapi.module.Module
+import com.intellij.openapi.module.ModuleUtil
 import com.intellij.openapi.project.Project
 import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiClass
@@ -37,8 +37,8 @@ class EntityLineMarkerProvider : LineMarkerProvider {
         if (!hasTable) {
             return null
         }
-        val Qualified = psiClass.Qualified
-        if (Qualified.isNullOrBlank()) {
+        val qualifiedName = psiClass.qualifiedName
+        if (qualifiedName.isNullOrBlank()) {
             return null
         }
         val module = ModuleUtil.findModuleForPsiElement(element)
@@ -46,7 +46,7 @@ class EntityLineMarkerProvider : LineMarkerProvider {
             element.textRange,
             AllIcons.Javaee.PersistenceEntity,
             { "Go to mapper" },
-            {_,_ -> gotoMapper(element.project, module, Qualified) },
+            {_,_ -> gotoMapper(element.project, module, qualifiedName) },
             GutterIconRenderer.Alignment.LEFT,
             { PLUGIN_NAME }
         )
@@ -55,9 +55,9 @@ class EntityLineMarkerProvider : LineMarkerProvider {
     /**
      * 跳转到 mapper
      */
-    private fun gotoMapper(project: Project, module: Module?, Qualified: String) {
+    private fun gotoMapper(project: Project, module: Module?, qualifiedName: String) {
         // TODO 正则校验检查一次
-        val mapperQualified = Qualified.replace(".entity.", ".mapper.")
+        val mapperQualified = qualifiedName.replace(".entity.", ".mapper.")
             .replace("Entity", "Mapper")
         val scope = module?.let { GlobalSearchScope.moduleScope(module) } ?: GlobalSearchScope.projectScope(project)
         val mapperClass = JavaPsiFacade.getInstance(project).findClass(mapperQualified, scope)
