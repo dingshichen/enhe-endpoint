@@ -264,7 +264,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                         """.trimIndent(), it)
                         parser.createMethodFromText("""
                             @Override
-                            public boolean existsByIds(List<Long> ids) {
+                            public boolean existsByIds($LIST<Long> ids) {
                                 return false;
                             }
                         """.trimIndent(), it)
@@ -288,7 +288,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                     if (enableDelete) {
                         parser.createMethodFromText("""
                             @Override
-                            public int deleteByIds(List<Long> ids) {
+                            public int deleteByIds($LIST<Long> ids) {
                                 return 0;
                             }
                         """.trimIndent(), it)
