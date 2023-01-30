@@ -78,6 +78,7 @@ public class MybatisGeneratorForm {
                 clientPackage.setEnabled(true);
                 serviceImplModuleComboBox.setEnabled(true);
                 serviceImplPackage.setEnabled(true);
+                enableTempImplCheckBox.setEnabled(true);
             } else {
                 controlModuleComboBox.setEnabled(false);
                 controlPackage.setEnabled(false);
@@ -85,6 +86,8 @@ public class MybatisGeneratorForm {
                 clientPackage.setEnabled(false);
                 serviceImplModuleComboBox.setEnabled(false);
                 serviceImplPackage.setEnabled(false);
+                enableTempImplCheckBox.setSelected(false);
+                enableTempImplCheckBox.setEnabled(false);
             }
         });
 

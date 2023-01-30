@@ -129,12 +129,6 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         dir.add(reformatted)
     }
 
-    private fun getEntityExtends(table: EFTable): String {
-        // TODO
-
-        return "implements $IO_SERIAL "
-    }
-
     override fun executeGenerateMapper(
         project: Project,
         dir: PsiDirectory,
