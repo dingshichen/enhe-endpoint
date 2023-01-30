@@ -35,9 +35,23 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         persistent: PersistentState,
         implTemp: ImplTempState
     ) {
+        // 这里修正 PSI 整理导入的问题，手动补全
+        val fixImports = if (implTemp.enable) {
+            val imports = StringBuilder("")
+            if (implTemp.enablePage || implTemp.enableListAll) {
+                imports.append("import ${implTemp.itemQualified};")
+            }
+            if (implTemp.enableSelect || implTemp.enableFill) {
+                imports.appendLine().append("import ${implTemp.optionQualified};")
+            }
+            if (implTemp.enableLoad || implTemp.enableInsert || implTemp.enableUpdate) {
+                imports.appendLine().append("import ${implTemp.baseBeanQualified};")
+            }
+            imports.toString()
+        } else ""
         val entityText = """
             package ${persistent.entityPackageName};
-            
+            $fixImports
             /**
              * ${table.comment}
              * <br> $CREATED_BY ${PluginVersionUtil.getVersion()}
@@ -73,26 +87,27 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                         private ${column.type.toJavaType().canonicalName} ${if (persistent.isId(column)) "id" else column.name.lowerCamel()};
                     """.trimIndent(), it)
             }
+            // 转换函数
             if (implTemp.enable) {
                 with(implTemp) {
                     if (enablePage || enableListAll) {
                         parser.addFieldFromText("""
-                            public static final $FUN<${persistent.entityQualified}, $itemQualified> item = $BEAN_UTIL.to(${persistent.entityQualified}.class, $itemQualified.class);
+                            public static final $FUN<${persistent.entityQualified}, $itemName> item = $BEAN_UTIL.to(${persistent.entityQualified}.class, $itemName.class);
                         """.trimIndent(), it)
                     }
                     if (enableLoad || enableFill) {
                         parser.addFieldFromText("""
-                            public static final $FUN<${persistent.entityQualified}, $optionQualified> option = $BEAN_UTIL.to(${persistent.entityQualified}.class, $optionQualified.class);
+                            public static final $FUN<${persistent.entityQualified}, $optionName> option = $BEAN_UTIL.to(${persistent.entityQualified}.class, $optionName.class);
                         """.trimIndent(), it)
                     }
                     if (enableLoad || enableInsert || enableUpdate) {
                         parser.addFieldFromText("""
-                            public static final $FUN<${persistent.entityQualified}, $baseBeanQualified> to = $BEAN_UTIL.to(${persistent.entityQualified}.class, $baseBeanQualified.class);
+                            public static final $FUN<${persistent.entityQualified}, ${persistent.baseName}> to = $BEAN_UTIL.to(${persistent.entityQualified}.class, ${persistent.baseName}.class);
                         """.trimIndent(), it)
                     }
                     if (enableInsert || enableUpdate) {
                         parser.addFieldFromText("""
-                            public static final $FUN<$baseBeanQualified, ${persistent.entityQualified}> from = $BEAN_UTIL.from(${persistent.entityQualified}.class, $baseBeanQualified.class);
+                            public static final $FUN<${persistent.baseName}, ${persistent.entityQualified}> from = $BEAN_UTIL.from(${persistent.entityQualified}.class, ${persistent.baseName}.class);
                         """.trimIndent(), it)
                     }
                 }
@@ -110,9 +125,20 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         persistent: PersistentState,
         implTemp: ImplTempState
     ) {
-        val mapperText = """
+        // 这里修正 PSI 整理导入的问题，手动补全
+        val fixImports = if (implTemp.enable) {
+            val imports = StringBuilder("")
+            if (implTemp.enablePage || implTemp.enableListAll) {
+                imports.append("import ${implTemp.queryQualified};")
+            }
+            if (implTemp.enableSelect) {
+                imports.appendLine().append("import ${implTemp.selectQualified};")
+            }
+            imports.toString()
+        } else ""
+        val text = """
             package ${persistent.mapperPackageName};
-
+            $fixImports
             /**
              * <br> $CREATED_BY ${PluginVersionUtil.getVersion()}
              */
@@ -122,7 +148,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         """.trimIndent()
 
         val psiFile = PsiFileFactory.getInstance(project)
-            .createFileFromText(persistent.mapperFileName, JavaLanguage.INSTANCE, mapperText)
+            .createFileFromText(persistent.mapperFileName, JavaLanguage.INSTANCE, text)
         // 生成接口方法，与 XML 对应
         if (implTemp.enable) {
             psiFile.getFirstPsiClass()?.let {
@@ -130,21 +156,21 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                 with(implTemp) {
                     if (enablePage) {
                         parser.addMethodFromText("""
-                            int countByQuery(@$MB_PARAM("query") $queryQualified query);
+                            int countByQuery(@$MB_PARAM("query") $queryName query);
                         """.trimIndent(), it)
                         parser.addMethodFromText("""
                             $MP_IPAGE<${persistent.entityQualified}> selectByQuery(@$MB_PARAM("ipage") $MP_IPAGE<${persistent.entityQualified}> ipage, 
-                                                                                   @$MB_PARAM("query") $queryQualified query);
+                                                                                   @$MB_PARAM("query") $queryName query);
                         """.trimIndent(), it)
                     }
                     if (enableListAll) {
                         parser.addMethodFromText("""
-                            $LIST<${persistent.entityQualified}> selectAllByQuery(@$MB_PARAM("query") $queryQualified query);
+                            $LIST<${persistent.entityQualified}> selectAllByQuery(@$MB_PARAM("query") $queryName query);
                         """.trimIndent(), it)
                     }
                     if (enableSelect) {
                         parser.addMethodFromText("""
-                            $LIST<${persistent.entityQualified}> selectBySelectQuery(@$MB_PARAM("query") $selectQualified query);
+                            $LIST<${persistent.entityQualified}> selectBySelectQuery(@$MB_PARAM("query") $selectName query);
                         """.trimIndent(), it)
                     }
                     if (enableLoad) {
