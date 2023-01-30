@@ -9,6 +9,10 @@ const val ANNOTATION_TASK_SERVICE = "com.enhe.dagp.job.api.annotation.Annotation
 const val ATTACH_SERVICE = "com.enhe.dagp.resource.api.service.AttachService"
 const val ANNOTATION_PREAUTH = "com.enhe.core.secure.annotation.PreAuth"
 
+const val PO_STABLE = "com.enhe.core.cloud.common.mybatis.entity.EFStableEntity"
+const val PO_BASE = "com.enhe.core.cloud.common.mybatis.entity.EFBaseEntity"
+const val PO_SIMPLE = "com.enhe.core.cloud.common.mybatis.entity.EFSimpleEntity"
+
 const val EF_MAPPER = "com.enhe.core.mp.mapper.EFMapper"
 const val CONTROL = "com.enhe.core.cloud.common.client.annotation.FeignController"
 

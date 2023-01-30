@@ -49,6 +49,9 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
             }
             imports.toString()
         } else ""
+        // 如果表拥有创建属性和修改属性以及软删属性，可以继承封装好的基类
+        val efEntityBase = table.getEFEntityBase()
+        val extends = if (efEntityBase == null) "implements $IO_SERIAL" else "extends $efEntityBase"
         val entityText = """
             package ${persistent.entityPackageName};
             $fixImports
@@ -64,7 +67,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
             @$LB_NAC
             @$LB_AAC
             @$MP_TABLE_NAME(value = "${table.name}", resultMap = "defaultResultMap")
-            public class ${persistent.entityName} implements $IO_SERIAL {
+            public class ${persistent.entityName} $extends{
                 $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
             }
         """.trimIndent()
@@ -74,7 +77,14 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
 
         psiFile.getFirstPsiClass()?.let {
             val parser = JavaPsiFacade.getInstance(project).parserFacade
-            table.columns.forEach { column ->
+            // 过滤可继承字段
+            val columns: List<EFColumn> = when (efEntityBase) {
+                PO_STABLE -> table.columns.filterNot { c -> CreateUserId.isSuper(c) || CreateTime.isSuper(c) }
+                PO_BASE -> table.columns.filterNot { c -> CreateUserId.isSuper(c) || CreateTime.isSuper(c) || LatestUpdateUserId.isSuper(c) || LatestUpdateTime.isSuper(c) }
+                PO_SIMPLE -> table.columns.filterNot { c -> CreateUserId.isSuper(c) || CreateTime.isSuper(c) || LatestUpdateUserId.isSuper(c) || LatestUpdateTime.isSuper(c) || IsDeleted.isSuper(c) }
+                else -> table.columns
+            }
+            columns.forEach { column ->
                 val columnAnnotationText = if (persistent.isId(column)) {
                     "@$MP_TABLE_ID(value = \"${column.name}\", type = $MP_TABLE_ID_TYPE_ASS)"
                 } else "@$MP_TABLE_FIELD(\"${column.name}\")"
@@ -117,6 +127,12 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         val shortened = JavaCodeStyleManager.getInstance(project).shortenClassReferences(psiFile)
         val reformatted = CodeStyleManager.getInstance(project).reformat(shortened)
         dir.add(reformatted)
+    }
+
+    private fun getEntityExtends(table: EFTable): String {
+        // TODO
+
+        return "implements $IO_SERIAL "
     }
 
     override fun executeGenerateMapper(
