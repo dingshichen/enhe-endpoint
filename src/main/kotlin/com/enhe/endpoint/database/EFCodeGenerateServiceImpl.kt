@@ -272,6 +272,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                     }
                     if (enableInsert) {
                         parser.createMethodFromText("""
+                            @$TRANS
                             @Override
                             public $baseBeanQualified insert($baseBeanQualified value) {
                                 return null;
@@ -280,6 +281,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                     }
                     if (enableUpdate) {
                         parser.createMethodFromText("""
+                            @$TRANS
                             @Override
                             public $baseBeanQualified update($baseBeanQualified value) {
                                 return null;
@@ -288,6 +290,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                     }
                     if (enableDelete) {
                         parser.createMethodFromText("""
+                            @$TRANS
                             @Override
                             public int deleteByIds($LIST<Long> ids) {
                                 return 0;
