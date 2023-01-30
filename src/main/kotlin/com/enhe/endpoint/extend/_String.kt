@@ -11,8 +11,16 @@ fun String.replaceToEmpty(oldValue: String, ignoreCase: Boolean = false) = repla
 
 fun String.replaceFirstToEmpty(oldValue: String, ignoreCase: Boolean = false) = replaceFirst(oldValue, "", ignoreCase)
 
-fun String.lowerCamel() = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, this)
+fun String.firstCharLower(): String {
+    if (this.isEmpty()) {
+        return this
+    } else if (this.length == 1) {
+        return this.lowercase()
+    } else {
+        return this.substring(0, 1).lowercase() + this.substring(1)
+    }
+}
 
-fun String.upperCamel() = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, this)
+fun String.lowerCamel() = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, this)
 
 fun String?.or(or: String) = if (isNullOrEmpty()) or else this

@@ -196,7 +196,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
             @$SERVICE
             public class ${controlService.serviceImplName} implements ${controlService.clientQualified} {
                 @$AUTOWIRED
-                private ${controlService.persistent.mapperQualified} ${controlService.persistent.mapperName.lowerCamel()};
+                private ${controlService.persistent.mapperQualified} ${controlService.persistent.mapperName.firstCharLower()};
             }
         """.trimIndent()
 
