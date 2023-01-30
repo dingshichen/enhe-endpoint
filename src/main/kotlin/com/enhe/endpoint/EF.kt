@@ -14,6 +14,10 @@ const val CONTROL = "com.enhe.core.cloud.common.client.annotation.FeignControlle
 
 const val CLIENT_API_SORT = "com.enhe.core.api.controller.ClientConstants.API_SORT"
 
+const val BEAN_UTIL = "com.enhe.core.tool.utils.BeanUtil"
+const val PAGE_UTIL = "com.enhe.core.cloud.common.mybatis.PageUtil"
+const val EXCEL_UTIL = "com.enhe.core.excel.util.ExcelUtil"
+
 const val BASE_BEAN = "com.enhe.core.api.entity.Base"
 const val QUERY = "com.enhe.core.api.entity.Query"
 const val SELECT_QUERY = "com.enhe.core.api.entity.SelectQuery"
@@ -27,6 +31,8 @@ const val PAGE_INFO = "com.enhe.core.api.entity.PageInfo"
 const val I_ATTACH = "com.enhe.core.api.entity.IAttach"
 
 const val EXCEL_SHEET = "com.enhe.core.api.bean.excel.ExcelSheetMeta"
+const val EXCEL_COLUM = "com.enhe.core.excel.handler.ExcelColumnInfo"
+const val EXCEL_PROPERTY = "com.enhe.core.excel.handler.ExcelPropertyInfo"
 
 // 模版接口
 const val QUERY_PAGE = "com.enhe.core.api.service.ClientQueryService.OnlyPage"
@@ -51,3 +57,5 @@ const val OPT_NO_QUERY_DEL = "com.enhe.core.api.service.ClientOperateService.Non
 const val EXCEL_IMP = "com.enhe.core.api.service.ClientExcelService.OnlyImp"
 const val EXCEL_EXP = "com.enhe.core.api.service.ClientExcelService.OnlyExp"
 const val EXCEL = "com.enhe.core.api.service.ClientExcelService"
+
+const val BIZ_EXEC = "com.enhe.core.api.exception.BusinessException"

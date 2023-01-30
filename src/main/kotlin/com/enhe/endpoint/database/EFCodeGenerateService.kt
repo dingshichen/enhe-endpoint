@@ -19,20 +19,23 @@ interface EFCodeGenerateService {
         project: Project,
         dir: PsiDirectory,
         table: EFTable,
-        persistent: PersistentState
+        persistent: PersistentState,
+        implTemp: ImplTempState
     )
 
     fun executeGenerateMapper(
         project: Project,
         dir: PsiDirectory,
-        persistent: PersistentState
+        persistent: PersistentState,
+        implTemp: ImplTempState
     )
 
     fun executeGenerateXml(
         project: Project,
         dir: PsiDirectory,
         table: EFTable,
-        persistent: PersistentState
+        persistent: PersistentState,
+        implTemp: ImplTempState
     )
 
     fun executeGenerateClient(
@@ -41,14 +44,14 @@ interface EFCodeGenerateService {
         dir: PsiDirectory,
         table: EFTable,
         controlService: ControlServiceState,
-        implTempState: ImplTempState,
+        implTemp: ImplTempState,
     )
 
     fun executeGenerateServiceImpl(
         project: Project,
         dir: PsiDirectory,
         controlService: ControlServiceState,
-        implTempState: ImplTempState,
+        implTemp: ImplTempState,
     )
 
     fun executeGenerateController(

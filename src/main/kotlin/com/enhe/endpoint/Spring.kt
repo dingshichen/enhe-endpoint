@@ -18,5 +18,6 @@ const val SERVICE = "org.springframework.stereotype.Service"
 const val PRIMARY = "org.springframework.context.annotation.Primary"
 const val AUTOWIRED = "org.springframework.beans.factory.annotation.Autowired"
 const val TRANS = "org.springframework.transaction.annotation.Transactional"
+const val REPO = "org.springframework.stereotype.Repository"
 
 val REST_MAPPINGS = listOf(POST_MAPPING, DELETE_MAPPING, PUT_MAPPING, GET_MAPPING)

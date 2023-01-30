@@ -9,3 +9,11 @@ const val IO_SERIAL = "java.io.Serializable"
 const val SERIAL_UID_FIELD = "private static final long serialVersionUID"
 
 const val LIST = "java.util.List"
+
+const val FUN = "java.util.function.Function"
+
+const val COLS = "java.util.stream.Collectors"
+
+const val INS = "java.io.InputStream"
+
+const val IO_EXEC = "java.io.IOException"

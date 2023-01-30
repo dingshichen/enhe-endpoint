@@ -72,6 +72,7 @@ class MybatisGenerateAction : AnAction() {
         MybatisGeneratorDialog(project, table).apply {
             if (showAndGet()) {
                 val persistent = getPersistentState()
+                val implTempState = getImplTempState()
                 val persistentModule = persistent.persistentModule
 
                 val sourceDir = findSourceDir(project, persistentModule) ?: return
@@ -80,9 +81,9 @@ class MybatisGenerateAction : AnAction() {
 
                 runWriteCommand(project, "MybatisPlusGeneratePersistent") {
                     EFCodeGenerateService.getInstance(project).run {
-                        executeGenerateEntity(project, entityDir, table, persistent)
-                        executeGenerateMapper(project, mapperDir, persistent)
-                        executeGenerateXml(project, mapperDir, table, persistent)
+                        executeGenerateEntity(project, entityDir, table, persistent, implTempState)
+                        executeGenerateMapper(project, mapperDir, persistent, implTempState)
+                        executeGenerateXml(project, mapperDir, table, persistent, implTempState)
                     }
                 }
 
@@ -101,7 +102,6 @@ class MybatisGenerateAction : AnAction() {
 
                 if (isEnableControlService()) {
                     val controlService = getControlServiceState()
-                    val implTempState = getImplTempState()
 
                     val controlSourceDir = findSourceDir(project, controlService.controlModule) ?: return
                     val clientSourceDir = findSourceDir(project, controlService.clientModule) ?: return

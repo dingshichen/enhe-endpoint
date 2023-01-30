@@ -83,6 +83,10 @@ data class ControlServiceState(
     val serviceImplName by lazy { persistent.baseName + "ServiceImpl" }
     val serviceImplQualified by lazy { "$serviceImplPackageName.$serviceImplName" }
     val serviceImplFileName by lazy { "$serviceImplName.${JavaFileType.INSTANCE.defaultExtension}" }
+
+    val excelServiceName by lazy { persistent.baseName + "ExcelService" }
+    val excelServiceQualified by lazy { "$serviceImplPackageName.$excelServiceName" }
+    val excelServiceFileName by lazy { "$excelServiceName.${JavaFileType.INSTANCE.defaultExtension}" }
 }
 
 data class ImplTempState(
@@ -130,9 +134,13 @@ data class ImplTempState(
     val impParamQualified by lazy { "$beanPackageName.$impParamName" }
     val impParamFileName by lazy { "$impParamName.${JavaFileType.INSTANCE.defaultExtension}" }
 
-    val expInfoName by lazy { persistent.baseName + "expInfo" }
+    val expInfoName by lazy { persistent.baseName + "ExpInfo" }
     val expInfoQualified by lazy { "$beanPackageName.$expInfoName" }
     val expInfoFileName by lazy { "$expInfoName.${JavaFileType.INSTANCE.defaultExtension}" }
+
+    val excelName by lazy { persistent.baseName + "Excel" }
+    val excelQualified by lazy { "$beanPackageName.$excelName" }
+    val excelFileName by lazy { "$excelName.${JavaFileType.INSTANCE.defaultExtension}" }
 
     var needItem = false
     var needQuery = false
@@ -142,4 +150,5 @@ data class ImplTempState(
     var needImpInfo = false
     var needImpParam = false
     var needExpInfo = false
+    var needExcel = false
 }
