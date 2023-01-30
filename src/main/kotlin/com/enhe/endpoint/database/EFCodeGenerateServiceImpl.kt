@@ -197,7 +197,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         val idTag = persistent.tableId?.let { "<id column=\"${it.getWrapName()}\" property=\"id\"/>" }.orEmpty()
         // 结果集映射
         val resultTag = buildString {
-            table.columns.filter { persistent.isId(it) }.forEach {
+            table.columns.filter { !persistent.isId(it) }.forEach {
                 this.append("<result column=\"${it.getWrapName()}\" property=\"${it.name.lowerCamel()}\"/>\n        ")
             }
         }.replaceFirstToEmpty("\n")
