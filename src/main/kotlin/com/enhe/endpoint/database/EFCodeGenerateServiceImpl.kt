@@ -35,24 +35,24 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         persistent: PersistentState
     ) {
         val entityText = """
-                    package ${persistent.entityPackageName};
-                    
-                    /**
-                     * ${table.comment}
-                     * <br> $CREATED_BY ${PluginVersionUtil.getVersion()}
-                     */
-                    @$LB_GETTER
-                    @$LB_SETTER
-                    @$LB_TOSTRING(callSuper = true)
-                    @$LB_ACCS(chain = true)
-                    @$LB_SB
-                    @$LB_NAC
-                    @$LB_AAC
-                    @$MP_TABLE_NAME(value = "${table.name}", resultMap = "defaultResultMap")
-                    public class ${persistent.entityName} implements $IO_SERIAL {
-                        $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
-                    }
-                """.trimIndent()
+            package ${persistent.entityPackageName};
+            
+            /**
+             * ${table.comment}
+             * <br> $CREATED_BY ${PluginVersionUtil.getVersion()}
+             */
+            @$LB_GETTER
+            @$LB_SETTER
+            @$LB_TOSTRING(callSuper = true)
+            @$LB_ACCS(chain = true)
+            @$LB_SB
+            @$LB_NAC
+            @$LB_AAC
+            @$MP_TABLE_NAME(value = "${table.name}", resultMap = "defaultResultMap")
+            public class ${persistent.entityName} implements $IO_SERIAL {
+                $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
+            }
+        """.trimIndent()
 
         val psiFile = PsiFileFactory.getInstance(project)
             .createFileFromText(persistent.entityFileName, JavaLanguage.INSTANCE, entityText)
@@ -208,14 +208,15 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                 psiFile.getFirstPsiClass()?.let {
                     val parser = JavaPsiFacade.getInstance(project).parserFacade
                     if (enableImp || enableExp) {
-                        parser.createFieldFromText("""
+                        parser.createFieldFromText(
+                            """
                             @$AUTOWIRED
                             private $ATTACH_SERVICE attachService;
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                         parser.createFieldFromText("""
                             @$AUTOWIRED
                             private $BKG_TASK_EXECUTOR bkgTaskExecutor;
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                     }
                     if (enablePage) {
                         parser.createMethodFromText("""
@@ -223,13 +224,13 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                             public int count($queryQualified query) {
                                 return 0;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                         parser.createMethodFromText("""
                             @Override
                             public $PAGI<$itemQualified, $queryQualified> list($PAGE_INFO<$queryQualified> pageInfo) {
                                 return null;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                     }
                     if (enableListAll) {
                         parser.createMethodFromText("""
@@ -237,7 +238,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                             public $LIST<$itemQualified> listAll($queryQualified query) {
                                 return null;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                     }
                     if (enableSelect) {
                         parser.createMethodFromText("""
@@ -245,7 +246,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                             public $LIST<$optionQualified> select($selectQualified query) {
                                 return null;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                     }
                     if (enableFill) {
                         parser.createMethodFromText("""
@@ -253,7 +254,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                             public $LIST<$optionQualified> listByIds($LIST<Long> ids) {
                                 return null;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                     }
                     if (enableLoad) {
                         parser.createMethodFromText("""
@@ -261,13 +262,13 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                             public $baseBeanQualified load(long id) {
                                 return null;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                         parser.createMethodFromText("""
                             @Override
                             public boolean existsByIds($LIST<Long> ids) {
                                 return false;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                     }
                     if (enableInsert) {
                         parser.createMethodFromText("""
@@ -275,7 +276,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                             public $baseBeanQualified insert($baseBeanQualified value) {
                                 return null;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                     }
                     if (enableUpdate) {
                         parser.createMethodFromText("""
@@ -283,7 +284,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                             public $baseBeanQualified update($baseBeanQualified value) {
                                 return null;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                     }
                     if (enableDelete) {
                         parser.createMethodFromText("""
@@ -291,7 +292,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                             public int deleteByIds($LIST<Long> ids) {
                                 return 0;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                     }
                     if (enableImp) {
                         parser.createMethodFromText("""
@@ -299,19 +300,19 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                             public $I_ATTACH template($IMP_PARAM impParam) {
                                 return null;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                         parser.createMethodFromText("""
                             @Override
                             public $LIST<$EXCEL_SHEET> header($IMP_PARAM impParam) {
                                 return null;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                         parser.createMethodFromText("""
                             @Override
                             public boolean imp($impInfoQualified impInfo) {
                                 return false;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                     }
                     if (enableExp) {
                         parser.createMethodFromText("""
@@ -319,7 +320,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                             public boolean exp($expInfoQualified expInfo) {
                                 return false;
                             }
-                        """.trimIndent(), it)
+                        """.trimIndent(), it).apply { it.add(this) }
                     }
                 }
             }
