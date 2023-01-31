@@ -14,6 +14,13 @@
 
 ### Security
 
+## 1.4.0
+
+### Added
+- Mybatis generate extends EFEntityBase
+- Mybatis generator template interface chooser
+- Convert doc comment to Swagger annotation
+
 ## 1.3.1
 
 ### Added
