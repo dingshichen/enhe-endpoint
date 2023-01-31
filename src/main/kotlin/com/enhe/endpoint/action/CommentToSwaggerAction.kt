@@ -56,7 +56,7 @@ class CommentToSwaggerAction : AnAction() {
                         it.getAnnotation(ANNO_TRANSFORMS)?.delete()
                         it.getAnnotation(ANNO_TRANS)?.delete()
                         it.getAnnotation(MP_TABLE_ID)?.delete()
-                        it.getAnnotation(MP_TABLE_NAME)?.delete()
+                        it.getAnnotation(MP_TABLE_FIELD)?.delete()
                     }
                 }
                 val shortened = JavaCodeStyleManager.getInstance(project).shortenClassReferences(psiClass.containingFile)
