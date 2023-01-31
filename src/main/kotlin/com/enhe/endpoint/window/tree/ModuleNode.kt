@@ -4,7 +4,7 @@
 
 package com.enhe.endpoint.window.tree
 
-import com.enhe.endpoint.FEIGN_CLIENT
+import com.enhe.endpoint.consts.FEIGN_CLIENT
 import com.enhe.endpoint.window.LibraryControlService
 import com.enhe.endpoint.extend.findAttributeRealValue
 import com.intellij.icons.AllIcons

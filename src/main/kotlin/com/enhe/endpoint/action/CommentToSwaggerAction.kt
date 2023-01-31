@@ -4,7 +4,7 @@
 
 package com.enhe.endpoint.action
 
-import com.enhe.endpoint.SK_API_PROP
+import com.enhe.endpoint.consts.SK_API_PROP
 import com.enhe.endpoint.extend.getFieldDescription
 import com.enhe.endpoint.extend.hasDocComment
 import com.enhe.endpoint.extend.isSerialUID

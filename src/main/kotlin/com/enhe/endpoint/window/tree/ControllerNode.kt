@@ -4,7 +4,7 @@
 
 package com.enhe.endpoint.window.tree
 
-import com.enhe.endpoint.REST_MAPPINGS
+import com.enhe.endpoint.consts.REST_MAPPINGS
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiClass

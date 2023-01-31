@@ -2,7 +2,7 @@
 // @email   foreverhuiqiao@126.com
 // @date    2022-12-08
 
-package com.enhe.endpoint
+package com.enhe.endpoint.consts
 
 // OpenFeign
 const val FEIGN_CLIENT = "org.springframework.cloud.openfeign.FeignClient"

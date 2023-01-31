@@ -2,7 +2,7 @@
 // @email   foreverhuiqiao@126.com
 // @date    2022-12-28
 
-package com.enhe.endpoint
+package com.enhe.endpoint.consts
 
 const val MB_PARAM = "org.apache.ibatis.annotations.Param"
 

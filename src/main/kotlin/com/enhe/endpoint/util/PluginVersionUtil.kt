@@ -4,7 +4,7 @@
 
 package com.enhe.endpoint.util
 
-import com.enhe.endpoint.PLUGIN_ID
+import com.enhe.endpoint.consts.PLUGIN_ID
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.extensions.PluginId
 

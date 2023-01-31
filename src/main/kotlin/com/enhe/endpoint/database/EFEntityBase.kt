@@ -4,9 +4,9 @@
 
 package com.enhe.endpoint.database
 
-import com.enhe.endpoint.PO_BASE
-import com.enhe.endpoint.PO_SIMPLE
-import com.enhe.endpoint.PO_STABLE
+import com.enhe.endpoint.consts.PO_BASE
+import com.enhe.endpoint.consts.PO_SIMPLE
+import com.enhe.endpoint.consts.PO_STABLE
 
 sealed interface EFEntityBaseField {
 

@@ -4,7 +4,7 @@
 
 package com.enhe.endpoint.action
 
-import com.enhe.endpoint.WINDOW_PANE
+import com.enhe.endpoint.consts.WINDOW_PANE
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 

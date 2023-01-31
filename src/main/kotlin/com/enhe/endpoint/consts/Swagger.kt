@@ -2,7 +2,7 @@
 // @email   foreverhuiqiao@126.com
 // @date    2023-01-29
 
-package com.enhe.endpoint
+package com.enhe.endpoint.consts
 
 const val SK_API = "io.swagger.annotations.Api"
 const val SK_API_MODEL = "io.swagger.annotations.ApiModel"

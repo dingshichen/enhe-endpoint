@@ -4,7 +4,7 @@
 
 package com.enhe.endpoint.extend
 
-import com.enhe.endpoint.SERIAL_UID
+import com.enhe.endpoint.consts.SERIAL_UID
 import com.intellij.psi.PsiField
 
 /**

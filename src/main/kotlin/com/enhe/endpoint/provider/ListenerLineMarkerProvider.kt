@@ -4,10 +4,10 @@
 
 package com.enhe.endpoint.provider
 
-import com.enhe.endpoint.ANNOTATION_TASK_SERVICE
-import com.enhe.endpoint.BKG_TASK_EXECUTOR
-import com.enhe.endpoint.PLUGIN_NAME
-import com.enhe.endpoint.SERVICE
+import com.enhe.endpoint.consts.ANNOTATION_TASK_SERVICE
+import com.enhe.endpoint.consts.BKG_TASK_EXECUTOR
+import com.enhe.endpoint.consts.PLUGIN_NAME
+import com.enhe.endpoint.consts.SERVICE
 import com.enhe.endpoint.extend.findAdapterValue
 import com.enhe.endpoint.extend.getModules
 import com.intellij.codeInsight.daemon.LineMarkerInfo

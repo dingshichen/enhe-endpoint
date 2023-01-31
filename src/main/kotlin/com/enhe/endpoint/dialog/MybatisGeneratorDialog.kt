@@ -4,7 +4,7 @@
 
 package com.enhe.endpoint.dialog
 
-import com.enhe.endpoint.MYBATIS_GENERATOR
+import com.enhe.endpoint.consts.MYBATIS_GENERATOR
 import com.enhe.endpoint.database.ControlServiceState
 import com.enhe.endpoint.database.EFTable
 import com.enhe.endpoint.database.ImplTempState

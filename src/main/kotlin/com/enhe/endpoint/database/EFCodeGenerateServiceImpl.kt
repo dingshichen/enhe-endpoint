@@ -4,7 +4,7 @@
 
 package com.enhe.endpoint.database
 
-import com.enhe.endpoint.*
+import com.enhe.endpoint.consts.*
 import com.enhe.endpoint.extend.*
 import com.enhe.endpoint.util.PluginVersionUtil
 import com.enhe.endpoint.util.SerialVersionUtil
@@ -497,7 +497,7 @@ $methodText
                         parser.addMethodFromText("""
                             @Override
                             public $LIST<$EXCEL_SHEET> header($IMP_PARAM impParam) {
-                                return $LISTS.newArrayList(new $EXCEL_SHEET("Sheet1", $LISTS.newArrayList(${controlService.excelServiceName.firstCharLower()}.getColumnInfoList())));
+                                return $GU_LISTS.newArrayList(new $EXCEL_SHEET("Sheet1", $GU_LISTS.newArrayList(${controlService.excelServiceName.firstCharLower()}.getColumnInfoList())));
                             }
                         """.trimIndent(), it)
                         parser.addMethodFromText("""

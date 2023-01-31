@@ -2,7 +2,7 @@
 // @email   foreverhuiqiao@126.com
 // @date    2023-01-29
 
-package com.enhe.endpoint
+package com.enhe.endpoint.consts
 
 const val LB_GETTER = "lombok.Getter"
 const val LB_SETTER = "lombok.Setter"
