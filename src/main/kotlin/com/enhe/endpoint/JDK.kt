@@ -6,7 +6,8 @@ package com.enhe.endpoint
 
 const val OVERRIDE = "Override"
 const val IO_SERIAL = "java.io.Serializable"
-const val SERIAL_UID_FIELD = "private static final long serialVersionUID"
+const val SERIAL_UID = "serialVersionUID"
+const val SERIAL_UID_FIELD = "private static final long $SERIAL_UID"
 
 const val LIST = "java.util.List"
 

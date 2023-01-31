@@ -20,6 +20,7 @@ import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.codeStyle.JavaCodeStyleManager
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.util.PsiTreeUtil
 
 /**
  * 使用 PSI 的能力来生成
@@ -74,8 +75,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
 
         val psiFile = PsiFileFactory.getInstance(project)
             .createFileFromText(persistent.entityFileName, JavaLanguage.INSTANCE, entityText)
-
-        psiFile.getFirstPsiClass()?.let {
+        PsiTreeUtil.getChildOfType(psiFile, PsiClass::class.java)?.let {
             val parser = JavaPsiFacade.getInstance(project).parserFacade
             // 过滤可继承字段
             val columns: List<EFColumn> = when (efEntityBase) {
@@ -161,7 +161,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
             .createFileFromText(persistent.mapperFileName, JavaLanguage.INSTANCE, text)
         // 生成接口方法，与 XML 对应
         if (implTemp.enable) {
-            psiFile.getFirstPsiClass()?.let {
+            PsiTreeUtil.getChildOfType(psiFile, PsiClass::class.java)?.let {
                 val parser = JavaPsiFacade.getInstance(project).parserFacade
                 with(implTemp) {
                     if (enablePage) {
@@ -359,7 +359,7 @@ $methodText
         // 实现模版接口的方法
         if (implTemp.enable) {
             with(implTemp) {
-                psiFile.getFirstPsiClass()?.let {
+                PsiTreeUtil.getChildOfType(psiFile, PsiClass::class.java)?.let {
                     val parser = JavaPsiFacade.getInstance(project).parserFacade
                     if (enableImp || enableExp) {
                         parser.addFieldFromText(
@@ -776,7 +776,7 @@ $methodText
                @$LB_SB
                @$LB_NAC
                @$LB_AAC
-               @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(查询条件)")
+               @$SK_API_PROP(description = "${table.getCommentWithoutSuffix()}(查询条件)")
                public class ${implTemp.queryName} extends $QUERY {
                    $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
                }
@@ -803,7 +803,7 @@ $methodText
                @$LB_SB
                @$LB_NAC
                @$LB_AAC
-               @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(选项查询条件)")
+               @$SK_API_PROP(description = "${table.getCommentWithoutSuffix()}(选项查询条件)")
                public class ${implTemp.selectName} extends $SELECT_QUERY {
                    $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
                }
@@ -830,7 +830,7 @@ $methodText
            @$LB_SB
            @$LB_NAC
            @$LB_AAC
-           @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(选项)")
+           @$SK_API_PROP(description = "${table.getCommentWithoutSuffix()}(选项)")
            public class ${implTemp.optionName} extends $BASE_BEAN {
                $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
            }
@@ -858,7 +858,7 @@ $methodText
            @$LB_SB
            @$LB_NAC
            @$LB_AAC
-           @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(列表)")
+           @$SK_API_PROP(description = "${table.getCommentWithoutSuffix()}(列表)")
            public class ${implTemp.itemName} extends $superText {
                $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
            }
@@ -892,7 +892,7 @@ $methodText
                 @$LB_SB
                 @$LB_NAC
                 @$LB_AAC
-                @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}")
+                @$SK_API_PROP(description = "${table.getCommentWithoutSuffix()}")
                 public class ${implTemp.persistent.baseName} extends $superText {
                     $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
                 }
@@ -919,7 +919,7 @@ $methodText
                 @$LB_SB
                 @$LB_NAC
                 @$LB_AAC
-                @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(导入参数)")
+                @$SK_API_PROP(description = "${table.getCommentWithoutSuffix()}(导入参数)")
                 public class ${implTemp.impParamName} extends $IMP_PARAM {
                     $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
                 }
@@ -946,7 +946,7 @@ $methodText
                 @$LB_SB
                 @$LB_NAC
                 @$LB_AAC
-                @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(导入)")
+                @$SK_API_PROP(description = "${table.getCommentWithoutSuffix()}(导入)")
                 public class ${implTemp.impInfoName} extends $IMP_INFO<${implTemp.impParamQualified}> {
                     $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
                 }
@@ -973,7 +973,7 @@ $methodText
                 @$LB_SB
                 @$LB_NAC
                 @$LB_AAC
-                @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(导出)")
+                @$SK_API_PROP(description = "${table.getCommentWithoutSuffix()}(导出)")
                 public class ${implTemp.expInfoName} extends $EXP_INFO<${implTemp.queryQualified}> {
                     $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
                 }
@@ -1000,7 +1000,7 @@ $methodText
                 @$LB_SB
                 @$LB_NAC
                 @$LB_AAC
-                @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(表格)")
+                @$SK_API_PROP(description = "${table.getCommentWithoutSuffix()}(表格)")
                 public class ${implTemp.excelName} implements $IO_SERIAL {
                     $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
                 }

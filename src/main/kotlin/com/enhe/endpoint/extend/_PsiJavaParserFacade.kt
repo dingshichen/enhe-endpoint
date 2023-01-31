@@ -16,3 +16,8 @@ fun PsiJavaParserFacade.addMethodFromText(text: String, context: PsiElement) {
     createMethodFromText(text, context)
         .also { context.add(it) }
 }
+
+fun PsiJavaParserFacade.addAnnotationFromText(text: String, context: PsiElement) {
+    createAnnotationFromText(text, context)
+        .also { context.add(it) }
+}

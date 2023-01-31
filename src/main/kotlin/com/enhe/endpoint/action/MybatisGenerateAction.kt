@@ -79,7 +79,7 @@ class MybatisGenerateAction : AnAction() {
                 val entityDir = findOrCreateDir(project, persistentModule, persistent.entityPackageName, sourceDir) ?: return
                 val mapperDir = findOrCreateDir(project, persistentModule, persistent.mapperPackageName, sourceDir) ?: return
 
-                runWriteCommand(project, "MybatisPlusGeneratePersistent") {
+                runWriteCommand(project, "Generate persistent") {
                     EFCodeGenerateService.getInstance(project).run {
                         executeGenerateEntity(project, entityDir, table, persistent, implTempState)
                         executeGenerateMapper(project, mapperDir, persistent, implTempState)
@@ -111,7 +111,7 @@ class MybatisGenerateAction : AnAction() {
                     val clientDir = findOrCreateDir(project, controlService.clientModule, controlService.clientPackageName, clientSourceDir) ?: return
                     val serviceImplDir = findOrCreateDir(project, controlService.serviceImplModule, controlService.serviceImplPackageName, serviceImplSourceDir) ?: return
 
-                    runWriteCommand(project, "MybatisPlusGenerateControlService") {
+                    runWriteCommand(project, "Generate control and service") {
                         EFCodeGenerateService.getInstance(project).run {
                             executeGenerateClient(project, clientSourceDir, clientDir, table, controlService, implTempState)
                             executeGenerateServiceImpl(project, serviceImplDir, controlService, implTempState)
