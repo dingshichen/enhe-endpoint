@@ -94,7 +94,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                          * ${column.comment}
                          */
                         $columnAnnotationText 
-                        private ${column.type.toJavaType().canonicalName} ${if (persistent.isId(column)) "id" else column.name.lowerCamel()};
+                        private ${column.type.toJavaType().canonicalName} ${if (persistent.isId(column)) "id" else column.getFieldNameOrSuperName()};
                     """.trimIndent(), it)
             }
             // 转换函数
@@ -208,9 +208,9 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         // 结果集映射
         val resultTag = buildString {
             table.columns.filter { !persistent.isId(it) }.forEach {
-                this.append("<result column=\"${it.getWrapName()}\" property=\"${it.name.lowerCamel()}\"/>\n        ")
+                this.append("<result column=\"${it.getWrapName()}\" property=\"${it.getFieldNameOrSuperName()}\"/>\n        ")
             }
-        }.replaceFirstToEmpty("\n")
+        }
         // 全字段 SQL
         val columnTag = table.columns.joinToString(", ") { it.getWrapName() }
         // 模版方法

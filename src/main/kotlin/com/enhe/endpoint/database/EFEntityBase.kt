@@ -7,6 +7,7 @@ package com.enhe.endpoint.database
 import com.enhe.endpoint.consts.PO_BASE
 import com.enhe.endpoint.consts.PO_SIMPLE
 import com.enhe.endpoint.consts.PO_STABLE
+import com.enhe.endpoint.extend.lowerCamel
 
 sealed interface EFEntityBaseField {
 
@@ -64,6 +65,21 @@ object IsDeleted : EFEntityBaseField {
 
 fun EFEntityBaseField.isSuper(column: EFColumn): Boolean {
     return column.name == getColumnName() && column.type.toJavaType() == getJavaType()
+}
+
+fun EFColumn.getFieldNameOrSuperName(): String {
+    if (CreateUserId.isSuper(this)) {
+        return CreateUserId.getName()
+    } else if (CreateTime.isSuper(this)) {
+        return CreateTime.getName()
+    } else if (LatestUpdateUserId.isSuper(this)) {
+        return LatestUpdateUserId.getName()
+    } else if (LatestUpdateTime.isSuper(this)) {
+        return LatestUpdateTime.getName()
+    } else if (IsDeleted.isSuper(this)) {
+        return IsDeleted.getName()
+    }
+    return this.name.lowerCamel()
 }
 
 fun EFTable.getEFEntityBase(): String? {
