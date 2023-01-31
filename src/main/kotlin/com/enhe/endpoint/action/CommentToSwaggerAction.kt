@@ -4,7 +4,7 @@
 
 package com.enhe.endpoint.action
 
-import com.enhe.endpoint.consts.SK_API_PROP
+import com.enhe.endpoint.consts.*
 import com.enhe.endpoint.extend.getFieldDescription
 import com.enhe.endpoint.extend.hasDocComment
 import com.enhe.endpoint.extend.isSerialUID
@@ -46,17 +46,22 @@ class CommentToSwaggerAction : AnAction() {
                 fields.forEach {
                     it.getFieldDescription()?.let { comment ->
                         val annotation = parser.createAnnotationFromText("@$SK_API_PROP(\"$comment\")", it)
-                        // 删除注释
-                        it.docComment?.delete()
                         // 添加到第一个注释
                         PsiTreeUtil.getChildOfType(it, PsiModifierList::class.java)?.let { pml ->
                             pml.addBefore(annotation, pml.firstChild)
                         }
+                        // 删除注释
+                        it.docComment?.delete()
+                        // 删除几个 Entity 里的注解
+                        it.getAnnotation(ANNO_TRANSFORMS)?.delete()
+                        it.getAnnotation(ANNO_TRANS)?.delete()
+                        it.getAnnotation(MP_TABLE_ID)?.delete()
+                        it.getAnnotation(MP_TABLE_NAME)?.delete()
                     }
                 }
                 val shortened = JavaCodeStyleManager.getInstance(project).shortenClassReferences(psiClass.containingFile)
                 CodeStyleManager.getInstance(project).reformat(shortened)
-            }, "Comment to Swagger Annotation", null)
+            }, "Doc Comment to Swagger Annotation", null)
         }
     }
 }

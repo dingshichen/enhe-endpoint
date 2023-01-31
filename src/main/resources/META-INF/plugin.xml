@@ -47,13 +47,14 @@
                     text="Refresh" description="Refresh" icon="AllIcons.Actions.Refresh"/>
         </group>
         <action id="com.enhe.endpoint.action.MybatisGenerateAction"
-                class="com.enhe.endpoint.action.MybatisGenerateAction" text="EF-Mybatis-Generator"
+                class="com.enhe.endpoint.action.MybatisGenerateAction"
+                text="EF Mybatis Generator"
                 icon="AllIcons.Actions.Colors"
                 description="Enhe framework Mybatis generator">
             <add-to-group group-id="DatabaseViewPopupMenu" anchor="first"/>
         </action>
         <action id="com.enhe.endpoint.action.CommentToSwaggerAction"
-                class="com.enhe.endpoint.action.CommentToSwaggerAction" text="Comment to Swagger Annotation"
+                class="com.enhe.endpoint.action.CommentToSwaggerAction" text="Doc Comment to Swagger Annotation"
                 description="Convert comments to swagger annotations" icon="AllIcons.Actions.Colors">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
