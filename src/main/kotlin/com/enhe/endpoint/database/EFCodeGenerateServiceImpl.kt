@@ -105,7 +105,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                             public static final $FUN<${persistent.entityQualified}, $itemName> item = $BEAN_UTIL.to(${persistent.entityQualified}.class, $itemName.class);
                         """.trimIndent(), it)
                     }
-                    if (enableLoad || enableFill) {
+                    if (enableSelect || enableFill) {
                         parser.addFieldFromText("""
                             public static final $FUN<${persistent.entityQualified}, $optionName> option = $BEAN_UTIL.to(${persistent.entityQualified}.class, $optionName.class);
                         """.trimIndent(), it)
@@ -525,7 +525,7 @@ $methodText
     }
 
     private fun generateExcelService(project: Project, dir: PsiDirectory, implTemp: ImplTempState) {
-        if (!implTemp.enableImp && implTemp.enableExp) {
+        if (!implTemp.enableImp && !implTemp.enableExp) {
             return
         }
         val service = implTemp.controlService
@@ -630,94 +630,82 @@ $methodText
         if (!implTemp.enable) {
             return ""
         }
-        val ext = StringBuilder("extends")
+        val list = mutableListOf<String>()
         // ClientQueryService
         if (implTemp.enablePage && !implTemp.enableListAll) {
-            ext.append(" $QUERY_PAGE<${implTemp.itemQualified}, ${implTemp.queryQualified}>")
+            list += (" $QUERY_PAGE<${implTemp.itemQualified}, ${implTemp.queryQualified}>")
             implTemp.needItem = true
             implTemp.needQuery = true
         } else if (!implTemp.enablePage && implTemp.enableListAll) {
-            ext.append(" $QUERY_ALL<${implTemp.itemQualified}, ${implTemp.queryQualified}>")
+            list += (" $QUERY_ALL<${implTemp.itemQualified}, ${implTemp.queryQualified}>")
             implTemp.needItem = true
             implTemp.needQuery = true
         } else if (implTemp.enablePage && implTemp.enableListAll) {
-            ext.append(" $QUERY_PAGE_ALL<${implTemp.itemQualified}, ${implTemp.queryQualified}>")
+            list += ("$QUERY_PAGE_ALL<${implTemp.itemQualified}, ${implTemp.queryQualified}>")
             implTemp.needItem = true
             implTemp.needQuery = true
-        } else {
-            ext.append(extendsPlaceholder)
         }
         // ClientFillService
         if (implTemp.enableSelect && !implTemp.enableFill) {
-            ext.append(", $FILL_SELECT<${implTemp.optionQualified}, ${implTemp.selectQualified}>")
+            list += ("$FILL_SELECT<${implTemp.optionQualified}, ${implTemp.selectQualified}>")
             implTemp.needOption = true
             implTemp.needSelectQuery = true
         } else if (!implTemp.enableSelect && implTemp.enableFill) {
-            ext.append(", $FILL_NO_SELECT<${implTemp.optionQualified}>")
+            list += ("$FILL_NO_SELECT<${implTemp.optionQualified}>")
             implTemp.needOption = true
         } else if (implTemp.enableSelect && implTemp.enableFill) {
-            ext.append(", $FILL_SIMPLE<${implTemp.optionQualified}, ${implTemp.selectQualified}>")
+            list += ("$FILL_SIMPLE<${implTemp.optionQualified}, ${implTemp.selectQualified}>")
             implTemp.needOption = true
             implTemp.needSelectQuery = true
-        } else {
-            ext.append(extendsPlaceholder)
         }
         // ClientLoadService
         if (implTemp.enableLoad) {
-            ext.append(", $LOAD_SIMPLE<${implTemp.baseBeanQualified}>")
+            list += ("$LOAD_SIMPLE<${implTemp.baseBeanQualified}>")
             implTemp.needBase = true
-        } else {
-            ext.append(extendsPlaceholder)
         }
         // ClientOperateService
         if (implTemp.enableInsert && !implTemp.enableUpdate && !implTemp.enableDelete) {
-            ext.append(", $OPT_INS<${implTemp.baseBeanQualified}>")
+            list += ("$OPT_INS<${implTemp.baseBeanQualified}>")
             implTemp.needBase = true
         } else if (!implTemp.enableInsert && implTemp.enableUpdate && !implTemp.enableDelete) {
-            ext.append(", $OPT_UPT<${implTemp.baseBeanQualified}>")
+            list += ("$OPT_UPT<${implTemp.baseBeanQualified}>")
             implTemp.needBase = true
         } else if (!implTemp.enableInsert && !implTemp.enableUpdate && implTemp.enableDelete) {
-            ext.append(", $OPT_SIMPLE_DEL<${implTemp.baseBeanQualified}>")
+            list += ("$OPT_SIMPLE_DEL<${implTemp.baseBeanQualified}>")
             implTemp.needBase = true
         } else if (implTemp.enableInsert && implTemp.enableUpdate && !implTemp.enableDelete) {
-            ext.append(", $OPT_NO_DEL<${implTemp.baseBeanQualified}>")
+            list += ("$OPT_NO_DEL<${implTemp.baseBeanQualified}>")
             implTemp.needBase = true
         } else if (implTemp.enableInsert && !implTemp.enableUpdate && implTemp.enableDelete) {
-            ext.append(", $OPT_NO_UPT<${implTemp.baseBeanQualified}, $QUERY>, $OPT_NO_QUERY_DEL<${implTemp.baseBeanQualified}>")
+            list += ("$OPT_NO_UPT<${implTemp.baseBeanQualified}, $QUERY>, $OPT_NO_QUERY_DEL<${implTemp.baseBeanQualified}>")
             implTemp.needBase = true
         } else if (!implTemp.enableInsert && implTemp.enableUpdate && implTemp.enableDelete) {
-            ext.append(", $OPT_NO_INS<${implTemp.baseBeanQualified}, $QUERY>, $OPT_NO_QUERY_DEL<${implTemp.baseBeanQualified}>")
+            list += ("$OPT_NO_INS<${implTemp.baseBeanQualified}, $QUERY>, $OPT_NO_QUERY_DEL<${implTemp.baseBeanQualified}>")
             implTemp.needBase = true
         } else if (implTemp.enableInsert && implTemp.enableUpdate && implTemp.enableDelete) {
-            ext.append(", $OPT_SIMPLE<${implTemp.baseBeanQualified}, $QUERY>, $OPT_NO_QUERY_DEL<${implTemp.baseBeanQualified}>")
+            list += ("$OPT_SIMPLE<${implTemp.baseBeanQualified}, $QUERY>, $OPT_NO_QUERY_DEL<${implTemp.baseBeanQualified}>")
             implTemp.needBase = true
-        } else {
-            ext.append(extendsPlaceholder)
         }
         // ClientExcelService
         if (implTemp.enableImp && !implTemp.enableExp) {
-            ext.append(", $EXCEL_IMP<$IMP_PARAM, ${implTemp.impInfoQualified}>")
+            list += ("$EXCEL_IMP<$IMP_PARAM, ${implTemp.impInfoQualified}>")
             implTemp.needImpInfo = true
             implTemp.needImpParam = true
             implTemp.needExcel = true
         } else if (!implTemp.enableImp && implTemp.enableExp) {
-            ext.append(", $EXCEL_EXP<${implTemp.queryQualified}, ${implTemp.expInfoQualified}>")
+            list += ("$EXCEL_EXP<${implTemp.queryQualified}, ${implTemp.expInfoQualified}>")
             implTemp.needQuery = true
             implTemp.needExpInfo = true
             implTemp.needExcel = true
         } else if (implTemp.enableImp && implTemp.enableExp) {
-            ext.append(", $EXCEL<$IMP_PARAM, ${implTemp.queryQualified}, ${implTemp.impInfoQualified}, ${implTemp.expInfoQualified}>")
+            list += ("$EXCEL<$IMP_PARAM, ${implTemp.queryQualified}, ${implTemp.impInfoQualified}, ${implTemp.expInfoQualified}>")
             implTemp.needQuery = true
             implTemp.needImpInfo = true
             implTemp.needImpParam = true
             implTemp.needExpInfo = true
             implTemp.needExcel = true
-        } else {
-            ext.append(", ")
         }
-        return ext.toString()
-            .replaceToEmpty("$extendsPlaceholder, ")
-            .run { if (trim() == "extends") "" else this }
+        return list.joinToString(",", " extends ")
     }
 
     private fun generateBean(project: Project, sourceDir: PsiDirectory, table: EFTable, implTemp: ImplTempState) {

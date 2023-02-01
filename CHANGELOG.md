@@ -14,6 +14,13 @@
 
 ### Security
 
+## 1.4.1
+
+### Fixed
+- Mybatis generate service extends bug
+- Mybatis generate excel service
+- Mybatis generate transform function
+
 ## 1.4.0
 
 ### Added
