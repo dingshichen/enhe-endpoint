@@ -14,6 +14,11 @@
 
 ### Security
 
+## 1.4.2
+
+### Added
+- Mybatis generator support no primary key
+
 ## 1.4.1
 
 ### Fixed
