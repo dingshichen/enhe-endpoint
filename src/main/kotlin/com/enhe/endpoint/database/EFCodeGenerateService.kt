@@ -4,6 +4,10 @@
 
 package com.enhe.endpoint.database
 
+import com.enhe.endpoint.database.model.ControlServiceState
+import com.enhe.endpoint.database.model.EFTable
+import com.enhe.endpoint.database.model.ImplTempState
+import com.enhe.endpoint.database.model.PersistentState
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 

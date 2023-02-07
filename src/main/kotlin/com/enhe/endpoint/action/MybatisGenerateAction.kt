@@ -5,8 +5,8 @@
 package com.enhe.endpoint.action
 
 import com.enhe.endpoint.database.EFCodeGenerateService
-import com.enhe.endpoint.database.EFColumn
-import com.enhe.endpoint.database.EFTable
+import com.enhe.endpoint.database.model.EFColumn
+import com.enhe.endpoint.database.model.EFTable
 import com.enhe.endpoint.database.MysqlColumnType
 import com.enhe.endpoint.dialog.MybatisGeneratorDialog
 import com.enhe.endpoint.extend.or

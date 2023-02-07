@@ -1,6 +1,6 @@
 package com.enhe.endpoint.ui;
 
-import com.enhe.endpoint.database.*;
+import com.enhe.endpoint.database.model.*;
 import com.enhe.endpoint.extend.ModuleItem;
 import com.google.common.base.CaseFormat;
 
@@ -15,7 +15,7 @@ public class MybatisGeneratorForm {
     private JPanel root;
     private JLabel tableLabel;
     private JLabel pkLabel;
-    private JComboBox<EFColumn> pkComboBox;
+    private JComboBox<EColumn> pkComboBox;
     private JLabel moduleLabel;
     private JComboBox<ModuleItem> moduleComboBox;
     private JComboBox<ModuleItem> persistentModuleComboBox;
@@ -66,6 +66,7 @@ public class MybatisGeneratorForm {
 
     private void init() {
         tableName.setText(table.getName());
+        pkComboBox.addItem(new EColumnOption());
         table.getPrimaryKeys().forEach(pk -> pkComboBox.addItem(pk));
         entityName.setText(CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, table.getName()) + "Entity");
 
@@ -200,6 +201,50 @@ public class MybatisGeneratorForm {
         return serviceImplPackage;
     }
 
+    public JCheckBox getEnableTempImplCheckBox() {
+        return enableTempImplCheckBox;
+    }
+
+    public JCheckBox getPageCheckBox() {
+        return pageCheckBox;
+    }
+
+    public JCheckBox getListAllCheckBox() {
+        return listAllCheckBox;
+    }
+
+    public JCheckBox getSelectCheckBox() {
+        return selectCheckBox;
+    }
+
+    public JCheckBox getFillCheckBox() {
+        return fillCheckBox;
+    }
+
+    public JCheckBox getLoadCheckBox() {
+        return loadCheckBox;
+    }
+
+    public JCheckBox getInsertCheckBox() {
+        return insertCheckBox;
+    }
+
+    public JCheckBox getUpdateCheckBox() {
+        return updateCheckBox;
+    }
+
+    public JCheckBox getDeleteCheckBox() {
+        return deleteCheckBox;
+    }
+
+    public JCheckBox getImpCheckBox() {
+        return impCheckBox;
+    }
+
+    public JCheckBox getExpCheckBox() {
+        return expCheckBox;
+    }
+
     public boolean isEnableControlService() {
         return enableControlServiceCheckBox.isSelected();
     }
@@ -224,7 +269,10 @@ public class MybatisGeneratorForm {
 
     private EFColumn getSelectedTableId() {
         Object selected = pkComboBox.getSelectedItem();
-        return selected == null ? null : (EFColumn) selected;
+        if (selected instanceof EFColumn) {
+            return (EFColumn) selected;
+        }
+        return null;
     }
 
     private ModuleItem getSelectedPersistentModuleItem() {

@@ -5,6 +5,7 @@
 package com.enhe.endpoint.database
 
 import com.enhe.endpoint.consts.*
+import com.enhe.endpoint.database.model.*
 import com.enhe.endpoint.extend.*
 import com.enhe.endpoint.util.PluginVersionUtil
 import com.enhe.endpoint.util.SerialVersionUtil

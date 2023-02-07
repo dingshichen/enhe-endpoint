@@ -2,44 +2,12 @@
 // @email   foreverhuiqiao@126.com
 // @date    2023-01-07
 
-package com.enhe.endpoint.database
+package com.enhe.endpoint.database.model
 
 import com.enhe.endpoint.extend.ModuleItem
 import com.enhe.endpoint.extend.replaceToEmpty
 import com.intellij.ide.highlighter.JavaFileType
 import com.intellij.ide.highlighter.XmlFileType
-
-data class EFTable(
-    val name: String,
-    val comment: String,
-    val columns: List<EFColumn>,
-) {
-    fun getPrimaryKeys() = columns.filter { it.isPrimaryKey }
-
-    /**
-     * 表名转换成接口路径
-     */
-    fun getPath() = "/" + name.replace("_", "/")
-
-    fun getCommentWithoutSuffix() = if (comment.endsWith("表")) comment.substring(0, comment.length - 1) else comment
-}
-
-data class EFColumn(
-    val name: String,
-    val type: MysqlColumnType,
-    val nullable: Boolean,
-    val comment: String,
-    val isPrimaryKey: Boolean,
-    val isAutoIncrement: Boolean,
-    val isLeftPrimaryKey: Boolean,
-) {
-    /**
-     * 包装保留字
-     */
-    fun getWrapName() = MySQLReservedWord.wrapReservedWord(name)
-
-    override fun toString() = name
-}
 
 data class PersistentState(
     val tableId: EFColumn?,

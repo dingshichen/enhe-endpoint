@@ -5,10 +5,10 @@
 package com.enhe.endpoint.dialog
 
 import com.enhe.endpoint.consts.MYBATIS_GENERATOR
-import com.enhe.endpoint.database.ControlServiceState
-import com.enhe.endpoint.database.EFTable
-import com.enhe.endpoint.database.ImplTempState
-import com.enhe.endpoint.database.PersistentState
+import com.enhe.endpoint.database.model.ControlServiceState
+import com.enhe.endpoint.database.model.EFTable
+import com.enhe.endpoint.database.model.ImplTempState
+import com.enhe.endpoint.database.model.PersistentState
 import com.enhe.endpoint.extend.ModuleItem
 import com.enhe.endpoint.extend.getModules
 import com.enhe.endpoint.ui.MybatisGeneratorForm
@@ -71,6 +71,27 @@ class MybatisGeneratorDialog(
             }
             if (!packagePattern.matcher(controlService.serviceImplPackageName).matches()) {
                 result += ValidationInfo("ServiceImpl 包目录不符合规范", form.serviceImplPackage)
+            }
+            val implTemp = getImplTempState()
+            if (persistent.tableId == null && implTemp.enable) {
+                if (implTemp.enableLoad) {
+                    result += ValidationInfo("MybatisPlus 无设置主键情况下暂不能实现此模版接口", form.loadCheckBox)
+                }
+                if (implTemp.enableFill) {
+                    result += ValidationInfo("MybatisPlus 无设置主键情况下暂不能实现此模版接口", form.fillCheckBox)
+                }
+                if (implTemp.enableSelect) {
+                    result += ValidationInfo("MybatisPlus 无设置主键情况下暂不能实现此模版接口", form.selectCheckBox)
+                }
+                if (implTemp.enableInsert) {
+                    result += ValidationInfo("MybatisPlus 无设置主键情况下暂不能实现此模版接口", form.insertCheckBox)
+                }
+                if (implTemp.enableDelete) {
+                    result += ValidationInfo("MybatisPlus 无设置主键情况下暂不能实现此模版接口", form.deleteCheckBox)
+                }
+                if (implTemp.enableUpdate) {
+                    result += ValidationInfo("MybatisPlus 无设置主键情况下暂不能实现此模版接口", form.updateCheckBox)
+                }
             }
         }
         return result
