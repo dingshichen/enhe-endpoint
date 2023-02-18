@@ -21,9 +21,9 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.PsiNavigateUtil
 
 /**
- * 事件发布的标记
+ * 任务事件发布的标记
  */
-class EventLineMarkerProvider : LineMarkerProvider {
+class TaskEventLineMarkerProvider : LineMarkerProvider {
 
     override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
         if (element !is PsiMethodCallExpression) {

@@ -21,3 +21,5 @@ const val TRANS = "org.springframework.transaction.annotation.Transactional"
 const val REPO = "org.springframework.stereotype.Repository"
 
 val REST_MAPPINGS = listOf(POST_MAPPING, DELETE_MAPPING, PUT_MAPPING, GET_MAPPING)
+
+const val EVENT_LISTENER = "org.springframework.context.event.EventListener"

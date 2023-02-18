@@ -5,8 +5,8 @@
 
     <vendor email="foreverhuiqiao@126.com" url="https://github.com/dingshichen">ding.shichen</vendor>
 
-    <description><![CDATA[Adapt to the Enhe Framework RestFull endpoint definition, provides a tool window to display the project controller tree, and can be quickly searched and navigated. <br> <br>
-        适配 Enhe Framework RestFull 端点定义，提供一个工具栏窗口来展示项目控制器树，并且还可以快速的搜索与导航。]]></description>
+    <description><![CDATA[Adapts the Enhe Framework RestFull endpoint definition to provide a toolbar window to display the project controller tree. Supports navigation for event publishing and listening. And a highly customized code generator. <br> <br>
+        适配 Enhe Framework RestFull 端点定义，提供一个工具栏窗口来展示项目控制器树。支持事件发布与监听的导航。以及一个高度定制化的代码生成器]]></description>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
@@ -29,13 +29,19 @@
                     factoryClass="com.enhe.endpoint.window.EndpointToolWindowFactory"/>
 
         <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.enhe.endpoint.provider.EventLineMarkerProvider" />
+                                        implementationClass="com.enhe.endpoint.provider.TaskEventLineMarkerProvider" />
 
         <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.enhe.endpoint.provider.ListenerLineMarkerProvider" />
+                                        implementationClass="com.enhe.endpoint.provider.TaskListenerLineMarkerProvider" />
 
         <codeInsight.lineMarkerProvider language="JAVA"
                                         implementationClass="com.enhe.endpoint.provider.EntityLineMarkerProvider" />
+
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.enhe.endpoint.provider.LocalEventLineMarkerProvider" />
+
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.enhe.endpoint.provider.LocalListenerMarkerProvider" />
 
         <notificationGroup id="Enhe.Notification.Group" displayType="BALLOON"/>
     </extensions>

@@ -23,10 +23,10 @@ import com.intellij.psi.search.searches.ReferencesSearch
 import com.intellij.util.PsiNavigateUtil
 
 /**
- * 事件监听的标记
+ * 任务事件监听的标记
  */
 @Suppress("UnstableApiUsage")
-class ListenerLineMarkerProvider : LineMarkerProvider {
+class TaskListenerLineMarkerProvider : LineMarkerProvider {
 
     override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
         if (element !is PsiIdentifier) {

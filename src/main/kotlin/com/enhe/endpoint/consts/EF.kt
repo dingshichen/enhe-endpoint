@@ -8,6 +8,7 @@ const val BKG_TASK_EXECUTOR = "com.enhe.dagp.system.api.service.BkgTaskExecutor"
 const val ANNOTATION_TASK_SERVICE = "com.enhe.dagp.job.api.annotation.AnnotationTaskService"
 const val ATTACH_SERVICE = "com.enhe.dagp.resource.api.service.AttachService"
 const val ANNOTATION_PREAUTH = "com.enhe.core.secure.annotation.PreAuth"
+const val PUBLISHER = "com.enhe.core.event.Publisher"
 
 // 转换
 const val ANNO_TRANSFORMS = "com.enhe.core.tool.beans.Transforms"
