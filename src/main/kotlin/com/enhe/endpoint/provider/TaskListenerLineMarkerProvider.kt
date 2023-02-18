@@ -12,20 +12,23 @@ import com.enhe.endpoint.extend.findAdapterValue
 import com.enhe.endpoint.extend.getModules
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
+import com.intellij.codeInsight.daemon.impl.PsiElementListNavigator
 import com.intellij.icons.AllIcons
 import com.intellij.lang.jvm.JvmMethod
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.openapi.project.Project
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.PsiClassReferenceType
+import com.intellij.psi.impl.source.tree.java.PsiMethodCallExpressionImpl
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.ReferencesSearch
-import com.intellij.util.PsiNavigateUtil
+import com.intellij.psi.util.PsiTreeUtil
+import java.awt.event.MouseEvent
 
 /**
  * 任务事件监听的标记
  */
-@Suppress("UnstableApiUsage")
+@Suppress("UnstableApiUsage", "DialogTitleCapitalization")
 class TaskListenerLineMarkerProvider : LineMarkerProvider {
 
     override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
@@ -45,7 +48,7 @@ class TaskListenerLineMarkerProvider : LineMarkerProvider {
             element.textRange,
             AllIcons.CodeWithMe.CwmForceFollowMe,
             { "Go to task publisher" },
-            {_,_ -> gotoTaskPublisher(element.project, adapter) },
+            { e,_ -> gotoTaskPublisher(e, element.project, adapter) },
             GutterIconRenderer.Alignment.LEFT,
             { PLUGIN_NAME }
         )
@@ -54,7 +57,7 @@ class TaskListenerLineMarkerProvider : LineMarkerProvider {
     /**
      * 跳转去任务发布
      */
-    private fun gotoTaskPublisher(project: Project, adapter: String) {
+    private fun gotoTaskPublisher(e: MouseEvent, project: Project, adapter: String) {
         val javaPsiFacade = JavaPsiFacade.getInstance(project)
         val methods = mutableSetOf<JvmMethod>()
         project.getModules().forEach {
@@ -66,32 +69,36 @@ class TaskListenerLineMarkerProvider : LineMarkerProvider {
             methods += findMethods[1]
             methods += findMethods[2]
         }
+        val elements = mutableListOf<PsiMethodCallExpressionImpl>()
         methods.forEach { method ->
             if (method !is PsiMethod) {
                 return@forEach
             }
-            ReferencesSearch.search(method.originalElement).find {
+            elements += ReferencesSearch.search(method.originalElement).filter {
                 when (val methodCall = it.element.parent) {
                     is PsiMethodCallExpression -> {
                         val expressionTypes = methodCall.argumentList.expressionTypes
                         if (expressionTypes.size !in 3..4) {
-                            return@find false
+                            return@filter false
                         }
                         val lastArg = expressionTypes.last()
                         if (lastArg !is PsiClassReferenceType) {
-                            return@find false
+                            return@filter false
                         }
                         lastArg.resolve()?.let { pc ->
                             val findAdapterValue = pc.findAdapterValue()
-                            return@find findAdapterValue == adapter
+                            return@filter findAdapterValue == adapter
                         }
                     }
                 }
-                return@find false
-            }?.let {
-                PsiNavigateUtil.navigate(it.element.parent)
-                return
+                return@filter false
+            }.mapNotNull {
+                PsiTreeUtil.getParentOfType(it.element, PsiMethodCallExpressionImpl::class.java)
             }
+        }
+        if (elements.isNotEmpty()) {
+            PsiElementListNavigator.openTargets(e, elements.toTypedArray(), "Task event publisher",
+                "Task event publisher", EventPublishCellRenderer())
         }
     }
 

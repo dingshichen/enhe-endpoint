@@ -3,8 +3,10 @@
 ## Unreleased
 
 ### Added
+- Local event listener navigate
 
 ### Changed
+- Task listener navigation support multiple
 
 ### Deprecated
 

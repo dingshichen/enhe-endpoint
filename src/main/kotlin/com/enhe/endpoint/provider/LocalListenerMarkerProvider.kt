@@ -12,7 +12,6 @@ import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.codeInsight.daemon.impl.PsiElementListNavigator
 import com.intellij.icons.AllIcons
-import com.intellij.ide.util.DefaultPsiElementCellRenderer
 import com.intellij.lang.jvm.JvmMethod
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.openapi.project.Project
@@ -38,7 +37,7 @@ class LocalListenerMarkerProvider : LineMarkerProvider {
         val psiType = value.operand.type
         return LineMarkerInfo(psiAnnotation,
             psiAnnotation.textRange,
-            AllIcons.CodeWithMe.CwmFollowMe,
+            AllIcons.CodeWithMe.CwmForceFollowMe,
             { "Go to local event publisher" },
             { e, listenerAnnotation -> openTargets(e, listenerAnnotation.project, psiType) },
             GutterIconRenderer.Alignment.RIGHT,
@@ -81,7 +80,7 @@ class LocalListenerMarkerProvider : LineMarkerProvider {
         }
         if (elements.isNotEmpty()) {
             PsiElementListNavigator.openTargets(e, elements.toTypedArray(), "Local event publisher",
-                "Local event publisher", DefaultPsiElementCellRenderer())
+                "Local event publisher", EventPublishCellRenderer())
         }
     }
 }
