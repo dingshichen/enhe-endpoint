@@ -3,10 +3,8 @@
 ## Unreleased
 
 ### Added
-- Local event listener navigate
 
 ### Changed
-- Task listener navigation support multiple
 
 ### Deprecated
 
@@ -15,6 +13,14 @@
 ### Fixed
 
 ### Security
+
+## 1.5.0
+
+### Added
+- Local event listener navigate
+
+### Changed
+- Task listener navigation support multiple
 
 ## 1.4.2
 
