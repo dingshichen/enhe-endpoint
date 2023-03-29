@@ -14,6 +14,11 @@
 
 ### Security
 
+## 1.5.1
+
+### Added
+- Support IDEA 2023.1
+
 ## 1.5.0
 
 ### Added
