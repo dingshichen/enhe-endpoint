@@ -40,6 +40,8 @@ class EndpointPanel(
 
     private var catalogTree: EndpointTree
 
+    private var updating = false
+
     init {
         val actionManager = ActionManager.getInstance()
         val actionToolbar = actionManager.createActionToolbar(ActionPlaces.TOOLWINDOW_TOOLBAR_BAR,
@@ -82,11 +84,13 @@ class EndpointPanel(
      * 更新目录树
      */
     fun updateCatalogTree() {
-        DumbService.getInstance(project).smartInvokeLater {
-            if (toolWindow.isDisposed || !toolWindow.isVisible) {
-                toolWindow.show { this.doUpdateCatalogTree() }
-            } else {
-                doUpdateCatalogTree()
+        if (!updating) {
+            DumbService.getInstance(project).smartInvokeLater {
+                if (toolWindow.isDisposed || !toolWindow.isVisible) {
+                    toolWindow.show { this.doUpdateCatalogTree() }
+                } else {
+                    doUpdateCatalogTree()
+                }
             }
         }
     }
@@ -94,10 +98,12 @@ class EndpointPanel(
     private fun doUpdateCatalogTree() {
         ProgressManager.getInstance().run(object : Task.Backgroundable(project, "Enhe Endpoints Searching...") {
             override fun run(indicator: ProgressIndicator) {
+                updating = true
                 AppUIUtil.invokeOnEdt {
                     rootNode.updateNode(project)
                     treeModel.invalidate()
                 }
+                updating = false
             }
         })
     }
