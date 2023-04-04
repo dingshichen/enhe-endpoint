@@ -29,19 +29,13 @@
                     factoryClass="com.enhe.endpoint.window.EndpointToolWindowFactory"/>
 
         <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.enhe.endpoint.provider.TaskEventLineMarkerProvider" />
-
-        <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.enhe.endpoint.provider.TaskListenerLineMarkerProvider" />
-
-        <codeInsight.lineMarkerProvider language="JAVA"
                                         implementationClass="com.enhe.endpoint.provider.EntityLineMarkerProvider" />
 
         <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.enhe.endpoint.provider.LocalEventLineMarkerProvider" />
+                                        implementationClass="com.enhe.endpoint.provider.EFEventMarkerProvider" />
 
         <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.enhe.endpoint.provider.LocalListenerMarkerProvider" />
+                                        implementationClass="com.enhe.endpoint.provider.EFListenerMarkerProvider" />
 
         <notificationGroup id="Enhe.Notification.Group" displayType="BALLOON"/>
     </extensions>

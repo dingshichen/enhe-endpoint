@@ -9,6 +9,8 @@ const val ANNOTATION_TASK_SERVICE = "com.enhe.dagp.job.api.annotation.Annotation
 const val ATTACH_SERVICE = "com.enhe.dagp.resource.api.service.AttachService"
 const val ANNOTATION_PREAUTH = "com.enhe.core.secure.annotation.PreAuth"
 const val PUBLISHER = "com.enhe.core.event.Publisher"
+const val LOCAL_EVENT = "com.enhe.core.api.event.LocalEvent"
+const val QUEUE_EVENT = "com.enhe.core.api.event.PrefixQueueEvent"
 
 // 转换
 const val ANNO_TRANSFORMS = "com.enhe.core.tool.beans.Transforms"
