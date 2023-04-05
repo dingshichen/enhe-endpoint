@@ -4,10 +4,12 @@
 
 package com.enhe.endpoint.notifier
 
+import com.intellij.notification.BrowseNotificationAction
 import com.intellij.notification.NotificationAction
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.project.Project
+import javax.swing.Icon
 
 object EnheNotifier {
 
@@ -28,4 +30,13 @@ object EnheNotifier {
     @JvmStatic
     fun error(project: Project, content: String) =
         NOTIFIER.createNotification(content, NotificationType.ERROR).notify(project)
+
+    @JvmStatic
+    fun notifyStartup(project: Project, icon: Icon) {
+        NOTIFIER.createNotification("如果遇到麻烦、或者有什么需求和建议，可以直接联系开发者", NotificationType.INFORMATION)
+            .setTitle("Enhe Endpoint Java 开发者工具")
+            .setIcon(icon)
+            .addAction(BrowseNotificationAction("帮助文档", "https://alidocs.dingtalk.com/i/nodes/93NwLYZXWygladDATyXz6nbrJkyEqBQm"))
+            .notify(project)
+    }
 }

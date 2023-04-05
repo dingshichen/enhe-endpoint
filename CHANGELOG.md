@@ -14,6 +14,12 @@
 
 ### Security
 
+## 1.6.0
+
+### Added
+- Queue Event Listener navigate 队列事件与监听之间支持导航
+- New version first start notifier 更新后首次打开增加通知
+
 ## 1.5.1
 
 ### Added

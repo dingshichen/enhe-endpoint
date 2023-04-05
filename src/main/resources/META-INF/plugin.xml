@@ -38,6 +38,8 @@
                                         implementationClass="com.enhe.endpoint.provider.EFListenerMarkerProvider" />
 
         <notificationGroup id="Enhe.Notification.Group" displayType="BALLOON"/>
+
+        <postStartupActivity implementation="com.enhe.endpoint.notifier.StartupNotifier" />
     </extensions>
 
     <actions>

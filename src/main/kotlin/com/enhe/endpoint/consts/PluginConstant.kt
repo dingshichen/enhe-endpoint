@@ -17,6 +17,8 @@ val WINDOW_PANE = DataKey.create<EndpointPanel>("EndpointPanel")
 
 object PluginIcons {
 
+    val logo = IconLoader.getIcon("/META_INF/pluginIcon.svg", this.javaClass)
+
     val requestMapping = IconLoader.getIcon("/icons/REQUEST.svg", this.javaClass)
 
     val getMapping = IconLoader.getIcon("/icons/GET.svg", this.javaClass)

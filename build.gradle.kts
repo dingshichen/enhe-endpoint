@@ -37,6 +37,10 @@ tasks {
         enabled = false
     }
 
+    jarSearchableOptions {
+        enabled = false
+    }
+
     patchPluginXml {
         sinceBuild.set(properties("pluginSinceBuild"))
         changeNotes.set(provider {
