@@ -22,7 +22,7 @@
 
         <toolWindow id="Enhe Endpoint"
                     anchor="right"
-                    icon="AllIcons.Actions.Colors"
+                    icon="MyIcons.Logo"
                     secondary="false"
                     doNotActivateOnStart="true"
                     order="last"
@@ -51,13 +51,13 @@
         <action id="com.enhe.endpoint.action.MybatisGenerateAction"
                 class="com.enhe.endpoint.action.MybatisGenerateAction"
                 text="EF Mybatis Generator"
-                icon="AllIcons.Actions.Colors"
+                icon="MyIcons.Logo"
                 description="Enhe framework Mybatis generator">
             <add-to-group group-id="DatabaseViewPopupMenu" anchor="first"/>
         </action>
         <action id="com.enhe.endpoint.action.CommentToSwaggerAction"
                 class="com.enhe.endpoint.action.CommentToSwaggerAction" text="Doc Comment to Swagger Annotation"
-                description="Convert comments to swagger annotations" icon="AllIcons.Actions.Colors">
+                description="Convert comments to swagger annotations" icon="MyIcons.Logo">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
     </actions>

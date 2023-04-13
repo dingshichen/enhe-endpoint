@@ -4,12 +4,16 @@
 
 package com.enhe.endpoint.window.tree
 
-import com.enhe.endpoint.consts.*
+import com.enhe.endpoint.consts.DELETE_MAPPING
+import com.enhe.endpoint.consts.GET_MAPPING
+import com.enhe.endpoint.consts.POST_MAPPING
+import com.enhe.endpoint.consts.PUT_MAPPING
 import com.enhe.endpoint.extend.findAttributeRealValue
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
 import com.intellij.ui.treeStructure.SimpleNode
+import icons.MyIcons
 import javax.swing.Icon
 
 class EndpointNode(
@@ -48,11 +52,11 @@ class EndpointNode(
      */
     private fun getMethodIcon(): Icon {
         return when (restAnnotation.qualifiedName) {
-            GET_MAPPING -> PluginIcons.getMapping
-            POST_MAPPING -> PluginIcons.postMapping
-            PUT_MAPPING -> PluginIcons.putMapping
-            DELETE_MAPPING -> PluginIcons.deleteMapping
-            else -> PluginIcons.requestMapping
+            GET_MAPPING -> MyIcons.GetMapping
+            POST_MAPPING -> MyIcons.PostMapping
+            PUT_MAPPING -> MyIcons.PutMapping
+            DELETE_MAPPING -> MyIcons.DeleteMapping
+            else -> MyIcons.RequestMapping
         }
     }
 

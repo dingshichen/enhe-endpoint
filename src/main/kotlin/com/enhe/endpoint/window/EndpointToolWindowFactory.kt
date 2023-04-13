@@ -15,7 +15,7 @@ class EndpointToolWindowFactory : ToolWindowFactory, DumbAware {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val contentFactory = ApplicationManager.getApplication().getService(ContentFactory::class.java)
-        contentFactory.createContent(EndpointPanel(project, toolWindow), "Enhe Endpoint", false).apply {
+        contentFactory.createContent(EndpointPanel(project, toolWindow), null, false).apply {
             toolWindow.contentManager.addContent(this)
         }
     }

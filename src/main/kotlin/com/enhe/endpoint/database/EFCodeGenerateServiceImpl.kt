@@ -480,7 +480,7 @@ $methodText
                             @$TRANS
                             @Override
                             public int deleteByIds($LIST<Long> ids) {
-                                return $mapper.deleteBatchIds(ids);
+                                return com.enhe.core.tool.utils.BatchUtil.execute(ids, batchIds -> $mapper.deleteBatchIds(batchIds));
                             }
                         """.trimIndent(), it)
                     }
