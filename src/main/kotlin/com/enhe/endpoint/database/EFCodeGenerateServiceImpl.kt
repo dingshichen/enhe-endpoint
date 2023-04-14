@@ -28,8 +28,6 @@ import com.intellij.psi.util.PsiTreeUtil
  */
 class EFCodeGenerateServiceImpl : EFCodeGenerateService {
 
-    private val extendsPlaceholder = "%r%"
-
     override fun executeGenerateEntity(
         project: Project,
         dir: PsiDirectory,
@@ -176,7 +174,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
                     }
                     if (enableListAll) {
                         parser.addMethodFromText("""
-                            $LIST<${persistent.entityQualified}> selectAllByQuery(@$MB_PARAM("query") $queryName query);
+                            $LIST<${persistent.entityQualified}> selectByQuery(@$MB_PARAM("query") $queryName query);
                         """.trimIndent(), it)
                     }
                     if (enableSelect) {
@@ -252,18 +250,11 @@ $methodText
             <!-- TODO -->
         </where>
     </select>
-
-    <select id="selectByQuery" resultMap="defaultResultMap">
-        select <include refid="Base_Column_List" /> from ${table.name}
-        <where>
-            <!-- TODO -->
-        </where>
-    </select>
                 """.trimIndent())
             }
-            if (enableListAll) {
-                text.appendLine().appendLine().append("""
-    <select id="selectAllByQuery" resultMap="defaultResultMap">
+            if (enablePage || enableListAll) {
+                text.appendLine().append("""
+    <select id="selectByQuery" resultMap="defaultResultMap">
         select <include refid="Base_Column_List" /> from ${table.name}
         <where>
             <!-- TODO -->
@@ -398,7 +389,7 @@ $methodText
                         parser.addMethodFromText("""
                             @Override
                             public $LIST<$itemQualified> listAll($queryQualified query) {
-                                $LIST<${persistent.entityQualified}> entities = $mapper.selectAllByQuery(query);
+                                $LIST<${persistent.entityQualified}> entities = $mapper.selectByQuery(query);
                                 return entities.stream()
                                         .map(${persistent.entityQualified}.item)
                                         .collect($COLS.toList());
