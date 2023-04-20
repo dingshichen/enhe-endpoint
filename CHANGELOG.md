@@ -14,6 +14,16 @@
 
 ### Security
 
+## 1.7.0
+
+### Changed
+- Use new logo 使用新的图标
+- Merge `page` and `listAll` in generator 在生成器中将 `page` 和 `listAll` 方法对应的 xml 方法合并
+- Use `BatchUtil` in generator 在生成器中使用 `BatchUtil` 包装批量操作的方法
+
+### Fixed
+- generator bug 生成器的某些缺陷修复
+
 ## 1.6.0
 
 ### Added
