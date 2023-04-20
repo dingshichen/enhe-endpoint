@@ -21,7 +21,7 @@ kotlin {
 intellij {
     version.set(properties("platformVersion"))
     type.set(properties("platformType"))
-//    localPath.set("/Users/dingshichen/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/223.7571.182/IntelliJ IDEA.app")
+//    localPath.set("/Users/dingshichen/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/231.8109.175/IntelliJ IDEA.app/Contents")
 
     plugins.set(listOf("com.intellij.java", "com.intellij.database"))
 }
