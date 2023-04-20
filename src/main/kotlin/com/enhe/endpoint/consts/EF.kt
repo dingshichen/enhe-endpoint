@@ -62,7 +62,7 @@ const val OPT_SIMPLE_DEL = "com.enhe.core.api.service.ClientOperateService.OnlyS
 const val OPT_NO_DEL = "com.enhe.core.api.service.ClientOperateService.NonDeletable"
 const val OPT_NO_UPT = "com.enhe.core.api.service.ClientOperateService.NonUpdatable"
 const val OPT_NO_INS = "com.enhe.core.api.service.ClientOperateService.NonInsertable"
-const val OPT_SIMPLE = "com.enhe.core.api.service.ClientOperateService.NonInsertable"
+const val OPT_SIMPLE = "com.enhe.core.api.service.ClientOperateService.Simple"
 const val OPT_NO_QUERY_DEL = "com.enhe.core.api.service.ClientOperateService.NonQueryDeletable"
 
 const val EXCEL_IMP = "com.enhe.core.api.service.ClientExcelService.OnlyImp"

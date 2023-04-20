@@ -411,7 +411,7 @@ $methodText
                         parser.addMethodFromText("""
                             @Override
                             public $LIST<$optionQualified> listByIds($LIST<Long> ids) {
-                                $LIST<${persistent.entityQualified}> entities = $mapper.selectBatchIds(ids);
+                                $LIST<${persistent.entityQualified}> entities = com.enhe.core.tool.utils.BatchUtil.flat(ids, batchIds -> $mapper.selectBatchIds(batchIds));
                                 return entities.stream()
                                         .map(${persistent.entityQualified}.option)
                                         .collect($COLS.toList());
