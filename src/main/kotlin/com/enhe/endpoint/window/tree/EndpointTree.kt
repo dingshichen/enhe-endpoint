@@ -6,30 +6,21 @@ package com.enhe.endpoint.window.tree
 
 import com.intellij.ui.treeStructure.SimpleTree
 import com.intellij.util.PsiNavigateUtil
+import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import java.awt.event.MouseListener
 import javax.swing.tree.TreeModel
 
 class EndpointTree(treeModel: TreeModel) : SimpleTree(treeModel) {
 
     init {
-        addMouseListener(object : MouseListener {
+        addMouseListener(object : MouseAdapter() {
 
             override fun mouseClicked(e: MouseEvent?) {
                 when (val selected = selectedNode) {
                     is EndpointNode -> PsiNavigateUtil.navigate(selected.getMethod())
                 }
             }
-
-            override fun mousePressed(e: MouseEvent?) {}
-
-            override fun mouseReleased(e: MouseEvent?) {}
-
-            override fun mouseEntered(e: MouseEvent) {}
-
-            override fun mouseExited(e: MouseEvent?) {}
         })
-
     }
 
 }
