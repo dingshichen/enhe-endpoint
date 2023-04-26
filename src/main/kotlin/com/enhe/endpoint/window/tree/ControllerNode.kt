@@ -4,6 +4,7 @@
 
 package com.enhe.endpoint.window.tree
 
+import com.enhe.endpoint.consts.FEIGN_CLIENT
 import com.enhe.endpoint.consts.REST_MAPPINGS
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.Project
@@ -32,6 +33,7 @@ class ControllerNode(
     override fun updateNode(project: Project) {
         cleanUpCache()
         endpointNodes.clear()
+
         service.methods.forEach {
             it.findSuperMethods().forEach { superMethod ->
                 superMethod.annotations.forEach { an ->
@@ -41,6 +43,19 @@ class ControllerNode(
                 }
             }
         }
+
+        // find default method in service interface
+        val overrideMethodNames = endpointNodes.map { it.getMethod().name }.toHashSet();
+        service.supers.filter { it.hasAnnotation(FEIGN_CLIENT) }.forEach {
+            it.methods.filter { method -> !overrideMethodNames.contains(method.name) }.forEach { method ->
+                method.annotations.forEach { an ->
+                    if (an.qualifiedName in REST_MAPPINGS) {
+                        endpointNodes += EndpointNode(this, project, an, method);
+                    }
+                }
+            }
+        }
+
         endpointNodes.sortBy { it.name }
         update()
     }
@@ -48,7 +63,7 @@ class ControllerNode(
     override fun buildChildren() = endpointNodes.toTypedArray()
 
     override fun getName(): String {
-        val serviceName = when(val parentClass = service.parent) {
+        val serviceName = when (val parentClass = service.parent) {
             is PsiClass -> "${parentClass.name}.${service.name}"
             else -> service.name
         }
