@@ -14,6 +14,14 @@
 
 ### Security
 
+## 1.7.1
+
+### Changed
+- endpoint tree text color 接口路径树文本颜色美化
+
+### Fixed
+- default method endpoint 修复默认方法没有被读取到接口列表的问题
+
 ## 1.7.0
 
 ### Changed
