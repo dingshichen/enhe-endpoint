@@ -14,10 +14,12 @@
 
 ### Run
 1. Gradle `RunIde` Add Environment variable `APP_PATH={Your IDEA path}`
-![img.png](img.png)
+
+![img_1.png](imgs/img_1.png)
+![img.png](imgs/img.png)
 
 
 ### Thanks
 [Special thanks to JetBrains for their support](https://jb.gg/OpenSourceSupport)
 
-![jb](jb_beam.svg)
+![jb](imgs/jb_beam.svg)
