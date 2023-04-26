@@ -19,9 +19,9 @@ kotlin {
 }
 
 intellij {
-    version.set(properties("platformVersion"))
-    type.set(properties("platformType"))
-//    localPath.set("/Users/dingshichen/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/231.8109.175/IntelliJ IDEA.app/Contents")
+//    version.set(properties("platformVersion"))
+//    type.set(properties("platformType"))
+    localPath.set(System.getenv("APP_PATH"))
 
     plugins.set(listOf("com.intellij.java", "com.intellij.database"))
 }
