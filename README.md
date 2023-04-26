@@ -12,6 +12,11 @@
 ### Target
 - IntelliJ IDEA 212+
 
+### Run
+1. Gradle `RunIde` Add Environment variable `APP_PATH={Your IDEA path}`
+![img.png](img.png)
+
+
 ### Thanks
 [Special thanks to JetBrains for their support](https://jb.gg/OpenSourceSupport)
 
