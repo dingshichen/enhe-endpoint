@@ -7,8 +7,10 @@ package com.enhe.endpoint.window.tree
 import com.enhe.endpoint.consts.FEIGN_CLIENT
 import com.enhe.endpoint.consts.REST_MAPPINGS
 import com.intellij.icons.AllIcons
+import com.intellij.ide.projectView.PresentationData
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiClass
+import com.intellij.ui.SimpleTextAttributes
 import com.intellij.ui.treeStructure.SimpleNode
 
 /**
@@ -62,12 +64,13 @@ class ControllerNode(
 
     override fun buildChildren() = endpointNodes.toTypedArray()
 
-    override fun getName(): String {
+    override fun doUpdate(presentation: PresentationData) {
         val serviceName = when (val parentClass = service.parent) {
             is PsiClass -> "${parentClass.name}.${service.name}"
             else -> service.name
         }
-        return "${subParentPath()} - $serviceName"
+        presentation.addText(subParentPath() + " ", SimpleTextAttributes.REGULAR_ATTRIBUTES)
+        presentation.addText(serviceName, SimpleTextAttributes.GRAYED_ATTRIBUTES)
     }
 
     /**
