@@ -29,7 +29,7 @@ class EndpointNode(
     }
 
     override fun updateNode(project: Project) {
-        cleanUpCache()
+        clearAll()
         update()
     }
 

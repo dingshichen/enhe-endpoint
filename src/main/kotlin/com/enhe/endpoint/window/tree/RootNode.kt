@@ -5,8 +5,8 @@
 package com.enhe.endpoint.window.tree
 
 import com.enhe.endpoint.extend.getModules
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.Project
+import icons.MyIcons
 
 /**
  * 根节点
@@ -16,12 +16,16 @@ class RootNode : BaseNode() {
     private val moduleNodes = mutableListOf<ModuleNode>()
 
     init {
-        myClosedIcon = AllIcons.Actions.Colors
+        myClosedIcon = MyIcons.Logo
+    }
+
+    override fun clearAll() {
+        super.clearAll()
+        moduleNodes.clear()
     }
 
     override fun updateNode(project: Project) {
-        cleanUpCache()
-        moduleNodes.clear()
+        clearAll()
         project.getModules().forEach {
             val moduleNode = ModuleNode(this, it, project)
             if (moduleNode.childCount > 0) {

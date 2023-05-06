@@ -97,6 +97,7 @@ class EndpointPanel(
 
     private fun doUpdateCatalogTree() {
         ProgressManager.getInstance().run(object : Task.Backgroundable(project, "Enhe Endpoints Searching...") {
+
             override fun run(indicator: ProgressIndicator) {
                 updating = true
                 AppUIUtil.invokeOnEdt {
@@ -104,6 +105,16 @@ class EndpointPanel(
                     treeModel.invalidate()
                 }
                 updating = false
+            }
+
+            override fun onCancel() {
+                super.onCancel()
+                rootNode.clearAll()
+            }
+
+            override fun onThrowable(error: Throwable) {
+                super.onThrowable(error)
+                rootNode.clearAll()
             }
         })
     }

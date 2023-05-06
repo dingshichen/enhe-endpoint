@@ -32,9 +32,13 @@ class ControllerNode(
 
     fun children() = endpointNodes
 
-    override fun updateNode(project: Project) {
-        cleanUpCache()
+    override fun clearAll() {
+        super.clearAll()
         endpointNodes.clear()
+    }
+
+    override fun updateNode(project: Project) {
+        clearAll()
 
         service.methods.forEach {
             it.findSuperMethods().forEach { superMethod ->
@@ -64,7 +68,7 @@ class ControllerNode(
 
     override fun buildChildren() = endpointNodes.toTypedArray()
 
-    override fun doUpdate(presentation: PresentationData) {
+    override fun doUpdateV2(presentation: PresentationData) {
         val serviceName = when (val parentClass = service.parent) {
             is PsiClass -> "${parentClass.name}.${service.name}"
             else -> service.name

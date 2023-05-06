@@ -4,10 +4,11 @@
 
 package com.enhe.endpoint.extend
 
+import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 
 /**
  * 获取模块
  */
-fun Project.getModules() = this.getService(ModuleManager::class.java).modules
+fun Project.getModules(): Array<Module> = ModuleManager.getInstance(this).modules
