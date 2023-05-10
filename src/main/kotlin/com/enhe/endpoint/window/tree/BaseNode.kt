@@ -27,6 +27,10 @@ abstract class BaseNode(parentNode: SimpleNode? = null) : CachingSimpleNode(pare
         cleanUpCache()
     }
 
+    open fun getMajorText(): String {
+        return ""
+    }
+
     protected open fun doUpdateV2(presentation: PresentationData) {
 
     }

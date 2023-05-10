@@ -14,6 +14,14 @@
 
 ### Security
 
+## 1.8.0
+
+### Added
+- Copy endpoint path 右键可复制接口路径
+
+### Fixed
+- endpoint tree text bug fix 修复接口目录树文字展示不出来的问题
+
 ## 1.7.2
 
 ### Fixed

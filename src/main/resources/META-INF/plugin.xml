@@ -48,6 +48,11 @@
                     class="com.enhe.endpoint.action.WindowRefreshAction"
                     text="Refresh" description="Refresh" icon="AllIcons.Actions.Refresh"/>
         </group>
+
+        <group id="enhe.endpoint.window.tree.popup.action" class="com.intellij.openapi.actionSystem.DefaultActionGroup"
+               text="Endpoint Popup Actions" description="Endpoint popup actions" >
+        </group>
+
         <action id="com.enhe.endpoint.action.MybatisGenerateAction"
                 class="com.enhe.endpoint.action.MybatisGenerateAction"
                 text="EF Mybatis Generator"
@@ -55,10 +60,18 @@
                 description="Enhe framework Mybatis generator">
             <add-to-group group-id="DatabaseViewPopupMenu" anchor="first"/>
         </action>
+
         <action id="com.enhe.endpoint.action.CommentToSwaggerAction"
                 class="com.enhe.endpoint.action.CommentToSwaggerAction" text="Doc Comment to Swagger Annotation"
                 description="Convert comments to swagger annotations" icon="MyIcons.Logo">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
+
+        <action id="com.enhe.endpoint.action.CopyEndpointPathAction"
+                class="com.enhe.endpoint.action.CopyEndpointPathAction" text="Copy Endpoint Path"
+                description="Copy endpoint path to clipboard" icon="AllIcons.Actions.Copy">
+            <add-to-group group-id="enhe.endpoint.window.tree.popup.action" anchor="first"/>
+        </action>
+
     </actions>
 </idea-plugin>

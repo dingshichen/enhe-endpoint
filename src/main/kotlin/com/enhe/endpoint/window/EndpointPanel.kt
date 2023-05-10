@@ -5,14 +5,11 @@
 package com.enhe.endpoint.window
 
 import com.enhe.endpoint.consts.WINDOW_PANE
-import com.enhe.endpoint.window.tree.EndpointTree
+import com.enhe.endpoint.window.tree.EndpointNode
 import com.enhe.endpoint.window.tree.RootNode
 import com.intellij.ide.util.treeView.AbstractTreeStructure
 import com.intellij.openapi.Disposable
-import com.intellij.openapi.actionSystem.ActionGroup
-import com.intellij.openapi.actionSystem.ActionManager
-import com.intellij.openapi.actionSystem.ActionPlaces
-import com.intellij.openapi.actionSystem.DataProvider
+import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
@@ -25,7 +22,12 @@ import com.intellij.ui.PopupHandler
 import com.intellij.ui.ScrollPaneFactory
 import com.intellij.ui.tree.AsyncTreeModel
 import com.intellij.ui.tree.StructureTreeModel
+import com.intellij.ui.treeStructure.SimpleNode
+import com.intellij.ui.treeStructure.SimpleTree
 import com.intellij.ui.treeStructure.SimpleTreeStructure
+import com.intellij.util.PsiNavigateUtil
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import javax.swing.BorderFactory
 import javax.swing.tree.TreeSelectionModel
 
@@ -38,9 +40,14 @@ class EndpointPanel(
 
     private var treeModel : StructureTreeModel<AbstractTreeStructure>
 
-    private var catalogTree: EndpointTree
+    private var catalogTree: SimpleTree
 
     private var updating = false
+
+    private lateinit var popupMenu: ActionPopupMenu
+
+    // 接口目录树中被选中的节点
+    private var selectedEndpoint: SimpleNode? = null
 
     init {
         val actionManager = ActionManager.getInstance()
@@ -51,7 +58,8 @@ class EndpointPanel(
         treeModel = StructureTreeModel(object : SimpleTreeStructure() {
             override fun getRootElement() = rootNode
         }, null, this)
-        catalogTree = EndpointTree(AsyncTreeModel(treeModel, this))
+        catalogTree = SimpleTree(AsyncTreeModel(treeModel, this))
+        initPopupMenu()
         initCatalogTree()
         setContent(ScrollPaneFactory.createScrollPane(catalogTree))
         updateCatalogTree()
@@ -69,6 +77,15 @@ class EndpointPanel(
     }
 
     /**
+     * 初始化树上的右键菜单
+     */
+    private fun initPopupMenu() {
+        val actionManager = ActionManager.getInstance()
+        popupMenu = actionManager.createActionPopupMenu("EndpointPopup",
+            actionManager.getAction("enhe.endpoint.window.tree.popup.action") as ActionGroup)
+    }
+
+    /**
      * 初始化目录树
      */
     private fun initCatalogTree() {
@@ -78,7 +95,33 @@ class EndpointPanel(
         catalogTree.border = BorderFactory.createEmptyBorder()
         catalogTree.selectionModel.selectionMode = TreeSelectionModel.SINGLE_TREE_SELECTION
         PopupHandler.installPopupMenu(catalogTree, "enhe.endpoint.window.catalog.action", ActionPlaces.TOOLWINDOW_CONTENT)
+        catalogTree.addMouseListener(object : MouseAdapter() {
+
+            override fun mouseClicked(e: MouseEvent) {
+                if (e.button == MouseEvent.BUTTON1) {
+                    when (val selected = catalogTree.selectedNode) {
+                        is EndpointNode -> PsiNavigateUtil.navigate(selected.getMethod())
+                    }
+                }
+            }
+
+            override fun mousePressed(e: MouseEvent) {
+                if (e.isPopupTrigger) {
+                    when (val selected = catalogTree.selectedNode) {
+                        is EndpointNode -> {
+                            selectedEndpoint = selected
+                            popupMenu.component.show(catalogTree, e.x, e.y)
+                        }
+                    }
+                }
+            }
+        })
     }
+
+    /**
+     * 获取选中的断点
+     */
+    fun getSelected() = selectedEndpoint
 
     /**
      * 更新目录树
@@ -94,6 +137,8 @@ class EndpointPanel(
             }
         }
     }
+
+
 
     private fun doUpdateCatalogTree() {
         ProgressManager.getInstance().run(object : Task.Backgroundable(project, "Enhe Endpoints Searching...") {

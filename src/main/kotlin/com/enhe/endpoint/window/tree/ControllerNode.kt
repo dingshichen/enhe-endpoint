@@ -77,6 +77,10 @@ class ControllerNode(
         presentation.addText(serviceName, SimpleTextAttributes.GRAYED_ATTRIBUTES)
     }
 
+    override fun getMajorText(): String {
+        return subParentPath()
+    }
+
     /**
      * 排除项目前缀
      */

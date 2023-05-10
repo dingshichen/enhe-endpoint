@@ -47,6 +47,10 @@ class EndpointNode(
 
     fun getMethod() = method
 
+    override fun getMajorText(): String {
+        return name
+    }
+
     /**
      * 根据请求类型选择不同的图标
      */
