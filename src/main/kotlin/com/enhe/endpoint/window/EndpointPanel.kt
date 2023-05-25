@@ -62,6 +62,7 @@ class EndpointPanel(
         initPopupMenu()
         initCatalogTree()
         setContent(ScrollPaneFactory.createScrollPane(catalogTree))
+        // TODO 暂时不直接展示，需要用户点击下刷新
         updateCatalogTree()
     }
 
@@ -106,6 +107,17 @@ class EndpointPanel(
             }
 
             override fun mousePressed(e: MouseEvent) {
+                tryShowPopupMenu(e)
+            }
+
+            override fun mouseReleased(e: MouseEvent) {
+                tryShowPopupMenu(e)
+            }
+
+            /**
+             * 尝试打开菜单
+             */
+            private fun tryShowPopupMenu(e: MouseEvent) {
                 if (e.isPopupTrigger) {
                     when (val selected = catalogTree.selectedNode) {
                         is EndpointNode -> {

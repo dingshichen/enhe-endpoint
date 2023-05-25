@@ -4,9 +4,9 @@
 
 package com.enhe.endpoint.window
 
+import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.impl.scopes.LibraryScope
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.module.Module
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.impl.java.stubs.index.JavaAnnotationIndex
@@ -50,16 +50,14 @@ interface LibraryControlService {
 class LibraryControlServiceImpl : LibraryControlService {
 
     override fun addPsiAnnotations(psiAnnotations: MutableList<PsiAnnotation>, module: Module, project: Project) {
-        val libraryControl = findLibraryControl(module)
-        if (libraryControl == null) {
-            psiAnnotations.addAll(
-                JavaAnnotationIndex.getInstance()["Service", module.project, GlobalSearchScope.moduleScope(
-                    module
-                )]
-            )
-        } else {
+        psiAnnotations.addAll(
+            JavaAnnotationIndex.getInstance()["Service", module.project, GlobalSearchScope.moduleScope(
+                module
+            )]
+        )
+        findLibraryControl(module)?.let {
             ModuleRootManager.getInstance(module).orderEntries().forEachLibrary { lib ->
-                if (libraryControl.equalsLibrary(lib.name.orEmpty())) {
+                if (it.equalsLibrary(lib.name.orEmpty())) {
                     psiAnnotations.addAll(
                         JavaAnnotationIndex.getInstance()["Service", module.project, LibraryScope(project, lib)]
                     )

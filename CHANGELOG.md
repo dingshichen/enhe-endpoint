@@ -14,6 +14,12 @@
 
 ### Security
 
+## 1.8.1
+
+### Fixed
+- Scan endpoint bug fix 扫描某些项目读取不到接口的问题修复
+- Popup menu bug fix 接口路径右键复制问题修复
+
 ## 1.8.0
 
 ### Added

@@ -40,7 +40,11 @@ class EndpointNode(
         if (childPath.isNullOrBlank()) {
             val st = restAnnotation.text.indexOf("{\"") + 2
             val ed = restAnnotation.text.indexOf("\"}")
-            childPath = restAnnotation.text.substring(st, ed)
+            childPath = if (st < 0 || ed < 0 || st >= ed) {
+                ""
+            } else {
+                restAnnotation.text.substring(st, ed)
+            }
         }
         return childPath
     }
