@@ -7,6 +7,7 @@ package com.enhe.endpoint.window.tree
 import com.enhe.endpoint.extend.getModules
 import com.intellij.openapi.project.Project
 import icons.MyIcons
+import javax.swing.Icon
 
 /**
  * 根节点
@@ -16,7 +17,7 @@ class RootNode : BaseNode() {
     private val moduleNodes = mutableListOf<ModuleNode>()
 
     init {
-        myClosedIcon = MyIcons.Logo
+        myClosedIcon = getCusIcon()
     }
 
     override fun clearAll() {
@@ -34,6 +35,10 @@ class RootNode : BaseNode() {
         }
         moduleNodes.sortBy { it.name }
         update()
+    }
+
+    override fun getCusIcon(): Icon {
+        return MyIcons.Logo
     }
 
     override fun buildChildren() = moduleNodes.toTypedArray()

@@ -8,10 +8,13 @@ import com.intellij.ide.projectView.PresentationData
 import com.intellij.openapi.project.Project
 import com.intellij.ui.treeStructure.CachingSimpleNode
 import com.intellij.ui.treeStructure.SimpleNode
+import javax.swing.Icon
 
 abstract class BaseNode(parentNode: SimpleNode? = null) : CachingSimpleNode(parentNode) {
 
     abstract fun updateNode(project: Project)
+
+    abstract fun getCusIcon(): Icon
 
     override fun update(presentation: PresentationData) {
         val newElement = updateElement()

@@ -6,18 +6,20 @@ package com.enhe.endpoint.window.tree
 
 import com.enhe.endpoint.consts.FEIGN_CLIENT
 import com.enhe.endpoint.consts.REST_MAPPINGS
+import com.enhe.endpoint.window.EndpointModel
+import com.enhe.endpoint.window.search.EndpointItemProvider
 import com.intellij.icons.AllIcons
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiClass
 import com.intellij.ui.SimpleTextAttributes
-import com.intellij.ui.treeStructure.SimpleNode
+import javax.swing.Icon
 
 /**
  * 控制器节点
  */
 class ControllerNode(
-    private val parentNode: SimpleNode,
+    private val parentNode: BaseNode,
     private val service: PsiClass,
     private val project: Project,
     private val parentPath: String
@@ -26,7 +28,7 @@ class ControllerNode(
     private val endpointNodes = mutableListOf<EndpointNode>()
 
     init {
-        myClosedIcon = AllIcons.General.ImplementingMethod
+        myClosedIcon = getCusIcon()
         updateNode(project)
     }
 
@@ -44,7 +46,11 @@ class ControllerNode(
             it.findSuperMethods().forEach { superMethod ->
                 superMethod.annotations.forEach { an ->
                     if (an.qualifiedName in REST_MAPPINGS) {
-                        endpointNodes += EndpointNode(this, project, an, it)
+                        val endpointNode = EndpointNode(this, project, an, it)
+                        val fullPath = (getMajorText() + endpointNode.getMajorText()).let { path -> if (path.startsWith("/")) path else "/$path" }
+
+                        endpointNodes += endpointNode
+                        EndpointItemProvider += EndpointModel(endpointNode.getCusIcon(), fullPath, endpointNode.getMethod())
                     }
                 }
             }
@@ -56,7 +62,11 @@ class ControllerNode(
             it.methods.filter { method -> !overrideMethodNames.contains(method.name) }.forEach { method ->
                 method.annotations.forEach { an ->
                     if (an.qualifiedName in REST_MAPPINGS) {
-                        endpointNodes += EndpointNode(this, project, an, method);
+                        val endpointNode = EndpointNode(this, project, an, method)
+                        val fullPath = (getMajorText() + endpointNode.getMajorText()).let { path -> if (path.startsWith("/")) path else "/$path" }
+
+                        endpointNodes += endpointNode
+                        EndpointItemProvider += EndpointModel(endpointNode.getCusIcon(), fullPath, endpointNode.getMethod())
                     }
                 }
             }
@@ -64,6 +74,10 @@ class ControllerNode(
 
         endpointNodes.sortBy { it.name }
         update()
+    }
+
+    override fun getCusIcon(): Icon {
+        return AllIcons.General.ImplementingMethod
     }
 
     override fun buildChildren() = endpointNodes.toTypedArray()

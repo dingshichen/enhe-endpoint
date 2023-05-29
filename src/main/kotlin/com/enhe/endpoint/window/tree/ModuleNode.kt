@@ -14,13 +14,13 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiClass
 import com.intellij.ui.SimpleTextAttributes
-import com.intellij.ui.treeStructure.SimpleNode
+import javax.swing.Icon
 
 /**
  * 模块节点
  */
 class ModuleNode(
-    private val parentNode: SimpleNode,
+    private val parentNode: BaseNode,
     private val module: Module,
     private val project: Project
 ) : BaseNode(parentNode) {
@@ -28,7 +28,7 @@ class ModuleNode(
     private val controllerNodes = mutableListOf<ControllerNode>()
 
     init {
-        myClosedIcon = AllIcons.Actions.ModuleDirectory
+        myClosedIcon = getCusIcon()
         updateNode(project)
     }
 
@@ -57,6 +57,10 @@ class ModuleNode(
         }
         controllerNodes.sortBy { it.name }
         update()
+    }
+
+    override fun getCusIcon(): Icon {
+        return AllIcons.Actions.ModuleDirectory
     }
 
     override fun buildChildren() = controllerNodes.toTypedArray()

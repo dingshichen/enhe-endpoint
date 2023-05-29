@@ -19,6 +19,8 @@
 
         <projectService serviceInterface="com.enhe.endpoint.database.EFCodeGenerateService"
                         serviceImplementation="com.enhe.endpoint.database.EFCodeGenerateServiceImpl" />
+        
+        <searchEverywhereContributor implementation="com.enhe.endpoint.window.search.EndpointSearchContributorFactory"/>
 
         <toolWindow id="Enhe Endpoint"
                     anchor="right"
@@ -73,5 +75,6 @@
             <add-to-group group-id="enhe.endpoint.window.tree.popup.action" anchor="first"/>
         </action>
 
+        <action id="com.enhe.endpoint.action.EndpointSearchAction" class="com.enhe.endpoint.action.EndpointSearchAction" />
     </actions>
 </idea-plugin>

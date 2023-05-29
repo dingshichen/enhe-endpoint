@@ -14,6 +14,15 @@
 
 ### Security
 
+## 2.0.0
+
+### Added
+- Endpoint search everywhere 接口路径搜索功能上线
+
+### Changed
+- Upgrade JDK version to 17 升级编译的 JDK 版本
+- Upgrade IDEA since version to 222 升级 IDEA 的最低版本为 2022.2
+
 ## 1.8.1
 
 ### Fixed

@@ -17,14 +17,14 @@ import icons.MyIcons
 import javax.swing.Icon
 
 class EndpointNode(
-    private val parentNode: SimpleNode,
+    private val parentNode: BaseNode,
     private val project: Project,
     private val restAnnotation: PsiAnnotation,
     private val method: PsiMethod
 ) : BaseNode(parentNode) {
 
     init {
-        myClosedIcon = getMethodIcon()
+        myClosedIcon = getCusIcon()
         updateNode(project)
     }
 
@@ -51,14 +51,7 @@ class EndpointNode(
 
     fun getMethod() = method
 
-    override fun getMajorText(): String {
-        return name
-    }
-
-    /**
-     * 根据请求类型选择不同的图标
-     */
-    private fun getMethodIcon(): Icon {
+    override fun getCusIcon(): Icon {
         return when (restAnnotation.qualifiedName) {
             GET_MAPPING -> MyIcons.GetMapping
             POST_MAPPING -> MyIcons.PostMapping
@@ -66,6 +59,10 @@ class EndpointNode(
             DELETE_MAPPING -> MyIcons.DeleteMapping
             else -> MyIcons.RequestMapping
         }
+    }
+
+    override fun getMajorText(): String {
+        return name
     }
 
 }
