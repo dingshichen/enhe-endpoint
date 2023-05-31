@@ -29,7 +29,7 @@ class MybatisGeneratorDialog(
 
     private lateinit var form: MybatisGeneratorForm
 
-    private val entityNamePattern: Pattern = Pattern.compile("[A-Z][A-Za-z]*Entity")
+    private val entityNamePattern: Pattern = Pattern.compile("[A-Z][A-Za-z0-9]*Entity")
     private val packagePattern: Pattern = Pattern.compile("[a-z][a-z.]+[a-z]")
 
     init {

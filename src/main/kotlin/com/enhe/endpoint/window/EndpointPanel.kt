@@ -158,7 +158,7 @@ class EndpointPanel(
 
             override fun run(indicator: ProgressIndicator) {
                 updating = true
-                EndpointItemProvider.clear()
+                EndpointItemProvider.getInstance(project).clear()
                 AppUIUtil.invokeOnEdt {
                     rootNode.updateNode(project)
                     treeModel.invalidate()

@@ -26,7 +26,7 @@ import javax.accessibility.AccessibleContext
 import javax.swing.JList
 import javax.swing.ListCellRenderer
 
-class EndpointSearchContributor : WeightedSearchEverywhereContributor<EndpointModel> {
+class EndpointSearchContributor(private val event: AnActionEvent) : WeightedSearchEverywhereContributor<EndpointModel> {
 
     override fun getSearchProviderId(): String {
         return this.javaClass.simpleName
@@ -56,8 +56,9 @@ class EndpointSearchContributor : WeightedSearchEverywhereContributor<EndpointMo
         if (StringUtil.isEmptyOrSpaces(pattern)) {
             return
         }
+        val project = event.project ?: return
         ProgressManager.getInstance().executeProcessUnderProgress({
-            EndpointItemProvider.filterElements(pattern) {
+            EndpointItemProvider.getInstance(project).filterElements(pattern) {
                 if (progressIndicator.isCanceled) {
                     return@filterElements false
                 }
@@ -110,7 +111,7 @@ class EndpointSearchContributor : WeightedSearchEverywhereContributor<EndpointMo
 class EndpointSearchContributorFactory : SearchEverywhereContributorFactory<EndpointModel> {
 
     override fun createContributor(initEvent: AnActionEvent): SearchEverywhereContributor<EndpointModel> {
-        return EndpointSearchContributor()
+        return EndpointSearchContributor(initEvent)
     }
 
 }

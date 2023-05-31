@@ -14,6 +14,12 @@
 
 ### Security
 
+## 2.0.1
+
+### Fixed
+- Search Endpoint bug 打开多个项目搜索接口冲突的问题
+- Code generator dialog validate bug 代码生成器的校验问题
+
 ## 2.0.0
 
 ### Added

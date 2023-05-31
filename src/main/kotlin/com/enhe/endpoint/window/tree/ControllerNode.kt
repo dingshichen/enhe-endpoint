@@ -27,6 +27,8 @@ class ControllerNode(
 
     private val endpointNodes = mutableListOf<EndpointNode>()
 
+    private val endpointItemProvider = EndpointItemProvider.getInstance(project)
+
     init {
         myClosedIcon = getCusIcon()
         updateNode(project)
@@ -50,7 +52,7 @@ class ControllerNode(
                         val fullPath = (getMajorText() + endpointNode.getMajorText()).let { path -> if (path.startsWith("/")) path else "/$path" }
 
                         endpointNodes += endpointNode
-                        EndpointItemProvider += EndpointModel(endpointNode.getCusIcon(), fullPath, endpointNode.getMethod())
+                        endpointItemProvider += EndpointModel(endpointNode.getCusIcon(), fullPath, endpointNode.getMethod())
                     }
                 }
             }
@@ -66,7 +68,7 @@ class ControllerNode(
                         val fullPath = (getMajorText() + endpointNode.getMajorText()).let { path -> if (path.startsWith("/")) path else "/$path" }
 
                         endpointNodes += endpointNode
-                        EndpointItemProvider += EndpointModel(endpointNode.getCusIcon(), fullPath, endpointNode.getMethod())
+                        endpointItemProvider += EndpointModel(endpointNode.getCusIcon(), fullPath, endpointNode.getMethod())
                     }
                 }
             }

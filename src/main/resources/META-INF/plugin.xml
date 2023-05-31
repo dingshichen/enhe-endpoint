@@ -20,6 +20,8 @@
         <projectService serviceInterface="com.enhe.endpoint.database.EFCodeGenerateService"
                         serviceImplementation="com.enhe.endpoint.database.EFCodeGenerateServiceImpl" />
         
+        <projectService serviceImplementation="com.enhe.endpoint.window.search.EndpointItemProvider" />
+        
         <searchEverywhereContributor implementation="com.enhe.endpoint.window.search.EndpointSearchContributorFactory"/>
 
         <toolWindow id="Enhe Endpoint"
@@ -74,7 +76,5 @@
                 description="Copy endpoint path to clipboard" icon="AllIcons.Actions.Copy">
             <add-to-group group-id="enhe.endpoint.window.tree.popup.action" anchor="first"/>
         </action>
-
-        <action id="com.enhe.endpoint.action.EndpointSearchAction" class="com.enhe.endpoint.action.EndpointSearchAction" />
     </actions>
 </idea-plugin>

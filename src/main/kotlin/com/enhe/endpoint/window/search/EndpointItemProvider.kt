@@ -9,10 +9,17 @@ import com.intellij.ide.actions.searcheverywhere.FoundItemDescriptor
 import com.intellij.ide.util.gotoByName.ChooseByNameViewModel
 import com.intellij.ide.util.gotoByName.ChooseByNameWeightedItemProvider
 import com.intellij.openapi.progress.ProgressIndicator
+import com.intellij.openapi.project.Project
 import com.intellij.util.Processor
 import java.util.function.Predicate
 
-object EndpointItemProvider : ChooseByNameWeightedItemProvider {
+class EndpointItemProvider : ChooseByNameWeightedItemProvider {
+
+    companion object {
+
+        @JvmStatic
+        fun getInstance(project: Project): EndpointItemProvider = project.getService(EndpointItemProvider::class.java)
+    }
 
     private val endpoints = mutableListOf<EndpointModel>()
 
@@ -24,11 +31,7 @@ object EndpointItemProvider : ChooseByNameWeightedItemProvider {
         endpoints += endpointModel
     }
 
-    override fun filterNames(
-        base: ChooseByNameViewModel,
-        names: Array<out String>,
-        pattern: String
-    ): MutableList<String> {
+    override fun filterNames(base: ChooseByNameViewModel, names: Array<out String>, pattern: String): MutableList<String> {
         return mutableListOf()
     }
 
@@ -39,12 +42,8 @@ object EndpointItemProvider : ChooseByNameWeightedItemProvider {
         cancelled: ProgressIndicator,
         consumer: Processor<Any?>
     ): Boolean {
-        return filterElementsWithWeights(
-            base, pattern, everywhere, cancelled
-        ) { descriptor: FoundItemDescriptor<*> ->
-            consumer.process(
-                descriptor.item
-            )
+        return filterElementsWithWeights(base, pattern, everywhere, cancelled) { descriptor: FoundItemDescriptor<*> ->
+            consumer.process(descriptor.item)
         }
     }
 
