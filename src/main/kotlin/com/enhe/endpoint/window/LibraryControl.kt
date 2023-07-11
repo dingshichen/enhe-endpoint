@@ -14,9 +14,9 @@ import com.intellij.psi.search.GlobalSearchScope
 
 // 以后配置化
 val INCLUDE_LIBRARY_CONTROL_MODULES = listOf(
-    LibraryControl("asset.service", "Maven: com.enhe.commons:asset.service:"),
-    LibraryControl("flow.service", "Maven: com.enhe.commons:flow.service:"),
-    LibraryControl("job.service", "Maven: com.enhe.commons:job.service:")
+    LibraryControl("asset.service", listOf("Maven: com.enhe.commons:asset.service:", "Maven: com.enhe.commons:commons.asset.service:")),
+    LibraryControl("flow.service", listOf("Maven: com.enhe.commons:flow.service:", "Maven: com.enhe.commons:commons.flow.service:")),
+    LibraryControl("job.service", listOf("Maven: com.enhe.commons:job.service:", "Maven: com.enhe.commons:commons.job.service:"))
 )
 
 /**
@@ -24,12 +24,19 @@ val INCLUDE_LIBRARY_CONTROL_MODULES = listOf(
  */
 class LibraryControl(
     private val moduleName: String,
-    private val libraryNameStart: String,
+    private val libraryNameStart: List<String>,
 ) {
 
     fun equalsModule(moduleName: String): Boolean = this.moduleName == moduleName
 
-    fun equalsLibrary(libraryName: String): Boolean = libraryName.startsWith(this.libraryNameStart)
+    fun equalsLibrary(libraryName: String): Boolean {
+        libraryNameStart.forEach {
+            if (libraryName.startsWith(it)) {
+                return true
+            }
+        }
+        return false
+    }
 
 }
 

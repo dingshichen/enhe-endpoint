@@ -14,6 +14,11 @@
 
 ### Security
 
+## 2.0.2
+
+### Changed
+- Library endpoint search 对库里的接口搜索调整
+
 ## 2.0.1
 
 ### Fixed
