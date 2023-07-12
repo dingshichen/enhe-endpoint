@@ -32,6 +32,14 @@
                     order="last"
                     factoryClass="com.enhe.endpoint.window.EndpointToolWindowFactory"/>
 
+        <toolWindow id="Enhe SQL Transfer Maotai"
+                    anchor="bottom"
+                    icon="MyIcons.Logo"
+                    secondary="false"
+                    doNotActivateOnStart="false"
+                    order="last"
+                    factoryClass="com.enhe.endpoint.window.SQLTransferWindowFactory"/>
+
         <codeInsight.lineMarkerProvider language="JAVA"
                                         implementationClass="com.enhe.endpoint.provider.EntityLineMarkerProvider" />
 

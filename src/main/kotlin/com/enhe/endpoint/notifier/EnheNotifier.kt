@@ -37,6 +37,7 @@ object EnheNotifier {
             .setTitle("Enhe Endpoint Java 开发者工具")
             .setIcon(icon)
             .addAction(BrowseNotificationAction("帮助文档", "https://alidocs.dingtalk.com/i/nodes/93NwLYZXWygladDATyXz6nbrJkyEqBQm"))
+            .addAction(BrowseNotificationAction("Star", "https://github.com/dingshichen/enhe-endpoint"))
             .notify(project)
     }
 }

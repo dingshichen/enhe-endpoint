@@ -11,6 +11,7 @@ group = properties("pluginGroup")
 version = properties("pluginVersion")
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -19,11 +20,15 @@ kotlin {
 }
 
 intellij {
-    version.set(properties("platformVersion"))
-    type.set(properties("platformType"))
-//    localPath.set(System.getenv("APP_PATH"))
+//    version.set(properties("platformVersion"))
+//    type.set(properties("platformType"))
+    localPath.set(System.getenv("APP_PATH"))
 
     plugins.set(listOf("com.intellij.java", "com.intellij.database"))
+}
+
+dependencies {
+    implementation("com.enhe.maotai:core:1.1.2")
 }
 
 changelog {

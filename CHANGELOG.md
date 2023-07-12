@@ -14,6 +14,12 @@
 
 ### Security
 
+## 2.1.0
+
+### Added
+- SQL transfer SQL 脚本转换
+- Copy endpoint path from method 从方法上提取复制接口路径
+
 ## 2.0.2
 
 ### Changed
