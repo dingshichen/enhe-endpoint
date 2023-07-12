@@ -56,7 +56,7 @@ class EFEventMarkerProvider : LineMarkerProvider {
             element.textRange,
             AllIcons.CodeWithMe.CwmFollowMe,
             { eventType.callListener },
-            { e, methodCallExpression -> openEventTargets(eventType, e, methodCallExpression.project, expressTypes[0].canonicalText) },
+            { e, em -> openEventTargets(eventType, e, em.project, expressTypes[0].canonicalText) },
             GutterIconRenderer.Alignment.RIGHT,
             { PLUGIN_NAME }
         )
@@ -76,7 +76,7 @@ class EFEventMarkerProvider : LineMarkerProvider {
             element.textRange,
             AllIcons.CodeWithMe.CwmFollowMe,
             { "Go to task service" },
-            {_,_ -> openTaskTargets(element.project, adapterName) },
+            { _,em -> openTaskTargets(em.project, adapterName) },
             GutterIconRenderer.Alignment.RIGHT,
             { PLUGIN_NAME }
         )

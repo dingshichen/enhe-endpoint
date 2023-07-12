@@ -8,7 +8,7 @@ import com.enhe.endpoint.consts.DELETE_MAPPING
 import com.enhe.endpoint.consts.GET_MAPPING
 import com.enhe.endpoint.consts.POST_MAPPING
 import com.enhe.endpoint.consts.PUT_MAPPING
-import com.enhe.endpoint.extend.findAttributeRealValue
+import com.enhe.endpoint.util.PathUtil
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiMethod
@@ -35,19 +35,7 @@ class EndpointNode(
 
     override fun buildChildren() = emptyArray<SimpleNode>()
 
-    override fun getName(): String {
-        var childPath = restAnnotation.findAttributeRealValue("value")
-        if (childPath.isNullOrBlank()) {
-            val st = restAnnotation.text.indexOf("{\"") + 2
-            val ed = restAnnotation.text.indexOf("\"}")
-            childPath = if (st < 0 || ed < 0 || st >= ed) {
-                ""
-            } else {
-                restAnnotation.text.substring(st, ed)
-            }
-        }
-        return childPath
-    }
+    override fun getName() = PathUtil.getChildPath(restAnnotation)
 
     fun getMethod() = method
 

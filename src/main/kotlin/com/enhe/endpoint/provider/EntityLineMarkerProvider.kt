@@ -46,7 +46,7 @@ class EntityLineMarkerProvider : LineMarkerProvider {
             element.textRange,
             AllIcons.Javaee.PersistenceEntity,
             { "Go to mapper" },
-            {_,_ -> gotoMapper(element.project, module, qualifiedName) },
+            {_,em -> gotoMapper(em.project, module, qualifiedName) },
             GutterIconRenderer.Alignment.LEFT,
             { PLUGIN_NAME }
         )

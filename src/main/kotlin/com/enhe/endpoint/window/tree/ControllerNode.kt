@@ -6,6 +6,7 @@ package com.enhe.endpoint.window.tree
 
 import com.enhe.endpoint.consts.FEIGN_CLIENT
 import com.enhe.endpoint.consts.REST_MAPPINGS
+import com.enhe.endpoint.util.PathUtil
 import com.enhe.endpoint.window.EndpointModel
 import com.enhe.endpoint.window.search.EndpointItemProvider
 import com.intellij.icons.AllIcons
@@ -89,23 +90,10 @@ class ControllerNode(
             is PsiClass -> "${parentClass.name}.${service.name}"
             else -> service.name
         }
-        presentation.addText(subParentPath() + " ", SimpleTextAttributes.REGULAR_ATTRIBUTES)
+        presentation.addText(getMajorText() + " ", SimpleTextAttributes.REGULAR_ATTRIBUTES)
         presentation.addText(serviceName, SimpleTextAttributes.GRAYED_ATTRIBUTES)
     }
 
-    override fun getMajorText(): String {
-        return subParentPath()
-    }
-
-    /**
-     * 排除项目前缀
-     */
-    private fun subParentPath(): String {
-        val index = parentPath.indexOf("/")
-        if (index == -1) {
-            return parentPath.replace("//", "/")
-        }
-        return parentPath.substring(index + 1).replace("//", "/")
-    }
+    override fun getMajorText() = PathUtil.subParentPath(parentPath)
 
 }

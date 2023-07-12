@@ -75,6 +75,7 @@
                 class="com.enhe.endpoint.action.CopyEndpointPathAction" text="Copy Endpoint Path"
                 description="Copy endpoint path to clipboard" icon="AllIcons.Actions.Copy">
             <add-to-group group-id="enhe.endpoint.window.tree.popup.action" anchor="first"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
     </actions>
 </idea-plugin>

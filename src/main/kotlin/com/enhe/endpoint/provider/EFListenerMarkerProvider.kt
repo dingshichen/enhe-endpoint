@@ -63,7 +63,7 @@ class EFListenerMarkerProvider : LineMarkerProvider {
                     element.textRange,
                     AllIcons.CodeWithMe.CwmForceFollowMe,
                     { "Go to task publisher" },
-                    { e,_ -> gotoTaskPublisher(e, element.project, adapter) },
+                    { e,em -> gotoTaskPublisher(e, em.project, adapter) },
                     GutterIconRenderer.Alignment.LEFT,
                     { PLUGIN_NAME }
                 )
