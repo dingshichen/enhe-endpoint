@@ -14,6 +14,11 @@
 
 ### Security
 
+## 2.1.2
+
+### Fixed
+- Adapt to older versions ( 适配老版本 )
+
 ## 2.1.1
 
 ### Added

@@ -141,7 +141,7 @@ class EndpointPanel(
      */
     fun updateCatalogTree() {
         if (!updating) {
-            DumbService.getInstance(project).smartInvokeLater {
+            project.getService(DumbService::class.java).smartInvokeLater {
                 if (toolWindow.isDisposed || !toolWindow.isVisible) {
                     toolWindow.show { this.doUpdateCatalogTree() }
                 } else {
@@ -151,10 +151,8 @@ class EndpointPanel(
         }
     }
 
-
-
     private fun doUpdateCatalogTree() {
-        ProgressManager.getInstance().run(object : Task.Backgroundable(project, "Enhe Endpoints Searching...") {
+        ProgressManager.getInstance().run(object : Task.Backgroundable(project, "Enhe endpoints searching...") {
 
             override fun run(indicator: ProgressIndicator) {
                 updating = true

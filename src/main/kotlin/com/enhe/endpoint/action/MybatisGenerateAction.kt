@@ -5,13 +5,14 @@
 package com.enhe.endpoint.action
 
 import com.enhe.endpoint.database.EFCodeGenerateService
+import com.enhe.endpoint.database.MysqlColumnType
 import com.enhe.endpoint.database.model.EFColumn
 import com.enhe.endpoint.database.model.EFTable
-import com.enhe.endpoint.database.MysqlColumnType
 import com.enhe.endpoint.dialog.MybatisGeneratorDialog
 import com.enhe.endpoint.extend.or
 import com.enhe.endpoint.notifier.EnheNotifier
 import com.intellij.database.psi.DbTable
+import com.intellij.database.types.typeName
 import com.intellij.database.util.DasUtil
 import com.intellij.ide.util.PackageUtil
 import com.intellij.openapi.actionSystem.AnAction
@@ -49,7 +50,7 @@ class MybatisGenerateAction : AnAction() {
                 DasUtil.getColumns(table).map {
                     EFColumn(
                         it.name,
-                        MysqlColumnType.of(it.dataType.typeName),
+                        MysqlColumnType.of(it.dasType.typeName),
                         it.isNotNull,
                         it.comment.orEmpty(),
                         resolveObjects?.any { pk -> pk.name == it.name } ?: false,
