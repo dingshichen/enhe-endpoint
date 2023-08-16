@@ -20,15 +20,15 @@ kotlin {
 }
 
 intellij {
-    version.set(properties("platformVersion"))
-    type.set(properties("platformType"))
-//    localPath.set(System.getenv("APP_PATH"))
+//    version.set(properties("platformVersion"))
+//    type.set(properties("platformType"))
+    localPath.set(System.getenv("APP_PATH"))
 
     plugins.set(listOf("com.intellij.java", "com.intellij.database"))
 }
 
 dependencies {
-    implementation("com.enhe.maotai:core:1.1.2")
+    implementation("com.enhe.maotai:core:1.2.0")
 }
 
 changelog {

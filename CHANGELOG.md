@@ -14,6 +14,14 @@
 
 ### Security
 
+## 2.2.0
+
+### Added
+- SQL Translator support 'Alter table rename' ( SQL 翻译器支持修改表名 )
+
+### Fixed
+- 2023.2 event navigate exception ( 2023.2 事件导航报错问题修复 )
+
 ## 2.1.2
 
 ### Fixed
