@@ -7,9 +7,9 @@ package com.enhe.endpoint.provider
 import com.enhe.endpoint.consts.*
 import com.enhe.endpoint.extend.findAdapterValue
 import com.enhe.endpoint.extend.getModules
+import com.enhe.endpoint.navigate.NavigateUtil.openTargetsMethod
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
-import com.intellij.codeInsight.daemon.impl.PsiElementListNavigator
 import com.intellij.icons.AllIcons
 import com.intellij.lang.jvm.JvmMethod
 import com.intellij.openapi.editor.markup.GutterIconRenderer
@@ -106,7 +106,7 @@ class EFListenerMarkerProvider : LineMarkerProvider {
             }
         }
         if (elements.isNotEmpty()) {
-            PsiElementListNavigator.openTargets(e, elements.toTypedArray(), eventType.toEventTitle, eventType.findEventUsagesTitle, EventPublishCellRenderer())
+            openTargetsMethod(elements.toList(), eventType.toEventTitle, e)
         }
     }
 
@@ -153,8 +153,7 @@ class EFListenerMarkerProvider : LineMarkerProvider {
             }
         }
         if (elements.isNotEmpty()) {
-            PsiElementListNavigator.openTargets(e, elements.toTypedArray(), "Task event publisher",
-                "Task event publisher", EventPublishCellRenderer())
+            openTargetsMethod(elements.toList(), "Task event publisher", e)
         }
     }
 }

@@ -8,11 +8,10 @@ import com.enhe.endpoint.consts.BKG_TASK_EXECUTOR
 import com.enhe.endpoint.consts.PLUGIN_NAME
 import com.enhe.endpoint.consts.PUBLISHER
 import com.enhe.endpoint.extend.findAdapterValue
+import com.enhe.endpoint.navigate.NavigateUtil.openTargetsMethod
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
-import com.intellij.codeInsight.daemon.impl.PsiElementListNavigator
 import com.intellij.icons.AllIcons
-import com.intellij.ide.util.MethodCellRenderer
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.openapi.project.Project
 import com.intellij.psi.*
@@ -94,7 +93,7 @@ class EFEventMarkerProvider : LineMarkerProvider {
             PsiTreeUtil.getParentOfType(pa, PsiMethod::class.java)
         }
         if (methods.isNotEmpty()) {
-            PsiElementListNavigator.openTargets(e, methods.toTypedArray(), eventType.toListenerTitle, eventType.findListenerUsagesTitle, MethodCellRenderer(true))
+            openTargetsMethod(methods, eventType.toListenerTitle, e)
         }
     }
 
