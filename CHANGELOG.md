@@ -14,6 +14,18 @@
 
 ### Security
 
+## 2.3.0
+
+### Added
+- Endpoint window add document action ( 接口路径窗口增加文档按钮 )
+- Endpoint window add find action ( 接口路径窗口增加查找按钮 )
+
+### Changed
+- Adjust the annotations that generate Java code ( 调整 Java 代码生成器生成的注解 )
+
+### Fixed
+- SQL transfer data type not null bug ( SQL 翻译器数据类型不为空的 bug )
+
 ## 2.2.0
 
 ### Added
