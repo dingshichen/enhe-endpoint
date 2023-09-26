@@ -65,7 +65,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
             @$LB_ACCS(chain = true)
             @$LB_SB
             @$LB_NAC
-            //@AllArgsConstructor    // 有属性后取消注释，打开构造器
+            @$LB_AAC
             @$MP_TABLE_NAME(value = "${table.name}", resultMap = "defaultResultMap")
             public class ${persistent.entityName} $extends{
                 $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
@@ -228,7 +228,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
             $columnTag
         </sql>
     $methodText
-    </mapper>
+</mapper>
         """
         val psiFile = PsiFileFactory.getInstance(project)
             .createFileFromText(persistent.xmlFileName, XMLLanguage.INSTANCE, xmlText)
@@ -245,24 +245,24 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
             if (enablePage) {
                 text.appendLine().append(
                     """
-    <select id="countByQuery" resultType="int">
-        select count(*) from ${table.name}
-        <where>
-            <!-- TODO -->
-        </where>
-    </select>
+        <select id="countByQuery" resultType="int">
+            select count(*) from ${table.name}
+            <where>
+                <!-- TODO -->
+            </where>
+        </select>
                 """
                 )
             }
             if (enablePage || enableListAll) {
                 text.appendLine().append(
                     """
-    <select id="selectByQuery" resultMap="defaultResultMap">
-        select <include refid="baseColumns" /> from ${table.name}
-        <where>
-            <!-- TODO -->
-        </where>
-    </select>
+        <select id="selectByQuery" resultMap="defaultResultMap">
+            select <include refid="baseColumns" /> from ${table.name}
+            <where>
+                <!-- TODO -->
+            </where>
+        </select>
                 """
                 )
 
@@ -270,12 +270,12 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
             if (enableSelect) {
                 text.appendLine().appendLine().append(
                     """
-    <select id="selectBySelectQuery" resultMap="defaultResultMap">
-        select <include refid="baseColumns" /> from ${table.name}
-        <where>
-            <!-- TODO -->
-        </where>
-    </select>
+        <select id="selectBySelectQuery" resultMap="defaultResultMap">
+            select <include refid="baseColumns" /> from ${table.name}
+            <where>
+                <!-- TODO -->
+            </where>
+        </select>
                 """
                 )
 
@@ -283,9 +283,9 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
             if (enableLoad) {
                 text.appendLine().appendLine().append(
                     """
-    <select id="countInIds" resultType="int">
-        select count(*) from ${table.name} where ${persistent.tableId!!.name} in <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
-    </select>
+        <select id="countInIds" resultType="int">
+            select count(*) from ${table.name} where ${persistent.tableId!!.name} in <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+        </select>
                 """
                 )
             }

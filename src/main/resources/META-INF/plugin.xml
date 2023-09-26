@@ -59,6 +59,11 @@
             <action id="endpoint.window.toolbar.action.refresh"
                     class="com.enhe.endpoint.action.WindowRefreshAction"
                     text="Refresh" description="Refresh" icon="AllIcons.Actions.Refresh"/>
+            <separator />
+            <reference ref="SearchEverywhere" />
+            <action id="endpoint.window.toolbar.action.pluginDoc"
+                    class="com.enhe.endpoint.action.PluginDocAction"
+                    text="Document" description="Document" icon="AllIcons.Xml.Browsers.Chrome" />
         </group>
 
         <group id="enhe.endpoint.window.tree.popup.action" class="com.intellij.openapi.actionSystem.DefaultActionGroup"
