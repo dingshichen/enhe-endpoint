@@ -65,7 +65,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
             @$LB_ACCS(chain = true)
             @$LB_SB
             @$LB_NAC
-            @$LB_AAC
+            //@AllArgsConstructor    // 有属性后取消注释，打开构造器
             @$MP_TABLE_NAME(value = "${table.name}", resultMap = "defaultResultMap")
             public class ${persistent.entityName} $extends{
                 $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
@@ -218,18 +218,18 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- $CREATED_BY ${PluginVersionUtil.getVersion()} -->
-<mapper namespace="${persistent.mapperQualified}">
-    <resultMap id="defaultResultMap" type="${persistent.entityQualified}" autoMapping="true">
-        <!--@Table ${table.name}-->
-        $idTag
-        $resultTag
-    </resultMap>
-    <sql id="Base_Column_List">
-        $columnTag
-    </sql>
-$methodText
-</mapper>
-        """.trimIndent()
+    <mapper namespace="${persistent.mapperQualified}">
+        <resultMap id="defaultResultMap" type="${persistent.entityQualified}" autoMapping="true">
+            <!--@Table ${table.name}-->
+            $idTag
+            $resultTag
+        </resultMap>
+        <sql id="baseColumns">
+            $columnTag
+        </sql>
+    $methodText
+    </mapper>
+        """
         val psiFile = PsiFileFactory.getInstance(project)
             .createFileFromText(persistent.xmlFileName, XMLLanguage.INSTANCE, xmlText)
 //        val reformatted = CodeStyleManager.getInstance(project).reformat(psiFile)
@@ -243,41 +243,51 @@ $methodText
         }
         with(implTempState) {
             if (enablePage) {
-                text.appendLine().append("""
+                text.appendLine().append(
+                    """
     <select id="countByQuery" resultType="int">
         select count(*) from ${table.name}
         <where>
             <!-- TODO -->
         </where>
     </select>
-                """.trimIndent())
+                """
+                )
             }
             if (enablePage || enableListAll) {
-                text.appendLine().append("""
+                text.appendLine().append(
+                    """
     <select id="selectByQuery" resultMap="defaultResultMap">
-        select <include refid="Base_Column_List" /> from ${table.name}
+        select <include refid="baseColumns" /> from ${table.name}
         <where>
             <!-- TODO -->
         </where>
     </select>
-                """.trimIndent())
+                """
+                )
+
             }
             if (enableSelect) {
-                text.appendLine().appendLine().append("""
+                text.appendLine().appendLine().append(
+                    """
     <select id="selectBySelectQuery" resultMap="defaultResultMap">
-        select <include refid="Base_Column_List" /> from ${table.name}
+        select <include refid="baseColumns" /> from ${table.name}
         <where>
             <!-- TODO -->
         </where>
     </select>
-                """.trimIndent())
+                """
+                )
+
             }
             if (enableLoad) {
-                text.appendLine().appendLine().append("""
+                text.appendLine().appendLine().append(
+                    """
     <select id="countInIds" resultType="int">
         select count(*) from ${table.name} where ${persistent.tableId!!.name} in <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
     </select>
-                """.trimIndent())
+                """
+                )
             }
         }
         return text.toString()
@@ -755,7 +765,7 @@ $methodText
                @$LB_ACCS(chain = true)
                @$LB_SB
                @$LB_NAC
-               @$LB_AAC
+               //@AllArgsConstructor    // 有属性后取消注释，打开构造器
                @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(查询条件)")
                public class ${implTemp.queryName} extends $QUERY {
                    $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
@@ -782,7 +792,7 @@ $methodText
                @$LB_ACCS(chain = true)
                @$LB_SB
                @$LB_NAC
-               @$LB_AAC
+               //@AllArgsConstructor    // 有属性后取消注释，打开构造器
                @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(选项查询条件)")
                public class ${implTemp.selectName} extends $SELECT_QUERY {
                    $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
@@ -809,7 +819,7 @@ $methodText
            @$LB_ACCS(chain = true)
            @$LB_SB
            @$LB_NAC
-           @$LB_AAC
+           //@AllArgsConstructor    // 有属性后取消注释，打开构造器
            @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(选项)")
            public class ${implTemp.optionName} extends $BASE_BEAN {
                $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
@@ -837,7 +847,7 @@ $methodText
            @$LB_ACCS(chain = true)
            @$LB_SB
            @$LB_NAC
-           @$LB_AAC
+           //@AllArgsConstructor    // 有属性后取消注释，打开构造器
            @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(列表)")
            public class ${implTemp.itemName} extends $superText {
                $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
@@ -871,7 +881,7 @@ $methodText
                 @$LB_ACCS(chain = true)
                 @$LB_SB
                 @$LB_NAC
-                @$LB_AAC
+                //@AllArgsConstructor    // 有属性后取消注释，打开构造器
                 @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}")
                 public class ${implTemp.persistent.baseName} extends $superText {
                     $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
@@ -898,7 +908,7 @@ $methodText
                 @$LB_ACCS(chain = true)
                 @$LB_SB
                 @$LB_NAC
-                @$LB_AAC
+                //@AllArgsConstructor    // 有属性后取消注释，打开构造器
                 @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(导入参数)")
                 public class ${implTemp.impParamName} extends $IMP_PARAM {
                     $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
@@ -925,7 +935,7 @@ $methodText
                 @$LB_ACCS(chain = true)
                 @$LB_SB
                 @$LB_NAC
-                @$LB_AAC
+                //@AllArgsConstructor    // 有属性后取消注释，打开构造器
                 @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(导入)")
                 public class ${implTemp.impInfoName} extends $IMP_INFO<${implTemp.impParamQualified}> {
                     $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
@@ -952,7 +962,7 @@ $methodText
                 @$LB_ACCS(chain = true)
                 @$LB_SB
                 @$LB_NAC
-                @$LB_AAC
+                //@AllArgsConstructor    // 有属性后取消注释，打开构造器
                 @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(导出)")
                 public class ${implTemp.expInfoName} extends $EXP_INFO<${implTemp.queryQualified}> {
                     $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
@@ -979,7 +989,7 @@ $methodText
                 @$LB_ACCS(chain = true)
                 @$LB_SB
                 @$LB_NAC
-                @$LB_AAC
+                //@AllArgsConstructor    // 有属性后取消注释，打开构造器
                 @$SK_API_MODEL(description = "${table.getCommentWithoutSuffix()}(表格)")
                 public class ${implTemp.excelName} implements $IO_SERIAL {
                     $SERIAL_UID_FIELD = ${SerialVersionUtil.generateUID()}L;
