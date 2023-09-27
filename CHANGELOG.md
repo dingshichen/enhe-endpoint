@@ -14,6 +14,11 @@
 
 ### Security
 
+## 2.3.1
+
+### Fixed
+- Generate xml bug fix ( 生成 xml 的问题修复 )
+
 ## 2.3.0
 
 ### Added

@@ -229,7 +229,7 @@ class EFCodeGenerateServiceImpl : EFCodeGenerateService {
         </sql>
     $methodText
 </mapper>
-        """
+        """.trimIndent()
         val psiFile = PsiFileFactory.getInstance(project)
             .createFileFromText(persistent.xmlFileName, XMLLanguage.INSTANCE, xmlText)
 //        val reformatted = CodeStyleManager.getInstance(project).reformat(psiFile)
