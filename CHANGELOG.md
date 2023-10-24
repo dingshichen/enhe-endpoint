@@ -14,6 +14,11 @@
 
 ### Security
 
+## 2.3.3
+
+### Fixed
+- SQL Translator unique index bug ( SQL 翻译器唯一索引 bug )
+
 ## 2.3.1
 
 ### Fixed
