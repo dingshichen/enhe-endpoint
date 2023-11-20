@@ -14,6 +14,11 @@
 
 ### Security
 
+## 2.4.0
+
+### Added
+- SQL Translator support ${} ( SQL 翻译器支持 ${} )
+
 ## 2.3.3
 
 ### Fixed

@@ -28,7 +28,7 @@ intellij {
 }
 
 dependencies {
-    implementation("com.enhe.maotai:core:1.2.3")
+    implementation("com.enhe.maotai:core:1.3.0")
 }
 
 changelog {
