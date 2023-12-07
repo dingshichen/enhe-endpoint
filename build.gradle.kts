@@ -2,9 +2,9 @@ fun properties(key: String) = project.findProperty(key).toString()
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.8.10"
+    id("org.jetbrains.kotlin.jvm") version "1.9.21"
     id("org.jetbrains.intellij") version "1.13.3"
-    id("org.jetbrains.changelog") version "2.0.0"
+    id("org.jetbrains.changelog") version "2.2.0"
 }
 
 group = properties("pluginGroup")
@@ -15,14 +15,10 @@ repositories {
     mavenCentral()
 }
 
-kotlin {
-    jvmToolchain(17)
-}
-
 intellij {
-//    version.set(properties("platformVersion"))
-//    type.set(properties("platformType"))
-    localPath.set(System.getenv("APP_PATH"))
+    version.set(properties("platformVersion"))
+    type.set(properties("platformType"))
+//    localPath.set(System.getenv("APP_PATH"))
 
     plugins.set(listOf("com.intellij.java", "com.intellij.database"))
 }
@@ -37,6 +33,14 @@ changelog {
 }
 
 tasks {
+
+    withType<JavaCompile> {
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
+    }
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions.jvmTarget = "17"
+    }
 
     buildSearchableOptions {
         enabled = false
