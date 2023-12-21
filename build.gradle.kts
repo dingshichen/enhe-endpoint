@@ -16,10 +16,13 @@ repositories {
 }
 
 intellij {
-    version.set(properties("platformVersion"))
-    type.set(properties("platformType"))
-//    localPath.set(System.getenv("APP_PATH"))
-
+    val appPath = System.getenv("APP_PATH")
+    if (appPath == null) {
+        version.set(properties("platformVersion"))
+        type.set(properties("platformType"))
+    } else {
+        localPath.set(appPath)
+    }
     plugins.set(listOf("com.intellij.java", "com.intellij.database"))
 }
 
