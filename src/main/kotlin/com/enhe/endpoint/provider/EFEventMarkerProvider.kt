@@ -8,7 +8,7 @@ import com.enhe.endpoint.consts.BKG_TASK_EXECUTOR
 import com.enhe.endpoint.consts.PLUGIN_NAME
 import com.enhe.endpoint.consts.PUBLISHER
 import com.enhe.endpoint.extend.findAdapterValue
-import com.enhe.endpoint.navigate.NavigateUtil.openTargetsMethod
+import com.enhe.endpoint.util.NavigateUtil
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.icons.AllIcons
@@ -93,7 +93,7 @@ class EFEventMarkerProvider : LineMarkerProvider {
             PsiTreeUtil.getParentOfType(pa, PsiMethod::class.java)
         }
         if (methods.isNotEmpty()) {
-            openTargetsMethod(methods, eventType.toListenerTitle, e)
+            NavigateUtil.openTargetsMethod(methods, eventType.toListenerTitle, e)
         }
     }
 

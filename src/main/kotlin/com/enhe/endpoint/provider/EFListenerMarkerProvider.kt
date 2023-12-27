@@ -7,7 +7,7 @@ package com.enhe.endpoint.provider
 import com.enhe.endpoint.consts.*
 import com.enhe.endpoint.extend.findAdapterValue
 import com.enhe.endpoint.extend.getModules
-import com.enhe.endpoint.navigate.NavigateUtil.openTargetsMethod
+import com.enhe.endpoint.util.NavigateUtil
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.icons.AllIcons
@@ -106,7 +106,7 @@ class EFListenerMarkerProvider : LineMarkerProvider {
             }
         }
         if (elements.isNotEmpty()) {
-            openTargetsMethod(elements.toList(), eventType.toEventTitle, e)
+            NavigateUtil.openTargetsMethod(elements.toList(), eventType.toEventTitle, e)
         }
     }
 
@@ -153,7 +153,7 @@ class EFListenerMarkerProvider : LineMarkerProvider {
             }
         }
         if (elements.isNotEmpty()) {
-            openTargetsMethod(elements.toList(), "Task event publisher", e)
+            NavigateUtil.openTargetsMethod(elements.toList(), "Task event publisher", e)
         }
     }
 }

@@ -4,7 +4,6 @@
 
 package com.enhe.endpoint.window.tree
 
-import com.enhe.endpoint.extend.getModules
 import com.intellij.openapi.project.Project
 import icons.MyIcons
 import javax.swing.Icon
@@ -14,7 +13,7 @@ import javax.swing.Icon
  */
 class RootNode : BaseNode() {
 
-    private val moduleNodes = mutableListOf<ModuleNode>()
+    private var moduleNodes: List<ModuleNode>? = null
 
     init {
         myClosedIcon = getCusIcon()
@@ -22,18 +21,12 @@ class RootNode : BaseNode() {
 
     override fun clearAll() {
         super.clearAll()
-        moduleNodes.clear()
+        moduleNodes = null
     }
 
     override fun updateNode(project: Project) {
         clearAll()
-        project.getModules().forEach {
-            val moduleNode = ModuleNode(this, it, project)
-            if (moduleNode.childCount > 0) {
-                moduleNodes.add(moduleNode)
-            }
-        }
-        moduleNodes.sortBy { it.name }
+        moduleNodes = EndpointContext.efModules.map { ModuleNode(this, it, project) }
         update()
     }
 
@@ -41,7 +34,7 @@ class RootNode : BaseNode() {
         return MyIcons.Logo
     }
 
-    override fun buildChildren() = moduleNodes.toTypedArray()
+    override fun buildChildren() = moduleNodes?.toTypedArray() ?: emptyArray()
 
-    override fun getName() = "EnheV3"
+    override fun getName() = "DAGP3"
 }

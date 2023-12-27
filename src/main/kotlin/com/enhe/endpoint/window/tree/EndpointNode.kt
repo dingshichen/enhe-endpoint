@@ -4,23 +4,16 @@
 
 package com.enhe.endpoint.window.tree
 
-import com.enhe.endpoint.consts.DELETE_MAPPING
-import com.enhe.endpoint.consts.GET_MAPPING
-import com.enhe.endpoint.consts.POST_MAPPING
-import com.enhe.endpoint.consts.PUT_MAPPING
-import com.enhe.endpoint.util.PathUtil
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiAnnotation
-import com.intellij.psi.PsiMethod
 import com.intellij.ui.treeStructure.SimpleNode
+import com.intellij.util.net.HTTPMethod
 import icons.MyIcons
 import javax.swing.Icon
 
 class EndpointNode(
-    private val parentNode: BaseNode,
+    val parentNode: ControllerNode,
+    val endpoint: EFEndpoint,
     private val project: Project,
-    private val restAnnotation: PsiAnnotation,
-    private val method: PsiMethod
 ) : BaseNode(parentNode) {
 
     init {
@@ -35,16 +28,16 @@ class EndpointNode(
 
     override fun buildChildren() = emptyArray<SimpleNode>()
 
-    override fun getName() = PathUtil.getChildPath(restAnnotation)
+    override fun getName() = endpoint.path
 
-    fun getMethod() = method
+    fun getMethod() = endpoint.psiMethod
 
     override fun getCusIcon(): Icon {
-        return when (restAnnotation.qualifiedName) {
-            GET_MAPPING -> MyIcons.GetMapping
-            POST_MAPPING -> MyIcons.PostMapping
-            PUT_MAPPING -> MyIcons.PutMapping
-            DELETE_MAPPING -> MyIcons.DeleteMapping
+        return when (endpoint.httpMethod) {
+            HTTPMethod.GET -> MyIcons.GetMapping
+            HTTPMethod.POST -> MyIcons.PostMapping
+            HTTPMethod.PUT -> MyIcons.PutMapping
+            HTTPMethod.DELETE -> MyIcons.DeleteMapping
             else -> MyIcons.RequestMapping
         }
     }

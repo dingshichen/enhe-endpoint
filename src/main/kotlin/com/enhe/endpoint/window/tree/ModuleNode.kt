@@ -4,15 +4,9 @@
 
 package com.enhe.endpoint.window.tree
 
-import com.enhe.endpoint.consts.FEIGN_CLIENT
-import com.enhe.endpoint.extend.findAttributeRealValue
-import com.enhe.endpoint.window.LibraryControlService
 import com.intellij.icons.AllIcons
 import com.intellij.ide.projectView.PresentationData
-import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiAnnotation
-import com.intellij.psi.PsiClass
 import com.intellij.ui.SimpleTextAttributes
 import javax.swing.Icon
 
@@ -20,12 +14,12 @@ import javax.swing.Icon
  * 模块节点
  */
 class ModuleNode(
-    private val parentNode: BaseNode,
-    private val module: Module,
+    val parentNode: RootNode,
+    val module: EFModule,
     private val project: Project
 ) : BaseNode(parentNode) {
 
-    private val controllerNodes = mutableListOf<ControllerNode>()
+    private var controllerNodes: List<ControllerNode>? = null
 
     init {
         myClosedIcon = getCusIcon()
@@ -34,28 +28,12 @@ class ModuleNode(
 
     override fun clearAll() {
         super.clearAll()
-        controllerNodes.clear()
+        controllerNodes = null
     }
 
     override fun updateNode(project: Project) {
         clearAll()
-        val psiAnnotations = mutableListOf<PsiAnnotation>()
-        LibraryControlService.getInstance(project).addPsiAnnotations(psiAnnotations, module, project)
-        psiAnnotations.forEach {
-            when (val serviceClass = it.parent.parent) {
-                is PsiClass -> {
-                    val feignService = serviceClass.supers.find { feign -> feign.hasAnnotation(FEIGN_CLIENT) }
-                    feignService?.getAnnotation(FEIGN_CLIENT)?.findAttributeRealValue("value")?.let { value ->
-                        ControllerNode(this, serviceClass, project, value).apply {
-                            if (this@apply.children().isNotEmpty()) {
-                                controllerNodes += this
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        controllerNodes.sortBy { it.name }
+        controllerNodes = module.controllers.map { ControllerNode(this, it, project) }
         update()
     }
 
@@ -63,7 +41,7 @@ class ModuleNode(
         return AllIcons.Actions.ModuleDirectory
     }
 
-    override fun buildChildren() = controllerNodes.toTypedArray()
+    override fun buildChildren() = controllerNodes?.toTypedArray() ?: emptyArray()
 
     override fun doUpdateV2(presentation: PresentationData) {
         val moduleName = module.name

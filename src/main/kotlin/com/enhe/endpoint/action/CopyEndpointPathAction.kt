@@ -7,7 +7,7 @@ package com.enhe.endpoint.action
 import com.enhe.endpoint.consts.FEIGN_CLIENT
 import com.enhe.endpoint.consts.REST_MAPPINGS
 import com.enhe.endpoint.consts.WINDOW_PANE
-import com.enhe.endpoint.extend.findAttributeRealValue
+import com.enhe.endpoint.extend.findValueAttributeRealValue
 import com.enhe.endpoint.extend.or
 import com.enhe.endpoint.util.PathUtil
 import com.enhe.endpoint.window.tree.ControllerNode
@@ -43,7 +43,7 @@ class CopyEndpointPathAction : AnAction() {
                 is PsiMethod -> {
                     val fullPath: String? = it.containingClass?.let path@{ psiClass ->
                         val feignService = if (psiClass.isInterface) psiClass else psiClass.supers.find { feign -> feign.hasAnnotation(FEIGN_CLIENT) }
-                        return@path feignService?.getAnnotation(FEIGN_CLIENT)?.findAttributeRealValue("value")?.let { parentPath ->
+                        return@path feignService?.getAnnotation(FEIGN_CLIENT)?.findValueAttributeRealValue()?.let { parentPath ->
                             if (psiClass.isInterface) {
                                 return@path getPath(it, parentPath)
                             } else{
@@ -66,7 +66,8 @@ class CopyEndpointPathAction : AnAction() {
     private fun getPath(psiMethod: PsiMethod, parentPath: String): String? {
         psiMethod.annotations.forEach { an ->
             if (an.qualifiedName in REST_MAPPINGS) {
-                return (PathUtil.subParentPath(parentPath) + PathUtil.getChildPath(an)).let { path -> if (path.startsWith("/")) path else "/$path" }
+                // 去掉模块前缀
+                return (PathUtil.subParentPath(parentPath) + an.findValueAttributeRealValue()).let { path -> if (path.startsWith("/")) path else "/$path" }
             }
         }
         return null

@@ -6,6 +6,7 @@ package com.enhe.endpoint.window
 
 import com.enhe.endpoint.consts.WINDOW_PANE
 import com.enhe.endpoint.window.search.EndpointItemProvider
+import com.enhe.endpoint.window.tree.EndpointContext
 import com.enhe.endpoint.window.tree.EndpointNode
 import com.enhe.endpoint.window.tree.RootNode
 import com.intellij.ide.util.treeView.AbstractTreeStructure
@@ -60,10 +61,11 @@ class EndpointPanel(
             override fun getRootElement() = rootNode
         }, null, this)
         catalogTree = SimpleTree(AsyncTreeModel(treeModel, this))
+        catalogTree.isRootVisible = false
         initPopupMenu()
         initCatalogTree()
         setContent(ScrollPaneFactory.createScrollPane(catalogTree))
-        // TODO 暂时不直接展示，需要用户点击下刷新
+        // TODO 考虑是否不直接展示，让用户点击下刷新
         updateCatalogTree()
     }
 
@@ -158,6 +160,7 @@ class EndpointPanel(
                 updating = true
                 EndpointItemProvider.getInstance(project).clear()
                 AppUIUtil.invokeOnEdt {
+                    EndpointContext.refresh(project)
                     rootNode.updateNode(project)
                     treeModel.invalidate()
                 }
