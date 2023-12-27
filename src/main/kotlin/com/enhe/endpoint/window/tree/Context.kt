@@ -9,6 +9,7 @@ import com.enhe.endpoint.extend.findValueAttributeRealValue
 import com.enhe.endpoint.extend.getModules
 import com.enhe.endpoint.extend.ofHttpMethod
 import com.enhe.endpoint.util.PathStringUtil
+import com.enhe.endpoint.util.PathUtil
 import com.enhe.endpoint.window.LibraryControlService
 import com.enhe.endpoint.window.search.EndpointItemProvider
 import com.intellij.openapi.module.Module
@@ -70,9 +71,7 @@ object EndpointContext {
                         .find { feign -> feign.hasAnnotation(FEIGN_CLIENT) }
                     feignService?.getAnnotation(FEIGN_CLIENT)?.findValueAttributeRealValue()?.let { value ->
                         // 去掉模块前缀
-                        val path = if (value.startsWith(module.name)) {
-                            value.substring(module.name.length)
-                        } else value
+                        val path = PathUtil.subParentPath(value)
                         val efController = EFController(getFullServiceName(serviceClass), serviceClass.qualifiedName!!, PathStringUtil.formatPath(path))
                         // 初始化接口方法
                         refreshMethod(serviceClass, efController)
