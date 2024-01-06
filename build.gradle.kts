@@ -23,7 +23,7 @@ intellij {
     } else {
         localPath.set(appPath)
     }
-    plugins.set(listOf("com.intellij.java", "com.intellij.database"))
+    plugins.set(listOf("com.intellij.java", "com.intellij.database", "markdown"))
 }
 
 dependencies {

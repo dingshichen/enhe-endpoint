@@ -4,6 +4,7 @@
 
 package com.enhe.endpoint.extend
 
+import com.enhe.endpoint.consts.FEIGN_CLIENT
 import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiReturnStatement
@@ -13,6 +14,13 @@ import com.intellij.psi.PsiReturnStatement
  */
 fun PsiClass.findAdapterValue(): String? {
     return this.findMethodRealReturnValue("adapter")
+}
+
+/**
+ * 获取 @FeignClient 标注的接口
+ */
+fun PsiClass.findFeignClass(): PsiClass? {
+    return supers.find { it.isInterface && it.hasAnnotation(FEIGN_CLIENT) }
 }
 
 /**

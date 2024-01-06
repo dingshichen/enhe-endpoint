@@ -7,6 +7,7 @@ package com.enhe.endpoint.action
 import com.enhe.endpoint.consts.FEIGN_CLIENT
 import com.enhe.endpoint.consts.REST_MAPPINGS
 import com.enhe.endpoint.consts.WINDOW_PANE
+import com.enhe.endpoint.extend.findFeignClass
 import com.enhe.endpoint.extend.findValueAttributeRealValue
 import com.enhe.endpoint.extend.or
 import com.enhe.endpoint.util.PathUtil
@@ -42,7 +43,7 @@ class CopyEndpointPathAction : AnAction() {
             when (it) {
                 is PsiMethod -> {
                     val fullPath: String? = it.containingClass?.let path@{ psiClass ->
-                        val feignService = if (psiClass.isInterface) psiClass else psiClass.supers.find { feign -> feign.hasAnnotation(FEIGN_CLIENT) }
+                        val feignService = if (psiClass.isInterface) psiClass else psiClass.findFeignClass()
                         return@path feignService?.getAnnotation(FEIGN_CLIENT)?.findValueAttributeRealValue()?.let { parentPath ->
                             if (psiClass.isInterface) {
                                 return@path getPath(it, parentPath)

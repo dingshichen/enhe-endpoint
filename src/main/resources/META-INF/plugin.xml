@@ -11,6 +11,7 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
     <depends>com.intellij.database</depends>
+    <depends>org.intellij.plugins.markdown</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
@@ -21,6 +22,12 @@
                         serviceImplementation="com.enhe.endpoint.database.EFCodeGenerateServiceImpl" />
         
         <projectService serviceImplementation="com.enhe.endpoint.window.search.EndpointItemProvider" />
+
+        <projectService serviceInterface="com.enhe.endpoint.doc.DocService"
+                        serviceImplementation="com.enhe.endpoint.doc.DocServiceImpl" />
+
+        <projectService serviceInterface="com.enhe.endpoint.doc.LangDataTypeConvertor"
+                        serviceImplementation="com.enhe.endpoint.doc.JavaDataTypeConvertor" />
         
         <searchEverywhereContributor implementation="com.enhe.endpoint.window.search.EndpointSearchContributorFactory"/>
 
@@ -88,6 +95,12 @@
                 class="com.enhe.endpoint.action.CopyEndpointPathAction" text="Copy Endpoint Path"
                 description="Copy endpoint path to clipboard" icon="AllIcons.Actions.Copy">
             <add-to-group group-id="enhe.endpoint.window.tree.popup.action" anchor="first"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </action>
+
+        <action id="com.enhe.endpoint.action.PopupApiDocAction"
+                class="com.enhe.endpoint.action.PopupApiDocAction" text="Show API Doc"
+                description="Popup API markdown document" icon="MyIcons.Logo">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
     </actions>

@@ -7,4 +7,6 @@ package com.enhe.endpoint.consts
 const val SK_API = "io.swagger.annotations.Api"
 const val SK_API_MODEL = "io.swagger.annotations.ApiModel"
 const val SK_API_PROP = "io.swagger.annotations.ApiModelProperty"
+const val SK_API_OPT = "io.swagger.annotations.ApiOperation"
 const val SK_API_SUPPORT = "com.github.xiaoymin.knife4j.annotations.ApiSupport"
+

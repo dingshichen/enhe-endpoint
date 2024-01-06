@@ -24,3 +24,31 @@ fun String.firstCharLower(): String {
 fun String.lowerCamel() = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, this)
 
 fun String?.or(or: String) = if (isNullOrEmpty()) or else this
+
+/**
+ * 截取
+ */
+fun String.simpleSubstring(startString: String, endString: String): String {
+    val a = indexOf(startString)
+    val b = lastIndexOf(endString)
+    if (a == -1 || b == -1) {
+        return ""
+    }
+    return substring(a + startString.length, b)
+}
+
+/**
+ * 分割符转小驼峰
+ */
+fun String.splitToSmallHump(split: String): String {
+    val builder = StringBuilder()
+    for (s in this.split(split)) {
+        if (builder.toString() == "") {
+            builder.append(s)
+        } else {
+            builder.append(s[0].uppercase())
+            builder.append(s.substring(1))
+        }
+    }
+    return builder.toString()
+}

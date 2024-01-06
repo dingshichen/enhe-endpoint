@@ -25,6 +25,13 @@ fun PsiAnnotation.findValueAttributeRealValue(): String {
 }
 
 /**
+ * 获取注解里的 required 属性的值
+ */
+fun PsiAnnotation?.findRequiredAttributeRealValue(): Boolean {
+    return this?.findAttributeRealValue("required")?.toBoolean()?: false
+}
+
+/**
  * 获取注解的值
  */
 fun PsiAnnotation.findAttributeRealValue(attribute: String): String? {

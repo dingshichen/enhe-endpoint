@@ -13,6 +13,11 @@ const val DELETE_MAPPING = "org.springframework.web.bind.annotation.DeleteMappin
 const val PUT_MAPPING = "org.springframework.web.bind.annotation.PutMapping"
 const val GET_MAPPING = "org.springframework.web.bind.annotation.GetMapping"
 
+const val REQUEST_BODY = "org.springframework.web.bind.annotation.RequestBody"
+const val PATH_VAR = "org.springframework.web.bind.annotation.PathVariable"
+const val MULTIPART_FILE = "org.springframework.web.multipart.MultipartFile"
+const val REQUEST_PARAM = "org.springframework.web.bind.annotation.RequestParam"
+
 // Spring
 const val SERVICE = "org.springframework.stereotype.Service"
 const val PRIMARY = "org.springframework.context.annotation.Primary"

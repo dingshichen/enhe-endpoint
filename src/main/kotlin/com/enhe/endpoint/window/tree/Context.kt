@@ -5,6 +5,7 @@
 package com.enhe.endpoint.window.tree
 
 import com.enhe.endpoint.consts.FEIGN_CLIENT
+import com.enhe.endpoint.extend.findFeignClass
 import com.enhe.endpoint.extend.findValueAttributeRealValue
 import com.enhe.endpoint.extend.getModules
 import com.enhe.endpoint.extend.ofHttpMethod
@@ -67,9 +68,7 @@ object EndpointContext {
         psiAnnotations.forEach {
             when (val serviceClass = it.parent.parent) {
                 is PsiClass -> {
-                    val feignService = serviceClass.supers.filter { sc -> sc.isInterface }
-                        .find { feign -> feign.hasAnnotation(FEIGN_CLIENT) }
-                    feignService?.getAnnotation(FEIGN_CLIENT)?.findValueAttributeRealValue()?.let { value ->
+                    serviceClass.findFeignClass()?.getAnnotation(FEIGN_CLIENT)?.findValueAttributeRealValue()?.let { value ->
                         // 去掉模块前缀
                         val path = PathUtil.subParentPath(value)
                         val efController = EFController(getFullServiceName(serviceClass), serviceClass.qualifiedName!!, PathStringUtil.formatPath(path))
@@ -100,7 +99,7 @@ object EndpointContext {
         }
         // find default method in service interface
         val overrideMethodNames = efController.endpoints.map { it.methodName }.toSet()
-        serviceClass.supers.filter { it.isInterface && it.hasAnnotation(FEIGN_CLIENT) }.forEach {
+        serviceClass.findFeignClass()?.let {
             it.methods.filter { method -> method.name !in overrideMethodNames }.forEach { method ->
                 method.annotations.forEach { an ->
                     ofHttpMethod(an.qualifiedName)?.let { httpMethod ->
