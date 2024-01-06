@@ -43,7 +43,7 @@ object PsiMethodApiExtractor {
         } else {
             psiMethod.findSuperMethods().find { it.hasAnnotation(SK_API_OPT) }
         }
-        return psm?.let { it.getAnnotation(SK_API_OPT)?.findAttributeRealValue("note") }.orEmpty()
+        return psm?.let { it.getAnnotation(SK_API_OPT)?.findAttributeRealValue("notes") }.orEmpty()
     }
 
     /**
@@ -58,7 +58,8 @@ object PsiMethodApiExtractor {
             val parentPath = psiClass.findFeignClass()?.getAnnotation(FEIGN_CLIENT)?.findValueAttributeRealValue()?.let { PathUtil.subParentPath(it) }.orEmpty()
             psiMethod.findSuperMethods().forEach {
                 val annotation = it.getAnnotation(GET_MAPPING) ?: it.getAnnotation(POST_MAPPING) ?: it.getAnnotation(PUT_MAPPING)?: it.getAnnotation(DELETE_MAPPING) ?: return@forEach
-                return "$parentPath/${annotation.findValueAttributeRealValue()}"
+                val path = annotation.findValueAttributeRealValue().let { v -> PathStringUtil.formatPath(v) }
+                return "$parentPath/$path"
             }
             return parentPath
         }

@@ -27,6 +27,7 @@ import com.intellij.psi.util.PsiUtil
  * 2. 解析 @ApiModelProperty 注解时，需要判断 hidden 属性来过滤
  * 3. 需要解析 @Setter(onMethod_ = {@ApiModelProperty(dataType = Base.CLASS_NAME, required = true)}) @Setter(onMethod_ = {@ApiModelProperty(dataType = Base.LIST_CLASS_NAME, required = true)})
  * 4. 要包装 Result 通用返回值结构
+ * 5. 入参是集合，怎么描述参数？
  */
 object PsiClassTypeApiExtractor {
 
