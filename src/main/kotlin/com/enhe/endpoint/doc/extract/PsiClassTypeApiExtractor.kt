@@ -5,6 +5,7 @@
 package com.enhe.endpoint.doc.extract
 
 import com.enhe.endpoint.consts.JSON_IGNORE
+import com.enhe.endpoint.consts.SERIAL_UID
 import com.enhe.endpoint.consts.SK_API_PROP
 import com.enhe.endpoint.consts.TRANSIENT
 import com.enhe.endpoint.doc.LangDataTypeConvertor
@@ -54,7 +55,7 @@ object PsiClassTypeApiExtractor {
         val generics = getGenericsType(psiClass, psiClassType)
         val fields = childrenFields ?: psiClass.fields
         fields.forEach {
-            if (it.name == "serialVersionUID" || it.type.isJavaLogType() || it.hasAnnotation(JSON_IGNORE) || it.hasAnnotation(TRANSIENT)) {
+            if (fieldIgnore(it)) {
                 // 序列化 ID || 忽略序列化
                 return@forEach
             }
@@ -99,6 +100,14 @@ object PsiClassTypeApiExtractor {
             )
         }
         return params
+    }
+
+    /**
+     * 属性是否需要忽略
+     */
+    private fun fieldIgnore(field: PsiField): Boolean {
+        return field.name == SERIAL_UID || field.type.isJavaLogType() || field.hasAnnotation(JSON_IGNORE)
+                || field.hasAnnotation(TRANSIENT) || field.getAnnotation(SK_API_PROP)?.findAttributeRealValue("hidden") == "true"
     }
 
     /**
