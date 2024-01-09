@@ -5,6 +5,7 @@
 package com.enhe.endpoint.extend
 
 import com.enhe.endpoint.consts.FEIGN_CLIENT
+import com.enhe.endpoint.consts.JAVA_ENUM
 import com.intellij.psi.PsiBinaryExpression
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiReturnStatement
@@ -43,4 +44,11 @@ fun PsiClass.findMethodRealReturnValue(methodName: String): String? {
  */
 fun PsiClass.findStringFieldRealValue(fieldName: String): String? {
     return findFieldByName(fieldName, false)?.children?.find { it is PsiBinaryExpression }?.resolveRealValue()
+}
+
+/**
+ * 是否是 Java lang 包下的基类枚举
+ */
+fun PsiClass.isJavaBaseEnum(): Boolean {
+    return qualifiedName == JAVA_ENUM
 }

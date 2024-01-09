@@ -21,6 +21,7 @@ object LangDataTypeMocker {
         return when (dataType) {
             LangDataType.BYTE,
             LangDataType.INT,
+            LangDataType.TIMESTAMP,
             LangDataType.LONG -> ApiParamExample(1)
             LangDataType.BOOL -> ApiParamExample(false)
             LangDataType.FLOAT -> ApiParamExample(0.5)
@@ -29,6 +30,7 @@ object LangDataTypeMocker {
             LangDataType.OBJECT -> ApiParamExample(JsonObject())
             LangDataType.ARRAY_INT,
             LangDataType.ARRAY_BYTE,
+            LangDataType.ARRAY_TIMESTAMP,
             LangDataType.ARRAY_LONG -> ApiParamExample(JsonArray().apply { add(1) })
             LangDataType.ARRAY_STRING -> ApiParamExample(JsonArray().apply { add("dagp") })
             LangDataType.ARRAY_BOOL -> ApiParamExample(JsonArray().apply { add(true) })

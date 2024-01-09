@@ -14,6 +14,7 @@ enum class LangDataType(
     INT("int", true),
     LONG("long", true),
     FLOAT("float", true),
+    TIMESTAMP("timestamp", true),
     ARRAY("array", true),
     OBJECT("object", false),
     FILE("file",false),
@@ -23,6 +24,7 @@ enum class LangDataType(
     ARRAY_INT("array<int>", true),
     ARRAY_LONG("array<long>", true),
     ARRAY_FLOAT("array<float>", true),
+    ARRAY_TIMESTAMP("array<timestamp>", true),
     ARRAY_OBJECT("array<object>", false),
 
 }

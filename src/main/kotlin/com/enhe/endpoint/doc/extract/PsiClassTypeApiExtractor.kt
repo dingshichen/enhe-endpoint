@@ -5,7 +5,6 @@
 package com.enhe.endpoint.doc.extract
 
 import com.enhe.endpoint.consts.JSON_IGNORE
-import com.enhe.endpoint.consts.SERIAL_UID
 import com.enhe.endpoint.consts.SK_API_PROP
 import com.enhe.endpoint.consts.TRANSIENT
 import com.enhe.endpoint.doc.LangDataTypeConvertor
@@ -16,19 +15,18 @@ import com.enhe.endpoint.doc.model.FieldNode
 import com.enhe.endpoint.extend.*
 import com.enhe.endpoint.util.ApiStringUtil
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiClassType
-import com.intellij.psi.PsiField
-import com.intellij.psi.PsiType
+import com.intellij.psi.*
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiUtil
 
 /**
  * TODO
  * 1. 解析泛型时，需要更准确的获取到泛型里的内容，有可能是多个泛型
- * 2. 解析 @ApiModelProperty 注解时，需要判断 hidden 属性来过滤
- * 3. 需要解析 @Setter(onMethod_ = {@ApiModelProperty(dataType = Base.CLASS_NAME, required = true)}) @Setter(onMethod_ = {@ApiModelProperty(dataType = Base.LIST_CLASS_NAME, required = true)})
+ * 2. 需要解析 @Setter(onMethod_ = {@ApiModelProperty(dataType = Base.CLASS_NAME, required = true)}) @Setter(onMethod_ = {@ApiModelProperty(dataType = Base.LIST_CLASS_NAME, required = true)})
  * 4. 要包装 Result 通用返回值结构
  * 5. 入参是集合，怎么描述参数？
+ * 6. 解析 com.enhe.core.tool.tuple.Pair
+ * 7. 解析 get 方法
  */
 object PsiClassTypeApiExtractor {
 
@@ -44,6 +42,7 @@ object PsiClassTypeApiExtractor {
         paramWhere: ApiParamWhere
     ): List<ApiParam> {
         val params = mutableListOf<ApiParam>()
+        val dataTypeConvertor = LangDataTypeConvertor.instance(project)
         // 顺序查询父类属性，如果子类有相同名称的属性，把父类的属性给隐藏
         psiClassType.superTypes.filterIsInstance<PsiClassType>()
             .filter {
@@ -52,11 +51,14 @@ object PsiClassTypeApiExtractor {
                 params += extractApiParam(project, it, parentField, childrenFields, fieldNode, paramWhere)
             }
         val psiClass = PsiUtil.resolveClassInClassTypeOnly(psiClassType) ?: return params
+        if (psiClass.isJavaBaseEnum()) {
+            // 如果发现解析的类是 Java 的枚举基类，则跳过解析
+            return params
+        }
         val generics = getGenericsType(psiClass, psiClassType)
         val fields = childrenFields ?: psiClass.fields
         fields.forEach {
             if (fieldIgnore(it)) {
-                // 序列化 ID || 忽略序列化
                 return@forEach
             }
             var fieldType = it.type
@@ -70,29 +72,29 @@ object PsiClassTypeApiExtractor {
                 fieldType = pt
             }
             val fieldName = it.getFieldSerialName()
-            val dataType = project.getService(LangDataTypeConvertor::class.java).run {
-                convert(fieldType.presentableText)
-            }
-            val childNode = newFiledNode(fieldType)
+            val propertyAn = it.getAnnotation(SK_API_PROP)
+            // 解析定义的数据类型
+            val decFieldType = resolveDeclaredType(project, fieldType, propertyAn)
+            val childNode = newFiledNode(decFieldType.psiType)
             if (childNode.existFromDownToUp(fieldNode)) {
                 // 防止无限递归
                 return@forEach
             }
+            val dataType = dataTypeConvertor.convert(if (decFieldType.decArray) "List<${decFieldType.psiType.presentableText}" else decFieldType.psiType.presentableText)
             childNode.parentNode = fieldNode
             fieldNode += childNode
-            val propertyAn = it.getAnnotation(SK_API_PROP)
             params += ApiParam(
                 name = fieldName,
-                type = dataType,
+                type = dataTypeConvertor.convert(decFieldType.psiType.presentableText),
                 where = paramWhere,
                 required = propertyAn.findRequiredAttributeRealValue(),
-                description = propertyAn?.findAttributeRealValue("notes"),
+                description = propertyAn?.run { findValueAttributeRealValue() + findAttributeRealValue("notes").orEmpty() },
                 example = LangDataTypeMocker.generateValue(dataType),
                 parentId = parentField?.name.orEmpty(),
                 children = getChildren(
                     project = project,
                     psiField = it,
-                    fieldType = fieldType,
+                    fieldType = decFieldType.psiType,
                     generics = generics,
                     parentNode = childNode,
                     paramWhere = paramWhere
@@ -106,8 +108,15 @@ object PsiClassTypeApiExtractor {
      * 属性是否需要忽略
      */
     private fun fieldIgnore(field: PsiField): Boolean {
-        return field.name == SERIAL_UID || field.type.isJavaLogType() || field.hasAnnotation(JSON_IGNORE)
-                || field.hasAnnotation(TRANSIENT) || field.getAnnotation(SK_API_PROP)?.findAttributeRealValue("hidden") == "true"
+        return field.type.isJavaLogType() || field.hasAnnotation(JSON_IGNORE)
+                || field.hasAnnotation(TRANSIENT) || field.getAnnotation(SK_API_PROP)?.findAttributeRealValue("hidden") == "true" || field.hasModifierProperty("static")
+    }
+
+    /**
+     * 枚举属性是否需要忽略
+     */
+    private fun enumFieldIgnore(psiClass: PsiClass, field: PsiField): Boolean {
+        return psiClass.isEnum && !field.hasAnnotation(SK_API_PROP) && (field.name == "name" || field.name == "ordinal")
     }
 
     /**
@@ -125,6 +134,30 @@ object PsiClassTypeApiExtractor {
             }
         }
         return generics
+    }
+
+    /**
+     * 解析定义的数据类型
+     */
+    private fun resolveDeclaredType(project: Project, fieldType: PsiType, propertyAn: PsiAnnotation?): DecPsiType {
+        val aliasDataType = propertyAn?.findDeclaredAttributeValue("dataType")
+        var decArray = false
+        val decFieldType = if (aliasDataType == null) {
+            fieldType
+        } else {
+            val dataTypeStr = aliasDataType.resolveRealValue()
+            if (dataTypeStr.isNullOrBlank()) {
+                fieldType
+            } else {
+                val isArrayType = dataTypeStr.endsWith("[]")
+                val objectTypeStr = if (isArrayType) {
+                    decArray = true
+                    dataTypeStr.substring(0, dataTypeStr.length - 2)
+                } else dataTypeStr
+                PsiType.getTypeByName(objectTypeStr, project, GlobalSearchScope.allScope(project))
+            }
+        }
+        return DecPsiType(decFieldType, decArray)
     }
 
     /**
@@ -187,4 +220,9 @@ object PsiClassTypeApiExtractor {
         val type = if (ApiStringUtil.isJavaGenericCollection(this)) ApiStringUtil.subJavaGeneric(this) else this
         FieldNode(type)
     }
+
+    /**
+     * 解析的属性类型
+     */
+    data class DecPsiType(val psiType: PsiType, val decArray: Boolean)
 }

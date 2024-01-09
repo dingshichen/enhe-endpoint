@@ -9,7 +9,8 @@ import com.enhe.endpoint.util.ApiStringUtil
 
 class JavaDataTypeConvertor : LangDataTypeConvertor {
 
-    private val stringList = arrayOf("String", "Date", "DateTime", "LocalDate", "LocalDateTime")
+    private val stringList = arrayOf("String")
+    private val timeList = arrayOf("Date", "DateTime", "LocalDate", "LocalDateTime")
     private val boolList = arrayOf("Boolean", "boolean")
     private val byteList = arrayOf("byte", "Byte")
     private val intList = arrayOf("Integer", "int", "short", "Short")
@@ -19,6 +20,7 @@ class JavaDataTypeConvertor : LangDataTypeConvertor {
 
     override fun convert(original: String): LangDataType = when (original) {
         in stringList -> LangDataType.STRING
+        in timeList -> LangDataType.TIMESTAMP
         in boolList -> LangDataType.BOOL
         in byteList -> LangDataType.BYTE
         in intList -> LangDataType.INT
@@ -34,6 +36,7 @@ class JavaDataTypeConvertor : LangDataTypeConvertor {
                 LangDataType.INT -> LangDataType.ARRAY_INT
                 LangDataType.LONG -> LangDataType.ARRAY_LONG
                 LangDataType.FLOAT -> LangDataType.ARRAY_FLOAT
+                LangDataType.TIMESTAMP -> LangDataType.ARRAY_TIMESTAMP
                 else -> LangDataType.ARRAY_OBJECT
             }
         } else LangDataType.OBJECT

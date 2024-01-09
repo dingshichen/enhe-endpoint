@@ -96,6 +96,7 @@ fun getExample(param: ApiParam): ApiParamExample {
         LangDataType.LONG,
         LangDataType.FLOAT,
         LangDataType.BOOL,
+        LangDataType.TIMESTAMP,
         LangDataType.ARRAY,
         LangDataType.ARRAY_STRING,
         LangDataType.ARRAY_BOOL,
@@ -103,6 +104,7 @@ fun getExample(param: ApiParam): ApiParamExample {
         LangDataType.ARRAY_INT,
         LangDataType.ARRAY_LONG,
         LangDataType.ARRAY_FLOAT,
+        LangDataType.ARRAY_TIMESTAMP,
         LangDataType.FILE -> param.example
         LangDataType.OBJECT -> {
             val json = ofJsonObject {
