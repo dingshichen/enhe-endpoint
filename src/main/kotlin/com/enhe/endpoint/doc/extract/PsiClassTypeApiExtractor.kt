@@ -5,6 +5,7 @@
 package com.enhe.endpoint.doc.extract
 
 import com.enhe.endpoint.consts.JSON_IGNORE
+import com.enhe.endpoint.consts.LB_SETTER
 import com.enhe.endpoint.consts.SK_API_PROP
 import com.enhe.endpoint.consts.TRANSIENT
 import com.enhe.endpoint.doc.LangDataTypeConvertor
@@ -18,6 +19,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.*
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiUtil
+import java.util.regex.Pattern
 
 /**
  * TODO
@@ -73,8 +75,9 @@ object PsiClassTypeApiExtractor {
             }
             val fieldName = it.getFieldSerialName()
             val propertyAn = it.getAnnotation(SK_API_PROP)
+            val setAn = it.getAnnotation(LB_SETTER)
             // 解析定义的数据类型
-            val decFieldType = resolveDeclaredType(project, fieldType, propertyAn)
+            val decFieldType = resolveDeclaredType(project, fieldType, propertyAn, setAn, paramWhere)
             val childNode = newFiledNode(decFieldType.psiType)
             if (childNode.existFromDownToUp(fieldNode)) {
                 // 防止无限递归
@@ -104,19 +107,25 @@ object PsiClassTypeApiExtractor {
         return params
     }
 
+    private fun resolveMatchClassName(dataTypeBySet: PsiReferenceExpression): String? {
+        return dataTypeBySet.resolve()?.text?.let {
+            // 使用正则表达式匹配类名
+            val pattern = Pattern.compile("\"(\\S+?)\"")
+            val matcher = pattern.matcher(it)
+            if (matcher.find()) {
+                matcher.group(1) // 获取匹配的类名
+            } else {
+                null
+            }
+        }
+    }
+
     /**
      * 属性是否需要忽略
      */
     private fun fieldIgnore(field: PsiField): Boolean {
         return field.type.isJavaLogType() || field.hasAnnotation(JSON_IGNORE)
                 || field.hasAnnotation(TRANSIENT) || field.getAnnotation(SK_API_PROP)?.findAttributeRealValue("hidden") == "true" || field.hasModifierProperty("static")
-    }
-
-    /**
-     * 枚举属性是否需要忽略
-     */
-    private fun enumFieldIgnore(psiClass: PsiClass, field: PsiField): Boolean {
-        return psiClass.isEnum && !field.hasAnnotation(SK_API_PROP) && (field.name == "name" || field.name == "ordinal")
     }
 
     /**
@@ -139,23 +148,40 @@ object PsiClassTypeApiExtractor {
     /**
      * 解析定义的数据类型
      */
-    private fun resolveDeclaredType(project: Project, fieldType: PsiType, propertyAn: PsiAnnotation?): DecPsiType {
-        val aliasDataType = propertyAn?.findDeclaredAttributeValue("dataType")
+    private fun resolveDeclaredType(
+        project: Project,
+        fieldType: PsiType,
+        propertyAn: PsiAnnotation?,
+        setAn: PsiAnnotation?,
+        paramWhere: ApiParamWhere
+    ): DecPsiType {
+        var dataTypeStr: String? = null
         var decArray = false
-        val decFieldType = if (aliasDataType == null) {
+        if (paramWhere == ApiParamWhere.RETURN) {
+            // 如果是返回值，需要解析一下 @ApiProperty
+            val aliasDataType = propertyAn?.findDeclaredAttributeValue("dataType")
+            dataTypeStr = aliasDataType?.resolveRealValue()
+        } else {
+            // 如果是入参，则需要解析一下 @Setter
+            val onMethodAnnotation = setAn?.findDeclaredAttributeValue("onMethod_")?.children?.find { an -> an is PsiAnnotation }
+            if (onMethodAnnotation != null) {
+                val dataTypeBySet = (onMethodAnnotation as PsiAnnotation).findDeclaredAttributeValue("dataType")
+                if (dataTypeBySet != null) {
+                    if (dataTypeBySet.resolveRealValue().isNullOrBlank()) {
+                        dataTypeStr = resolveMatchClassName(dataTypeBySet as PsiReferenceExpression)
+                    }
+                }
+            }
+        }
+        val decFieldType = if (dataTypeStr.isNullOrBlank()) {
             fieldType
         } else {
-            val dataTypeStr = aliasDataType.resolveRealValue()
-            if (dataTypeStr.isNullOrBlank()) {
-                fieldType
-            } else {
-                val isArrayType = dataTypeStr.endsWith("[]")
-                val objectTypeStr = if (isArrayType) {
-                    decArray = true
-                    dataTypeStr.substring(0, dataTypeStr.length - 2)
-                } else dataTypeStr
-                PsiType.getTypeByName(objectTypeStr, project, GlobalSearchScope.allScope(project))
-            }
+            val isArrayType = dataTypeStr.endsWith("[]")
+            val objectTypeStr = if (isArrayType) {
+                decArray = true
+                dataTypeStr.substring(0, dataTypeStr.length - 2)
+            } else dataTypeStr
+            PsiType.getTypeByName(objectTypeStr, project, GlobalSearchScope.allScope(project))
         }
         return DecPsiType(decFieldType, decArray)
     }

@@ -8,4 +8,5 @@ enum class ApiParamWhere{
     PATH,
     BODY,
     URL,
+    RETURN,
 }

@@ -201,7 +201,7 @@ object PsiMethodApiExtractor {
             PsiClassTypeApiExtractor.extractApiParam(
                 project = project,
                 psiClassType = it as PsiClassType,
-                paramWhere = ApiParamWhere.BODY
+                paramWhere = ApiParamWhere.RETURN
             )
         } ?: emptyList()
     }
