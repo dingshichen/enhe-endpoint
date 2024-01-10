@@ -127,9 +127,9 @@ object PsiMethodApiExtractor {
     }
 
     /**
-     * 提取请求参数，请求参数可能在 url 中、body 里、表单里
+     * 从 PATH 里提取参数
      */
-    fun extractApiRequestParams(project: Project, psiMethod: PsiMethod): List<ApiParam> {
+    fun extractApiPathParams(project: Project, psiMethod: PsiMethod): List<ApiParam>? {
         val dataTypeConvertor = project.getService(LangDataTypeConvertor::class.java)
         val method = psiMethod.findDeepestSuperMethod() ?: psiMethod
         val apiParams = mutableListOf<ApiParam>()
@@ -147,7 +147,74 @@ object PsiMethodApiExtractor {
                         description = it.getAnnotation(SK_API_PROP)?.findValueAttributeRealValue(),
                         example = LangDataTypeMocker.generateValue(dataType),
                     )
-                } else if (it.hasAnnotation(REQUEST_BODY)) {
+                }
+            }
+        return if (apiParams.isEmpty()) null else apiParams
+    }
+
+    /**
+     * 从 url 里提取参数
+     */
+    fun extractApiUrlParams(project: Project, psiMethod: PsiMethod): List<ApiParam>? {
+        val dataTypeConvertor = project.getService(LangDataTypeConvertor::class.java)
+        val method = psiMethod.findDeepestSuperMethod() ?: psiMethod
+        val apiParams = mutableListOf<ApiParam>()
+        method.parameterList.parameters
+            .filter { it.type.canonicalText !in listOf(HTTP_SER_REQ, HTTP_SER_RES) }
+            .forEach {
+                if (!it.hasAnnotation(PATH_VAR) && !it.hasAnnotation(REQUEST_BODY)) {
+                    if (it.hasAnnotation(MULTIPART_FILE)) {
+                        // 参数是上传的文件流
+                        val paramAn = it.getAnnotation(REQUEST_PARAM)
+                        apiParams += ApiParam(
+                            name = paramAn?.findValueAttributeRealValue() ?: "file",
+                            type = LangDataType.FILE,
+                            where = ApiParamWhere.URL,
+                            required = paramAn.findRequiredAttributeRealValue(),
+                            description = it.getAnnotation(SK_API_PROP)?.findValueAttributeRealValue(),
+                            example = LangDataTypeMocker.generateValue(LangDataType.FILE),
+                        )
+                    } else {
+                        // 分两种情况。一种是标识了 @ApiParam 的简单类型，一种是没有添加标识但是一个自定义的对象类型
+                        val paramAn = it.getAnnotation(REQUEST_PARAM)
+                        val dataType = dataTypeConvertor.convert(it.type.canonicalText)
+                        if (paramAn == null) {
+                            // 判断是一个自定义的对象类型，递归查询其属性的类型
+                            if (dataType == LangDataType.OBJECT && it.type is PsiClassType) {
+                                apiParams += PsiClassTypeApiExtractor.extractApiParam(
+                                    project = project,
+                                    psiClassType = it.type as PsiClassType,
+                                    paramWhere = ApiParamWhere.URL,
+                                )
+                            }
+                        } else {
+                            // TODO 需要排除掉 HttpRequest HttpResponse 这种直接注入的
+                            apiParams += ApiParam(
+                                name = paramAn.findValueAttributeRealValue(),
+                                type = dataType,
+                                where = ApiParamWhere.URL,
+                                required = paramAn.findRequiredAttributeRealValue(),
+                                description = it.getAnnotation(SK_API_PROP)?.findValueAttributeRealValue(),
+                                example = LangDataTypeMocker.generateValue(dataType),
+                            )
+                        }
+                    }
+                }
+            }
+        return if (apiParams.isEmpty()) null else apiParams
+    }
+
+    /**
+     * 从 body 里提取参数
+     */
+    fun extractApiBodyParams(project: Project, psiMethod: PsiMethod): List<ApiParam>? {
+        val dataTypeConvertor = project.getService(LangDataTypeConvertor::class.java)
+        val method = psiMethod.findDeepestSuperMethod() ?: psiMethod
+        val apiParams = mutableListOf<ApiParam>()
+        method.parameterList.parameters
+            .filter { it.type.canonicalText !in listOf(HTTP_SER_REQ, HTTP_SER_RES) }
+            .forEach {
+                if (it.hasAnnotation(REQUEST_BODY)) {
                     // 参数在 body 中，一定是一个集合带泛型的类型或者是一个自定义的类型
                     val dataType = dataTypeConvertor.convert(it.type.canonicalText)
                     // 判断是一个自定义的对象类型，递归查询其属性的类型
@@ -158,44 +225,9 @@ object PsiMethodApiExtractor {
                             paramWhere = ApiParamWhere.BODY,
                         )
                     }
-                } else if (it.hasAnnotation(MULTIPART_FILE)) {
-                    // 参数是上传的文件流
-                    val paramAn = it.getAnnotation(REQUEST_PARAM)
-                    apiParams += ApiParam(
-                        name = paramAn?.findValueAttributeRealValue() ?: "file",
-                        type = LangDataType.FILE,
-                        where = ApiParamWhere.URL,
-                        required = paramAn.findRequiredAttributeRealValue(),
-                        description = it.getAnnotation(SK_API_PROP)?.findValueAttributeRealValue(),
-                        example = LangDataTypeMocker.generateValue(LangDataType.FILE),
-                    )
-                } else {
-                    // 参数在 url 里
-                    // 分两种情况。一种是标识了 @ApiParam 的简单类型，一种是没有添加标识但是一个自定义的对象类型
-                    val paramAn = it.getAnnotation(REQUEST_PARAM)
-                    val dataType = dataTypeConvertor.convert(it.type.canonicalText)
-                    if (paramAn == null) {
-                        // 判断是一个自定义的对象类型，递归查询其属性的类型
-                        if (dataType == LangDataType.OBJECT && it.type is PsiClassType) {
-                            apiParams += PsiClassTypeApiExtractor.extractApiParam(
-                                project = project,
-                                psiClassType = it.type as PsiClassType,
-                                paramWhere = ApiParamWhere.URL,
-                            )
-                        }
-                    } else {
-                        apiParams += ApiParam(
-                            name = paramAn.findValueAttributeRealValue(),
-                            type = dataType,
-                            where = ApiParamWhere.URL,
-                            required = paramAn.findRequiredAttributeRealValue(),
-                            description = it.getAnnotation(SK_API_PROP)?.findValueAttributeRealValue(),
-                            example = LangDataTypeMocker.generateValue(dataType),
-                        )
-                    }
                 }
             }
-        return apiParams
+        return if (apiParams.isEmpty()) null else apiParams
     }
 
     /**

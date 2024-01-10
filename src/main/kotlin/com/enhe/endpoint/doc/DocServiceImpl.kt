@@ -29,7 +29,9 @@ class DocServiceImpl : DocService {
             deprecated = PsiMethodApiExtractor.extractApiDeprecated(psiClass, psiMethod),
             httpMethod = PsiMethodApiExtractor.extractApiHttpMethod(psiMethod),
             contentType = PsiMethodApiExtractor.extractApiContentType(psiMethod),
-            requestParams = PsiMethodApiExtractor.extractApiRequestParams(project, psiMethod),
+            pathParams = PsiMethodApiExtractor.extractApiPathParams(project, psiMethod),
+            urlParams = PsiMethodApiExtractor.extractApiUrlParams(project, psiMethod),
+            bodyParams = PsiMethodApiExtractor.extractApiBodyParams(project, psiMethod),
             responseParams = PsiMethodApiExtractor.extractApiResponseParams(project, psiMethod),
         )
     }

@@ -6,6 +6,7 @@ package com.enhe.endpoint.doc.model
 
 import com.enhe.endpoint.extend.*
 import com.google.gson.JsonObject
+import com.intellij.database.util.isNotNullOrEmpty
 import com.intellij.util.net.HTTPMethod
 
 /**
@@ -26,8 +27,12 @@ data class Api(
     val httpMethod: HTTPMethod,
     // HTTP ContentType
     val contentType: String,
-    // 请求入参
-    var requestParams: List<ApiParam>,
+    // 请求 path 参数
+    var pathParams: List<ApiParam>? = null,
+    // 请求 url 参数
+    var urlParams: List<ApiParam>? = null,
+    // 请求 body 参数
+    var bodyParams: List<ApiParam>? = null,
     // 响应返回值入参
     var responseParams: List<ApiParam>,
 ) {
@@ -36,18 +41,36 @@ data class Api(
         url.splitToSmallHump("/")
     }
 
-    val requestBody: String by lazy {
+    val pathText: String by lazy {
         buildString {
             append("|参数|类型|必填|描述|\n|:-----|:-----|:-----|:-----|\n")
-            requestParams.forEach {
-                requestAppend("", it)
+            pathParams?.forEach {
+                bodyAppend("", it)
             }
         }
     }
 
-    val requestExample: String by lazy {
+    val urlText: String by lazy {
+        buildString {
+            append("|参数|类型|必填|描述|\n|:-----|:-----|:-----|:-----|\n")
+            urlParams?.forEach {
+                bodyAppend("", it)
+            }
+        }
+    }
+
+    val bodyText: String by lazy {
+        buildString {
+            append("|参数|类型|必填|描述|\n|:-----|:-----|:-----|:-----|\n")
+            bodyParams?.forEach {
+                bodyAppend("", it)
+            }
+        }
+    }
+
+    val bodyExample: String by lazy {
         buildJsonString {
-            requestParams.forEach {
+            bodyParams?.forEach {
                 putParamExample(it)
             }
         }
@@ -71,15 +94,20 @@ data class Api(
     }
 
     val markdownText: String by lazy {
-        "**$name**\n\n" +
-                "**URL:** `$url`\n\n" +
-                "**Type:** `${httpMethod.name}`\n\n" +
-                "**Content-Type:** `$contentType`\n\n" +
-                "**Description:** $description\n\n" +
-                "**Body-Parameters:**\n\n$requestBody\n\n" +
-                "**Request-Example:**\n```json\n$requestExample\n```\n\n" +
-                "**Response-Fields:**\n\n$responseBody\n\n" +
-                "**Response-Example:**\n```json\n$responseExample\n```\n\n"
+        var text = "## $folder\n\n**$name**\n\n**URL:** `$url`\n\n**Type:** `${httpMethod.name}`\n\n**Content-Type:** `$contentType`\n\n"
+        if (description.isNotNullOrEmpty && description != name) {
+            text = "$text**Description:** $description\n\n"
+        }
+        pathParams?.let {
+            text = "$text**Path-Params:**\n\n$pathText\n\n"
+        }
+        urlParams?.let {
+            text = "$text**Url-Params:**\n\n$urlText\n\n"
+        }
+        bodyParams?.let {
+            text = "$text**Body-Params:**\n\n$bodyText\n\n**Body-Example:**\n```json\n$bodyExample\n```\n\n"
+        }
+        return@lazy "$text**Response-Params:**\n\n$responseBody\n\n**Response-Example:**\n```json\n$responseExample\n```\n\n"
     }
 
 }
@@ -127,10 +155,10 @@ fun getExample(param: ApiParam): ApiParamExample {
     }
 }
 
-private fun StringBuilder.requestAppend(prefix: String, param: ApiParam) {
+private fun StringBuilder.bodyAppend(prefix: String, param: ApiParam) {
     append("| $prefix${param.name} | ${param.type.value} | ${param.requiredText} | ${param.description ?: ""} | \n")
     param.children?.forEach {
-        requestAppend(if (prefix == "") "└─" else "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$prefix",
+        bodyAppend(if (prefix == "") "└─" else "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$prefix",
             it
         )
     }
