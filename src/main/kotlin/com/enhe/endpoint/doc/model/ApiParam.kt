@@ -20,8 +20,6 @@ data class ApiParam(
     var description: String? = null,
     // 示例值，示例值的类型随字段类型而变化
     var example: ApiParamExample,
-    // 父节点
-    var parentId: String? = null,
     // 子节点
     var children: List<ApiParam>? = null,
 ) {

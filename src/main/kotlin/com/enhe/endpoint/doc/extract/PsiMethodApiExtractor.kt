@@ -8,15 +8,20 @@ import com.enhe.endpoint.consts.*
 import com.enhe.endpoint.doc.LangDataTypeConvertor
 import com.enhe.endpoint.doc.mock.LangDataTypeMocker
 import com.enhe.endpoint.doc.model.ApiParam
+import com.enhe.endpoint.doc.model.ApiParamExample
 import com.enhe.endpoint.doc.model.ApiParamWhere
 import com.enhe.endpoint.doc.model.LangDataType
 import com.enhe.endpoint.extend.*
 import com.enhe.endpoint.util.PathStringUtil
 import com.enhe.endpoint.util.PathUtil
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiClassType
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiReferenceParameterList
+import com.intellij.psi.util.childrenOfType
 import com.intellij.util.net.HTTPMethod
 import org.apache.http.entity.ContentType
 
@@ -194,23 +199,118 @@ object PsiMethodApiExtractor {
     }
 
     /**
+     * 如果解析没有返回值，返回 {"code":200,"success":true,"msg":"操作成功"}
+     * 如果是 boolean 值，返回 {"code":200,"success":true,"data":{"status":true},"msg":"操作成功"}
+     * 如果是 list 值，返回 {"code":200,"success":true,"data":{"list":[]},"msg":"操作成功"}
+     * 如果是 int 值，返回 {"code":200,"success":true,"data":{"value":1660},"msg":"操作成功"}
+     * 如果是 Date 值 {"code":200,"success":true,"data":{"value":1704872266477},"msg":"操作成功"}
+     * 如果是 string 值，返回 {"code":200,"success":true,"data":{"message":"20240110145534265t111100"},"msg":"操作成功"}
+     * 如果是 分页或者其他自定义对象，返回 data json 格式
+     *
      * 提取返回值
      */
     fun extractApiResponseParams(project: Project, psiMethod: PsiMethod): List<ApiParam> {
-        // TODO 如果解析没有返回值，返回 {"code":200,"success":true,"msg":"操作成功"}
-        //      如果是 boolean 值，返回 {"code":200,"success":true,"data":{"status":true},"msg":"操作成功"}
-        //      如果是 list 值，返回 {"code":200,"success":true,"data":{"list":[]},"msg":"操作成功"}
-        //      如果是 int 值，返回 {"code":200,"success":true,"data":{"value":1660},"msg":"操作成功"}
-        //      如果是 Date 值 {"code":200,"success":true,"data":{"value":1704872266477},"msg":"操作成功"}
-        //      如果是 string 值，返回 {"code":200,"success":true,"data":{"message":"20240110145534265t111100"},"msg":"操作成功"}
-        //      如果是 分页或者其他自定义对象，返回 data json 格式
-
-        return psiMethod.returnTypeElement?.type?.let {
-            PsiClassTypeApiExtractor.extractApiParam(
-                project = project,
-                psiClassType = it as PsiClassType,
-                paramWhere = ApiParamWhere.RETURN
-            )
-        } ?: emptyList()
+        val returnApiParams = mutableListOf(
+            ApiParam(name = "code", type = LangDataType.INT, where = ApiParamWhere.RETURN, required = true, description = "服务状态码", example = ApiParamExample(200)),
+            ApiParam(name = "success", type = LangDataType.BOOL, where = ApiParamWhere.RETURN, required = true, description = "服务处理状态", example = ApiParamExample(true)),
+            ApiParam(name = "msg", type = LangDataType.INT, where = ApiParamWhere.RETURN, required = true, description = "服务状态信息", example = ApiParamExample("操作成功"))
+        )
+        val returnElement = psiMethod.returnTypeElement ?: return returnApiParams
+        val psiType = returnElement.type
+        // 集合类型的处理
+        if (psiType.isJavaGenericList()) {
+            return returnApiParams.apply {
+                val genericPsiType = returnElement.children.first()?.childrenOfType<PsiReferenceParameterList>()?.first()?.typeArguments?.first()
+                var listType: LangDataType = LangDataType.ARRAY
+                var listChildren: List<ApiParam>? = null
+                genericPsiType?.let {
+                    listType = LangDataTypeConvertor.instance(project).convert(psiType.presentableText)
+                    if (!it.isJavaBaseType() && !it.isJavaSimpleType()) {
+                        listChildren = PsiClassTypeApiExtractor.extractApiParam(project = project, psiClassType = it as PsiClassType, paramWhere = ApiParamWhere.URL)
+                    }
+                    // TODO 有可能有泛型里面是集合还有泛型
+                }
+                this += ApiParam(
+                    name = "data",
+                    type = LangDataType.OBJECT,
+                    where = ApiParamWhere.RETURN,
+                    required = true,
+                    description = "业务响应数据",
+                    example = ApiParamExample(JsonObject()),
+                    children = listOf(
+                        // type 要根据泛型里的类型去解析
+                        ApiParam(name = "list", type = listType, where = ApiParamWhere.RETURN, required = true, description = "业务响应数据列表", example = ApiParamExample(JsonArray()), children = listChildren),
+                    )
+                )
+            }
+        }
+        return when (psiType.canonicalText) {
+            JavaBaseType.BOOLEAN.qualifiedName -> returnApiParams.apply {
+                this += ApiParam(
+                    name = "data",
+                    type = LangDataType.OBJECT,
+                    where = ApiParamWhere.RETURN,
+                    required = true,
+                    description = "业务响应数据",
+                    example = ApiParamExample(JsonObject()),
+                    children = listOf(
+                        ApiParam(name = "status", type = LangDataType.BOOL, where = ApiParamWhere.RETURN, required = true, description = "操作状态", example = ApiParamExample(true))
+                    )
+                )
+            }
+            JavaBaseType.INT.qualifiedName -> returnApiParams.apply {
+                this += ApiParam(
+                    name = "data",
+                    type = LangDataType.OBJECT,
+                    where = ApiParamWhere.RETURN,
+                    required = true,
+                    description = "业务响应数据",
+                    example = ApiParamExample(JsonObject()),
+                    children = listOf(
+                        ApiParam(name = "value", type = LangDataType.INT, where = ApiParamWhere.RETURN, required = true, description = "值", example = ApiParamExample(1024))
+                    )
+                )
+            }
+            JavaSimpleType.STRING.qualifiedName -> returnApiParams.apply {
+                this += ApiParam(
+                    name = "data",
+                    type = LangDataType.OBJECT,
+                    where = ApiParamWhere.RETURN,
+                    required = true,
+                    description = "业务响应数据",
+                    example = ApiParamExample(JsonObject()),
+                    children = listOf(
+                        ApiParam(name = "message", type = LangDataType.STRING, where = ApiParamWhere.RETURN, required = true, description = "文本内容", example = ApiParamExample("恩核"))
+                    )
+                )
+            }
+            JavaSimpleType.DATE.qualifiedName,
+            JavaSimpleType.LOCAL_DATE.qualifiedName,
+            JavaSimpleType.LOCAL_DATE_TIME.qualifiedName,
+            JavaSimpleType.LOCAL_TIME.qualifiedName -> returnApiParams.apply {
+                this += ApiParam(
+                    name = "data",
+                    type = LangDataType.OBJECT,
+                    where = ApiParamWhere.RETURN,
+                    required = true,
+                    description = "业务响应数据",
+                    example = ApiParamExample(JsonObject()),
+                    children = listOf(
+                        ApiParam(name = "value", type = LangDataType.TIMESTAMP, where = ApiParamWhere.RETURN, required = true, description = "时间戳", example = ApiParamExample(System.currentTimeMillis()))
+                    )
+                )
+            }
+            else -> returnApiParams.apply {
+                this += ApiParam(
+                    name = "data",
+                    type = LangDataType.OBJECT,
+                    where = ApiParamWhere.RETURN,
+                    required = true,
+                    description = "业务响应数据",
+                    example = ApiParamExample(JsonObject()),
+                    children = PsiClassTypeApiExtractor.extractApiParam(project = project, psiClassType = psiType as PsiClassType, paramWhere = ApiParamWhere.URL)
+                )
+            }
+        }
     }
 }

@@ -91,7 +91,6 @@ object PsiClassTypeApiExtractor {
                 required = resolveRequired(propertyAn, setAn, paramWhere),
                 description = propertyAn?.run { findValueAttributeRealValue() + findAttributeRealValue("notes").orEmpty() },
                 example = LangDataTypeMocker.generateValue(dataType),
-                parentId = parentField?.name.orEmpty(),
                 children = getChildren(
                     project = project,
                     psiField = it,

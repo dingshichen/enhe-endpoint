@@ -38,7 +38,7 @@ data class Api(
 
     val requestBody: String by lazy {
         buildString {
-            append("|参数名|类型|是否必填|描述|\n|:-----|:-----|:-----|:-----|\n")
+            append("|参数|类型|必填|描述|\n|:-----|:-----|:-----|:-----|\n")
             requestParams.forEach {
                 requestAppend("", it)
             }
@@ -55,7 +55,7 @@ data class Api(
 
     val responseBody: String by lazy {
         buildString {
-            append("|参数名|类型|描述|\n|:-----|:-----|:-----|\n")
+            append("|参数|类型|描述|\n|:-----|:-----|:-----|\n")
             responseParams.forEach {
                 responseAppend("", it)
             }
@@ -76,10 +76,10 @@ data class Api(
                 "**Type:** `${httpMethod.name}`\n\n" +
                 "**Content-Type:** `$contentType`\n\n" +
                 "**Description:** $description\n\n" +
-                "**Body-parameters:**\n\n$requestBody\n\n" +
-                "**Request-example:**\n```json\n$requestExample\n```\n\n" +
-                "**Response-fields:**\n\n$responseBody\n\n" +
-                "**Response-example:**\n```json\n$responseExample\n```\n\n"
+                "**Body-Parameters:**\n\n$requestBody\n\n" +
+                "**Request-Example:**\n```json\n$requestExample\n```\n\n" +
+                "**Response-Fields:**\n\n$responseBody\n\n" +
+                "**Response-Example:**\n```json\n$responseExample\n```\n\n"
     }
 
 }
