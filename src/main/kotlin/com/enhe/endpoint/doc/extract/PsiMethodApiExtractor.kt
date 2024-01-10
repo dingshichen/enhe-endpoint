@@ -197,6 +197,14 @@ object PsiMethodApiExtractor {
      * 提取返回值
      */
     fun extractApiResponseParams(project: Project, psiMethod: PsiMethod): List<ApiParam> {
+        // TODO 如果解析没有返回值，返回 {"code":200,"success":true,"msg":"操作成功"}
+        //      如果是 boolean 值，返回 {"code":200,"success":true,"data":{"status":true},"msg":"操作成功"}
+        //      如果是 list 值，返回 {"code":200,"success":true,"data":{"list":[]},"msg":"操作成功"}
+        //      如果是 int 值，返回 {"code":200,"success":true,"data":{"value":1660},"msg":"操作成功"}
+        //      如果是 Date 值 {"code":200,"success":true,"data":{"value":1704872266477},"msg":"操作成功"}
+        //      如果是 string 值，返回 {"code":200,"success":true,"data":{"message":"20240110145534265t111100"},"msg":"操作成功"}
+        //      如果是 分页或者其他自定义对象，返回 data json 格式
+
         return psiMethod.returnTypeElement?.type?.let {
             PsiClassTypeApiExtractor.extractApiParam(
                 project = project,

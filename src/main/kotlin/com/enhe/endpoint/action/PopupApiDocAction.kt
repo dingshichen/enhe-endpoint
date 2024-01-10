@@ -5,6 +5,7 @@
 package com.enhe.endpoint.action
 
 import com.enhe.endpoint.doc.DocService
+import com.enhe.endpoint.ui.ApiDocPreviewForm
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -23,7 +24,7 @@ class PopupApiDocAction : AnAction() {
                     // 解析、生成文档
                     it.containingClass?.let { psiClass ->
                         val api = DocService.instance(project).buildApi(project, psiClass, it)
-                        println(api)
+                        ApiDocPreviewForm.getInstance(project, it.containingFile, api).popup()
                     }
                 }
                 else -> null
