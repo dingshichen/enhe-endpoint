@@ -23,12 +23,10 @@ import java.util.regex.Pattern
 
 /**
  * TODO
- * 1. 解析泛型时，需要更准确的获取到泛型里的内容，有可能是多个泛型
- * 2. 需要解析 @Setter(onMethod_ = {@ApiModelProperty(dataType = Base.CLASS_NAME, required = true)}) @Setter(onMethod_ = {@ApiModelProperty(dataType = Base.LIST_CLASS_NAME, required = true)})
- * 4. 要包装 Result 通用返回值结构
- * 5. 入参是集合，怎么描述参数？
- * 6. 解析 com.enhe.core.tool.tuple.Pair
- * 7. 解析 get 方法
+ * . 解析泛型时，需要更准确的获取到泛型里的内容，有可能是多个泛型，比如 com.enhe.core.tool.tuple.Pair
+ * . 要包装 Result 通用返回值结构
+ * . 入参是集合，怎么描述参数？
+ * . 解析 get 方法
  */
 object PsiClassTypeApiExtractor {
 
@@ -90,7 +88,7 @@ object PsiClassTypeApiExtractor {
                 name = fieldName,
                 type = dataTypeConvertor.convert(decFieldType.psiType.presentableText),
                 where = paramWhere,
-                required = propertyAn.findRequiredAttributeRealValue(),
+                required = resolveRequired(propertyAn, setAn, paramWhere),
                 description = propertyAn?.run { findValueAttributeRealValue() + findAttributeRealValue("notes").orEmpty() },
                 example = LangDataTypeMocker.generateValue(dataType),
                 parentId = parentField?.name.orEmpty(),
@@ -118,6 +116,13 @@ object PsiClassTypeApiExtractor {
                 null
             }
         }
+    }
+
+    private fun resolveRequired(propertyAn: PsiAnnotation?, setAn: PsiAnnotation?, paramWhere: ApiParamWhere): Boolean {
+        if (paramWhere == ApiParamWhere.RETURN && setAn != null) {
+            return setAn.findRequiredAttributeRealValue()
+        }
+        return propertyAn.findRequiredAttributeRealValue()
     }
 
     /**
