@@ -23,6 +23,8 @@ intellij {
     } else {
         localPath.set(appPath)
     }
+    updateSinceUntilBuild.set(false)
+    sameSinceUntilBuild.set(false)
     plugins.set(listOf("com.intellij.java", "com.intellij.database", "markdown"))
 }
 
