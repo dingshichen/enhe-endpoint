@@ -45,7 +45,7 @@
                 <children/>
               </grid>
               <grid id="f4474" binding="previewPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-                <constraints border-constraint="North"/>
+                <constraints border-constraint="Center"/>
                 <properties/>
                 <border type="none"/>
                 <children/>

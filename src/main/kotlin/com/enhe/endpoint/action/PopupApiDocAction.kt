@@ -4,8 +4,10 @@
 
 package com.enhe.endpoint.action
 
+import com.enhe.endpoint.consts.WINDOW_PANE
 import com.enhe.endpoint.doc.DocService
 import com.enhe.endpoint.ui.ApiDocPreviewForm
+import com.enhe.endpoint.window.tree.EndpointNode
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -25,6 +27,18 @@ class PopupApiDocAction : AnAction() {
                     it.containingClass?.let { psiClass ->
                         val api = DocService.instance(project).buildApi(project, psiClass, it)
                         ApiDocPreviewForm.getInstance(project, it.containingFile, api).popup()
+                    }
+                }
+                else -> null
+            }
+        }
+        e.getData(WINDOW_PANE)?.getSelected()?.let {
+            when (it) {
+                is EndpointNode -> {
+                    val psiMethod = it.getMethod()
+                    psiMethod.containingClass?.let { psiClass ->
+                        val api = DocService.instance(project).buildApi(project, psiClass, psiMethod)
+                        ApiDocPreviewForm.getInstance(project, psiMethod.containingFile, api).popup()
                     }
                 }
                 else -> null

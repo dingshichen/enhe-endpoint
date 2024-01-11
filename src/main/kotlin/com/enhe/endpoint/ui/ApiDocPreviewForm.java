@@ -168,7 +168,7 @@ public class ApiDocPreviewForm {
         Utils.setSmallerFontForChildren(toolbar);
 
         previewToolbarPanel.add(toolbar.getComponent(), BorderLayout.EAST);
-        docNameLabel.setText("Enhe Endpoint");
+        docNameLabel.setText("恩核星码");
     }
 
 
