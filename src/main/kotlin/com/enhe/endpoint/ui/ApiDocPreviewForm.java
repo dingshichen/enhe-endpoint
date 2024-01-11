@@ -226,7 +226,7 @@ public class ApiDocPreviewForm {
 
         DefaultActionGroup leftGroup = new DefaultActionGroup();
 
-        leftGroup.add(new ToggleAction("Preview", "Preview markdown", AllIcons.Actions.Preview) {
+        leftGroup.add(new ToggleAction("预览", "Preview markdown", AllIcons.Actions.Preview) {
 
             @Override
             public boolean isDumbAware() {
@@ -278,7 +278,7 @@ public class ApiDocPreviewForm {
 
     private void initPreviewRightToolbar() {
         DefaultActionGroup rightGroup = new DefaultActionGroup();
-        rightGroup.add(new AnAction("Export", "Export markdown", AllIcons.ToolbarDecorator.Export) {
+        rightGroup.add(new AnAction("导出", "Export markdown", AllIcons.ToolbarDecorator.Export) {
             @Override
             public void actionPerformed(AnActionEvent e) {
                 popup.cancel();
@@ -287,7 +287,7 @@ public class ApiDocPreviewForm {
             }
         });
 
-        rightGroup.add(new AnAction("Copy", "Copy to clipboard", AllIcons.Actions.Copy) {
+        rightGroup.add(new AnAction("复制", "Copy to clipboard", AllIcons.Actions.Copy) {
             @Override
             public void actionPerformed(AnActionEvent e) {
 
