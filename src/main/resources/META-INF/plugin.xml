@@ -65,12 +65,12 @@
         <group id="enhe.endpoint.window.toolbar.action">
             <action id="endpoint.window.toolbar.action.refresh"
                     class="com.enhe.endpoint.action.WindowRefreshAction"
-                    text="Refresh" description="Refresh" icon="AllIcons.Actions.Refresh"/>
+                    text="刷新" description="Refresh" icon="AllIcons.Actions.Refresh"/>
             <separator />
             <reference ref="SearchEverywhere" />
             <action id="endpoint.window.toolbar.action.pluginDoc"
                     class="com.enhe.endpoint.action.PluginDocAction"
-                    text="Document" description="Document" icon="AllIcons.Xml.Browsers.Chrome" />
+                    text="文档" description="Document" icon="AllIcons.Xml.Browsers.Chrome" />
         </group>
 
         <group id="enhe.endpoint.window.tree.popup.action" class="com.intellij.openapi.actionSystem.DefaultActionGroup"
@@ -85,23 +85,27 @@
             <add-to-group group-id="DatabaseViewPopupMenu" anchor="first"/>
         </action>
 
-        <action id="com.enhe.endpoint.action.CommentToSwaggerAction"
-                class="com.enhe.endpoint.action.CommentToSwaggerAction" text="Doc Comment to Swagger Annotation"
-                description="Convert comments to swagger annotations" icon="MyIcons.Logo">
+        <group id="enhe.endpoint.editor.group" popup="true" text="恩核星码" description="Enhe editor popup group" icon="MyIcons.Logo">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </group>
+
+        <action id="com.enhe.endpoint.action.CommentToSwaggerAction"
+                class="com.enhe.endpoint.action.CommentToSwaggerAction" text="注释转换成 Swagger 注解"
+                description="Convert comments to swagger annotations" icon="AllIcons.Actions.BuildLoadChanges">
+            <add-to-group group-id="enhe.endpoint.editor.group" anchor="first"/>
         </action>
 
         <action id="com.enhe.endpoint.action.CopyEndpointPathAction"
-                class="com.enhe.endpoint.action.CopyEndpointPathAction" text="Copy Endpoint Path"
+                class="com.enhe.endpoint.action.CopyEndpointPathAction" text="提取复制接口路径"
                 description="Copy endpoint path to clipboard" icon="AllIcons.Actions.Copy">
             <add-to-group group-id="enhe.endpoint.window.tree.popup.action" anchor="first"/>
-            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+            <add-to-group group-id="enhe.endpoint.editor.group" anchor="first"/>
         </action>
 
         <action id="com.enhe.endpoint.action.PopupApiDocAction"
-                class="com.enhe.endpoint.action.PopupApiDocAction" text="Show API Doc"
-                description="Popup API markdown document" icon="MyIcons.Logo">
-            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+                class="com.enhe.endpoint.action.PopupApiDocAction" text="显示 API 接口文档"
+                description="Popup API markdown document" icon="AllIcons.Actions.Preview">
+            <add-to-group group-id="enhe.endpoint.editor.group" anchor="first"/>
         </action>
     </actions>
 </idea-plugin>

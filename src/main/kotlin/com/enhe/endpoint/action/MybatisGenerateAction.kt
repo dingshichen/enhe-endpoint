@@ -35,7 +35,6 @@ import org.jetbrains.jps.model.java.JavaSourceRootType
  */
 class MybatisGenerateAction : AnAction() {
 
-    @Suppress("removal")
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
         val table = e.getData(LangDataKeys.PSI_ELEMENT) ?: return
