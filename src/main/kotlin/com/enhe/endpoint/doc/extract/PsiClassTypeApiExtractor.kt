@@ -21,13 +21,6 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiUtil
 import java.util.regex.Pattern
 
-/**
- * TODO
- * . 解析泛型时，需要更准确的获取到泛型里的内容，有可能是多个泛型，比如 com.enhe.core.tool.tuple.Pair
- * . 要包装 Result 通用返回值结构
- * . 入参是集合，怎么描述参数？
- * . 解析 get 方法
- */
 object PsiClassTypeApiExtractor {
 
     /**
