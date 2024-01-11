@@ -11,4 +11,4 @@ import com.intellij.openapi.project.Project
 /**
  * 获取模块
  */
-fun Project.getModules(): Array<Module> = this.getService(ModuleManager::class.java).modules
+fun Project.getModules(): Array<Module> = ModuleManager.getInstance(this).modules

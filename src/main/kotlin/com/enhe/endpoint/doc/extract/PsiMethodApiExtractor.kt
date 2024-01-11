@@ -277,6 +277,7 @@ object PsiMethodApiExtractor {
             }
         }
         return when (psiType.canonicalText) {
+            JavaBaseType.BOOLEAN.baseName,
             JavaBaseType.BOOLEAN.qualifiedName -> returnApiParams.apply {
                 this += ApiParam(
                     name = "data",
@@ -290,6 +291,13 @@ object PsiMethodApiExtractor {
                     )
                 )
             }
+            JavaBaseType.BYTE.baseName,
+            JavaBaseType.BYTE.qualifiedName,
+            JavaBaseType.SHORT.baseName,
+            JavaBaseType.SHORT.qualifiedName,
+            JavaBaseType.LONG.baseName,
+            JavaBaseType.LONG.qualifiedName,
+            JavaBaseType.INT.baseName,
             JavaBaseType.INT.qualifiedName -> returnApiParams.apply {
                 this += ApiParam(
                     name = "data",
@@ -333,15 +341,17 @@ object PsiMethodApiExtractor {
                 )
             }
             else -> returnApiParams.apply {
-                this += ApiParam(
-                    name = "data",
-                    type = LangDataType.OBJECT,
-                    where = ApiParamWhere.RETURN,
-                    required = true,
-                    description = "业务响应数据",
-                    example = ApiParamExample(JsonObject()),
-                    children = PsiClassTypeApiExtractor.extractApiParam(project = project, psiClassType = psiType as PsiClassType, paramWhere = ApiParamWhere.URL)
-                )
+                if (psiType is PsiClassType) {
+                    this += ApiParam(
+                        name = "data",
+                        type = LangDataType.OBJECT,
+                        where = ApiParamWhere.RETURN,
+                        required = true,
+                        description = "业务响应数据",
+                        example = ApiParamExample(JsonObject()),
+                        children = PsiClassTypeApiExtractor.extractApiParam(project = project, psiClassType = psiType, paramWhere = ApiParamWhere.URL)
+                    )
+                }
             }
         }
     }
