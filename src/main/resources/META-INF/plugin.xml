@@ -105,6 +105,7 @@
         <action id="com.enhe.endpoint.action.PopupApiDocAction"
                 class="com.enhe.endpoint.action.PopupApiDocAction" text="显示 API 接口文档"
                 description="Popup API markdown document" icon="AllIcons.Actions.Preview">
+            <add-to-group group-id="enhe.endpoint.window.tree.popup.action" anchor="first"/>
             <add-to-group group-id="enhe.endpoint.editor.group" anchor="first"/>
         </action>
     </actions>
