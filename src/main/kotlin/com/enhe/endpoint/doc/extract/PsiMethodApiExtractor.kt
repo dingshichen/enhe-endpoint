@@ -21,6 +21,7 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiClassType
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiReferenceParameterList
+import com.intellij.psi.impl.source.PsiClassReferenceType
 import com.intellij.psi.util.childrenOfType
 import com.intellij.util.net.HTTPMethod
 import org.apache.http.entity.ContentType
@@ -215,13 +216,37 @@ object PsiMethodApiExtractor {
             .filter { it.type.canonicalText !in listOf(HTTP_SER_REQ, HTTP_SER_RES) }
             .forEach {
                 if (it.hasAnnotation(REQUEST_BODY)) {
+                    val psiType = it.type
                     // 参数在 body 中，一定是一个集合带泛型的类型或者是一个自定义的类型
-                    val dataType = dataTypeConvertor.convert(it.type.canonicalText)
-                    // 判断是一个自定义的对象类型，递归查询其属性的类型
-                    if (dataType == LangDataType.OBJECT && it.type is PsiClassType) {
+                    val dataType = dataTypeConvertor.convert(psiType.presentableText)
+                    if (psiType.isJavaGenericList() && psiType is PsiClassReferenceType) {
+                        val genericType = psiType.parameters.first()
+                        val genericDataType = dataTypeConvertor.convert(genericType.presentableText)
+                        if (genericDataType == LangDataType.OBJECT && genericType is PsiClassType) {
+                            apiParams += ApiParam(
+                                name = "[]",
+                                type = LangDataType.ARRAY_OBJECT,
+                                where = ApiParamWhere.BODY,
+                                required = true,
+                                description = "数组BODY",
+                                example = LangDataTypeMocker.generateValue(LangDataType.ARRAY_OBJECT),
+                                children = PsiClassTypeApiExtractor.extractApiParam(project = project, psiClassType = genericType, paramWhere = ApiParamWhere.BODY)
+                            )
+                        } else {
+                            apiParams += ApiParam(
+                                name = "[]",
+                                type = genericDataType,
+                                where = ApiParamWhere.BODY,
+                                required = true,
+                                description = "数组BODY",
+                                example = LangDataTypeMocker.generateValue(LangDataType.ARRAY),
+                            )
+                        }
+                    } else if (dataType == LangDataType.OBJECT && psiType is PsiClassType) {
+                        // 判断是一个自定义的对象类型，递归查询其属性的类型
                         apiParams += PsiClassTypeApiExtractor.extractApiParam(
                             project = project,
-                            psiClassType = it.type as PsiClassType,
+                            psiClassType = psiType,
                             paramWhere = ApiParamWhere.BODY,
                         )
                     }

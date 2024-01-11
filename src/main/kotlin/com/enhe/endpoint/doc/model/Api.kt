@@ -5,6 +5,7 @@
 package com.enhe.endpoint.doc.model
 
 import com.enhe.endpoint.extend.*
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.intellij.database.util.isNotNullOrEmpty
 import com.intellij.util.net.HTTPMethod
@@ -69,9 +70,17 @@ data class Api(
     }
 
     val bodyExample: String by lazy {
-        buildJsonString {
-            bodyParams?.forEach {
-                putParamExample(it)
+        if (bodyParams?.first()?.name == "[]") {
+            val array = JsonArray()
+            bodyParams?.first()?.children?.forEach {
+                array.add(ofJsonObject { it.example })
+            }
+            array.toString()
+        } else {
+            buildJsonString {
+                bodyParams?.forEach {
+                    putParamExample(it)
+                }
             }
         }
     }
@@ -94,7 +103,7 @@ data class Api(
     }
 
     val markdownText: String by lazy {
-        var text = "## $folder\n\n**$name**\n\n**URL:** `$url`\n\n**Type:** `${httpMethod.name}`\n\n**Content-Type:** `$contentType`\n\n"
+        var text = "## $folder\n\n**$name**\n\n**URL:** `$url`\n\n**Method:** `${httpMethod.name}`\n\n**Content-Type:** `$contentType`\n\n"
         if (description.isNotNullOrEmpty && description != name) {
             text = "$text**Description:** $description\n\n"
         }
@@ -107,7 +116,7 @@ data class Api(
         bodyParams?.let {
             text = "$text**Body-Params:**\n\n$bodyText\n\n**Body-Example:**\n```json\n$bodyExample\n```\n\n"
         }
-        return@lazy "$text**Response-Params:**\n\n$responseBody\n\n**Response-Example:**\n```json\n$responseExample\n```\n\n"
+        return@lazy "$text**Response-Body:**\n\n$responseBody\n\n**Response-Example:**\n```json\n$responseExample\n```\n\n"
     }
 
 }
