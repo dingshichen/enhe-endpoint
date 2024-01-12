@@ -4,23 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af6cdfb0-0dc7-4fdb-a41c-205c1dfd42da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/ui/ApiDocPreviewForm.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/enhe/endpoint/ui/ApiDocPreviewForm.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/ui/ApiDocPreviewForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/enhe/endpoint/ui/ApiDocPreviewForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/ui/MybatisGeneratorForm.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/enhe/endpoint/ui/MybatisGeneratorForm.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/ui/MybatisGeneratorForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/enhe/endpoint/ui/MybatisGeneratorForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/ui/SQLTransferForm.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/enhe/endpoint/ui/SQLTransferForm.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/ui/SQLTransferForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/enhe/endpoint/ui/SQLTransferForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/util/NavigateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/enhe/endpoint/util/NavigateUtil.java" afterDir="false" />
+    <list default="true" id="af6cdfb0-0dc7-4fdb-a41c-205c1dfd42da" name="Changes" comment="修复 Form Class 加载不到的问题">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiMethodApiExtractor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiMethodApiExtractor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/util/PathStringUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/util/PathStringUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/window/tree/Context.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/window/tree/Context.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,11 +180,26 @@
       <option name="presentableId" value="Default" />
       <updated>1705022671834</updated>
       <workItem from="1705022674140" duration="582000" />
-      <workItem from="1705023485012" duration="2412000" />
+      <workItem from="1705023485012" duration="4277000" />
     </task>
+    <task id="LOCAL-00001" summary="修复 Form Class 加载不到的问题">
+      <option name="closed" value="true" />
+      <created>1705045020007</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1705045020007</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="修复 Form Class 加载不到的问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复 Form Class 加载不到的问题" />
   </component>
 </project>

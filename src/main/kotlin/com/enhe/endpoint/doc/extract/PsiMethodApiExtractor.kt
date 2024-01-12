@@ -59,13 +59,13 @@ object PsiMethodApiExtractor {
         return if (psiClass.isInterface) {
             val parentPath = psiClass.getAnnotation(FEIGN_CLIENT)?.findValueAttributeRealValue()?.let { PathUtil.subParentPath(it) }.orEmpty()
             val path = psiMethod.annotations.find { it.qualifiedName in REST_MAPPINGS }?.let { PathStringUtil.formatPath(it.findValueAttributeRealValue()) }.orEmpty()
-            "$parentPath/$path"
+            "$parentPath$path"
         } else {
             val parentPath = psiClass.findFeignClass()?.getAnnotation(FEIGN_CLIENT)?.findValueAttributeRealValue()?.let { PathUtil.subParentPath(it) }.orEmpty()
             psiMethod.findSuperMethods().forEach {
                 val annotation = it.getAnnotation(GET_MAPPING) ?: it.getAnnotation(POST_MAPPING) ?: it.getAnnotation(PUT_MAPPING)?: it.getAnnotation(DELETE_MAPPING) ?: return@forEach
                 val path = annotation.findValueAttributeRealValue().let { v -> PathStringUtil.formatPath(v) }
-                return "$parentPath/$path"
+                return "$parentPath$path"
             }
             return parentPath
         }

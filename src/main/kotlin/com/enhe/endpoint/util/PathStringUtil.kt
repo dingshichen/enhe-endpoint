@@ -7,17 +7,14 @@ package com.enhe.endpoint.util
 object PathStringUtil {
 
     /**
-     * 格式化路径，使其变成 xxx 、 xxx/yyy 的形式
+     * 格式化路径，使其变成 /xxx 、 /xxx/yyy 的形式
      */
     fun formatPath(path: String?): String {
         if (path.isNullOrBlank() || path == "/") {
-            return ""
+            return "/"
         }
         if (path.length < 2) {
             return formatPathSuffix(path)
-        }
-        if (path.startsWith("/")) {
-            return formatPathSuffix(path.substring(1))
         }
         return formatPathSuffix(path)
     }
@@ -27,12 +24,14 @@ object PathStringUtil {
      */
     private fun formatPathSuffix(path: String): String {
         if (path.isEmpty() || path == "/") {
-            return ""
+            return "/"
         }
         return if (path.endsWith("/")) {
-            path.substring(0, path.length - 1)
+            path.substring(0, path.length - 1).replace("//", "/")
+        } else if (path[0] != '/') {
+            "/$path".replace("//", "/")
         } else {
-            path
+            path.replace("//", "/")
         }
     }
 }

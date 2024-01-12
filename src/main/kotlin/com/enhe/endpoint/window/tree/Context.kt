@@ -91,7 +91,7 @@ object EndpointContext {
                 superMethod.annotations.forEach { an ->
                     ofHttpMethod(an.qualifiedName)?.let { httpMethod ->
                         val path = PathStringUtil.formatPath(an.findValueAttributeRealValue())
-                        val efEndpoint = EFEndpoint(it.name, path, "${efController.path}/$path", httpMethod, it)
+                        val efEndpoint = EFEndpoint(it.name, path, "${efController.path}$path", httpMethod, it)
                         efController.endpoints += efEndpoint
                     }
                 }
@@ -104,7 +104,7 @@ object EndpointContext {
                 method.annotations.forEach { an ->
                     ofHttpMethod(an.qualifiedName)?.let { httpMethod ->
                         val path = PathStringUtil.formatPath(an.findValueAttributeRealValue())
-                        val efEndpoint = EFEndpoint(method.name, path, "$efController/$path", httpMethod, method)
+                        val efEndpoint = EFEndpoint(method.name, path, "$efController$path", httpMethod, method)
                         efController.endpoints += efEndpoint
                     }
                 }
