@@ -72,7 +72,6 @@ public class ApiDocPreviewForm {
         // UI调整
         initUI();
         initHeadToolbar();
-        // 右侧文档
         initMarkdownSourceScrollPanel();
         initMarkdownHtmlPanel();
         initPreviewPanel();
