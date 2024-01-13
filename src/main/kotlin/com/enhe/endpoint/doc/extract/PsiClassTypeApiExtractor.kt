@@ -8,6 +8,7 @@ import com.enhe.endpoint.consts.JSON_IGNORE
 import com.enhe.endpoint.consts.LB_SETTER
 import com.enhe.endpoint.consts.SK_API_PROP
 import com.enhe.endpoint.consts.TRANSIENT
+import com.enhe.endpoint.doc.JavaDataTypeConvertor
 import com.enhe.endpoint.doc.LangDataTypeConvertor
 import com.enhe.endpoint.doc.mock.LangDataTypeMocker
 import com.enhe.endpoint.doc.model.ApiParam
@@ -35,7 +36,6 @@ object PsiClassTypeApiExtractor {
         paramWhere: ApiParamWhere
     ): List<ApiParam> {
         val params = mutableListOf<ApiParam>()
-        val dataTypeConvertor = LangDataTypeConvertor.instance(project)
         // 顺序查询父类属性，如果子类有相同名称的属性，把父类的属性给隐藏
         psiClassType.superTypes.filterIsInstance<PsiClassType>()
             .filter {
@@ -74,12 +74,12 @@ object PsiClassTypeApiExtractor {
                 // 防止无限递归
                 return@forEach
             }
-            val dataType = dataTypeConvertor.convert(if (decFieldType.decArray) "List<${decFieldType.psiType.presentableText}" else decFieldType.psiType.presentableText)
+            val dataType = JavaDataTypeConvertor.convert(if (decFieldType.decArray) "List<${decFieldType.psiType.presentableText}" else decFieldType.psiType.presentableText)
             childNode.parentNode = fieldNode
             fieldNode += childNode
             params += ApiParam(
                 name = fieldName,
-                type = dataTypeConvertor.convert(decFieldType.psiType.presentableText),
+                type = decFieldType.psiType.convertApiDataType(),
                 where = paramWhere,
                 required = resolveRequired(propertyAn, setAn, paramWhere),
                 description = propertyAn?.run { findValueAttributeRealValue() + findAttributeRealValue("notes").orEmpty() },

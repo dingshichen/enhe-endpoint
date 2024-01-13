@@ -11,7 +11,12 @@ import com.enhe.endpoint.window.tree.EndpointNode
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.findParentOfType
 
 /**
  * 弹出 API 接口文档
@@ -25,11 +30,16 @@ class PopupApiDocAction : AnAction() {
                 is PsiMethod -> {
                     // 解析、生成文档
                     it.containingClass?.let { psiClass ->
-                        val api = DocService.instance(project).buildApi(project, psiClass, it)
-                        ApiDocPreviewForm.getInstance(project, it.containingFile, api).popup()
+                        showDoc(project, it.containingFile, psiClass, it)
                     }
                 }
-                else -> null
+                else -> {
+                    PsiTreeUtil.getParentOfType(it, PsiMethod::class.java)?.let { m ->
+                        m.containingClass?.let { psiClass ->
+                            showDoc(project, it.containingFile, psiClass, m)
+                        }
+                    }
+                }
             }
         }
         e.getData(WINDOW_PANE)?.getSelected()?.let {
@@ -37,12 +47,16 @@ class PopupApiDocAction : AnAction() {
                 is EndpointNode -> {
                     val psiMethod = it.getMethod()
                     psiMethod.containingClass?.let { psiClass ->
-                        val api = DocService.instance(project).buildApi(project, psiClass, psiMethod)
-                        ApiDocPreviewForm.getInstance(project, psiMethod.containingFile, api).popup()
+                        showDoc(project, psiMethod.containingFile, psiClass, psiMethod)
                     }
                 }
                 else -> null
             }
         }
+    }
+
+    private fun showDoc(project: Project, psiFile: PsiFile, psiClass: PsiClass, psiMethod: PsiMethod) {
+        val api = DocService.instance(project).buildApi(project, psiClass, psiMethod)
+        ApiDocPreviewForm.getInstance(project, psiFile, api).popup()
     }
 }

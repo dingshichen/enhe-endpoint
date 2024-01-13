@@ -25,9 +25,6 @@
 
         <projectService serviceInterface="com.enhe.endpoint.doc.DocService"
                         serviceImplementation="com.enhe.endpoint.doc.DocServiceImpl" />
-
-        <projectService serviceInterface="com.enhe.endpoint.doc.LangDataTypeConvertor"
-                        serviceImplementation="com.enhe.endpoint.doc.JavaDataTypeConvertor" />
         
         <searchEverywhereContributor implementation="com.enhe.endpoint.window.search.EndpointSearchContributorFactory"/>
 

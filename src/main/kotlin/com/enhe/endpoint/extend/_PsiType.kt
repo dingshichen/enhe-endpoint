@@ -5,6 +5,8 @@
 package com.enhe.endpoint.extend
 
 import com.enhe.endpoint.consts.*
+import com.enhe.endpoint.doc.JavaDataTypeConvertor
+import com.enhe.endpoint.doc.model.LangDataType
 import com.intellij.psi.PsiType
 
 /**
@@ -86,4 +88,11 @@ fun PsiType.isAnyJavaList(): Boolean {
  */
 fun PsiType.isMultipartFileType(): Boolean {
     return canonicalText == MULTIPART_FILE
+}
+
+/**
+ * 转换成 API 数据类型
+ */
+fun PsiType.convertApiDataType(): LangDataType {
+    return JavaDataTypeConvertor.convert(presentableText)
 }

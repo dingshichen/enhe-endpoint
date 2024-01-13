@@ -12,10 +12,5 @@ import com.intellij.openapi.project.Project
  */
 interface LangDataTypeConvertor {
 
-    companion object {
-
-        fun instance(project: Project) = project.getService(LangDataTypeConvertor::class.java)
-    }
-
     fun convert(original: String): LangDataType
 }

@@ -5,6 +5,7 @@
 package com.enhe.endpoint.doc.extract
 
 import com.enhe.endpoint.consts.*
+import com.enhe.endpoint.doc.JavaDataTypeConvertor
 import com.enhe.endpoint.doc.LangDataTypeConvertor
 import com.enhe.endpoint.doc.mock.LangDataTypeMocker
 import com.enhe.endpoint.doc.model.ApiParam
@@ -131,7 +132,6 @@ object PsiMethodApiExtractor {
      * 从 PATH 里提取参数
      */
     fun extractApiPathParams(project: Project, psiMethod: PsiMethod): List<ApiParam>? {
-        val dataTypeConvertor = project.getService(LangDataTypeConvertor::class.java)
         val method = psiMethod.findDeepestSuperMethod() ?: psiMethod
         val apiParams = mutableListOf<ApiParam>()
         method.parameterList.parameters
@@ -139,7 +139,7 @@ object PsiMethodApiExtractor {
             .forEach {
                 if (it.hasAnnotation(PATH_VAR)) {
                     // 参数在 path 中，一定是简单类型
-                    val dataType = dataTypeConvertor.convert(it.type.canonicalText)
+                    val dataType = it.type.convertApiDataType()
                     apiParams += ApiParam(
                         name = it.name,
                         type = dataType,
@@ -157,7 +157,6 @@ object PsiMethodApiExtractor {
      * 从 url 里提取参数
      */
     fun extractApiUrlParams(project: Project, psiMethod: PsiMethod): List<ApiParam>? {
-        val dataTypeConvertor = project.getService(LangDataTypeConvertor::class.java)
         val method = psiMethod.findDeepestSuperMethod() ?: psiMethod
         val apiParams = mutableListOf<ApiParam>()
         method.parameterList.parameters
@@ -178,7 +177,7 @@ object PsiMethodApiExtractor {
                     } else {
                         // 分两种情况。一种是标识了 @ApiParam 的简单类型，一种是没有添加标识但是一个自定义的对象类型
                         val paramAn = it.getAnnotation(REQUEST_PARAM)
-                        val dataType = dataTypeConvertor.convert(it.type.canonicalText)
+                        val dataType = it.type.convertApiDataType()
                         if (paramAn == null) {
                             // 判断是一个自定义的对象类型，递归查询其属性的类型
                             if (dataType == LangDataType.OBJECT && it.type is PsiClassType) {
@@ -209,7 +208,6 @@ object PsiMethodApiExtractor {
      * 从 body 里提取参数
      */
     fun extractApiBodyParams(project: Project, psiMethod: PsiMethod): List<ApiParam>? {
-        val dataTypeConvertor = project.getService(LangDataTypeConvertor::class.java)
         val method = psiMethod.findDeepestSuperMethod() ?: psiMethod
         val apiParams = mutableListOf<ApiParam>()
         method.parameterList.parameters
@@ -218,10 +216,10 @@ object PsiMethodApiExtractor {
                 if (it.hasAnnotation(REQUEST_BODY)) {
                     val psiType = it.type
                     // 参数在 body 中，一定是一个集合带泛型的类型或者是一个自定义的类型
-                    val dataType = dataTypeConvertor.convert(psiType.presentableText)
+                    val dataType = psiType.convertApiDataType()
                     if (psiType.isJavaGenericList() && psiType is PsiClassReferenceType) {
                         val genericType = psiType.parameters.first()
-                        val genericDataType = dataTypeConvertor.convert(genericType.presentableText)
+                        val genericDataType = genericType.convertApiDataType()
                         if (genericDataType == LangDataType.OBJECT && genericType is PsiClassType) {
                             apiParams += ApiParam(
                                 name = "[]",
@@ -281,7 +279,7 @@ object PsiMethodApiExtractor {
                 var listType: LangDataType = LangDataType.ARRAY
                 var listChildren: List<ApiParam>? = null
                 genericPsiType?.let {
-                    listType = LangDataTypeConvertor.instance(project).convert(psiType.presentableText)
+                    listType = psiType.convertApiDataType()
                     if (!it.isJavaBaseType() && !it.isJavaSimpleType()) {
                         listChildren = PsiClassTypeApiExtractor.extractApiParam(project = project, psiClassType = it as PsiClassType, paramWhere = ApiParamWhere.URL)
                     }

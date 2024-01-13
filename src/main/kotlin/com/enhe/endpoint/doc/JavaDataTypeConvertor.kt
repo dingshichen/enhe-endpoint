@@ -7,7 +7,7 @@ package com.enhe.endpoint.doc
 import com.enhe.endpoint.doc.model.LangDataType
 import com.enhe.endpoint.util.ApiStringUtil
 
-class JavaDataTypeConvertor : LangDataTypeConvertor {
+object JavaDataTypeConvertor : LangDataTypeConvertor {
 
     private val stringList = arrayOf("String")
     private val timeList = arrayOf("Date", "DateTime", "LocalDate", "LocalDateTime")
