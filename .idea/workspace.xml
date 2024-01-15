@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af6cdfb0-0dc7-4fdb-a41c-205c1dfd42da" name="Changes" comment="接口路径处理">
+    <list default="true" id="af6cdfb0-0dc7-4fdb-a41c-205c1dfd42da" name="Changes" comment="方法内容里都可以点击弹出文档">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/action/PopupApiDocAction.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/action/PopupApiDocAction.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/JavaDataTypeConvertor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/JavaDataTypeConvertor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/LangDataTypeConvertor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/LangDataTypeConvertor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiMethodApiExtractor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiMethodApiExtractor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/extend/_PsiType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/extend/_PsiType.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -210,7 +204,8 @@
       <workItem from="1705022674140" duration="582000" />
       <workItem from="1705023485012" duration="6300000" />
       <workItem from="1705053390849" duration="130000" />
-      <workItem from="1705114547303" duration="1298000" />
+      <workItem from="1705114547303" duration="1345000" />
+      <workItem from="1705296738166" duration="1179000" />
     </task>
     <task id="LOCAL-00001" summary="修复 Form Class 加载不到的问题">
       <option name="closed" value="true" />
@@ -228,7 +223,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705046913223</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="方法内容里都可以点击弹出文档">
+      <option name="closed" value="true" />
+      <created>1705115882177</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1705115882178</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -239,6 +242,18 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="修复 Form Class 加载不到的问题" />
     <MESSAGE value="接口路径处理" />
-    <option name="LAST_COMMIT_MESSAGE" value="接口路径处理" />
+    <MESSAGE value="方法内容里都可以点击弹出文档" />
+    <option name="LAST_COMMIT_MESSAGE" value="方法内容里都可以点击弹出文档" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiMethodApiExtractor.kt</url>
+          <line>220</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

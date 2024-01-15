@@ -208,7 +208,11 @@ object PsiMethodApiExtractor {
      * 从 body 里提取参数
      */
     fun extractApiBodyParams(project: Project, psiMethod: PsiMethod): List<ApiParam>? {
-        val method = psiMethod.findDeepestSuperMethod() ?: psiMethod
+        val method = if (psiMethod.hasAnnotation(POST_MAPPING) || psiMethod.hasAnnotation(DELETE_MAPPING) || psiMethod.hasAnnotation(PUT_MAPPING) || psiMethod.hasAnnotation(GET_MAPPING)) {
+            psiMethod
+        } else {
+            psiMethod.findDeepestSuperMethod() ?: psiMethod
+        }
         val apiParams = mutableListOf<ApiParam>()
         method.parameterList.parameters
             .filter { it.type.canonicalText !in listOf(HTTP_SER_REQ, HTTP_SER_RES) }
