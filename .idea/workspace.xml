@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af6cdfb0-0dc7-4fdb-a41c-205c1dfd42da" name="Changes" comment="修改忽略配置">
+    <list default="true" id="af6cdfb0-0dc7-4fdb-a41c-205c1dfd42da" name="Changes" comment="解析返回值类型的 get 方法">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiMethodApiExtractor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiMethodApiExtractor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +45,7 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="enhe-endpoint" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
+                <item name="intellij" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -85,6 +85,8 @@
     "Gradle.Download Sources.executor": "Run",
     "Gradle.enhe-endpoint [buildPlugin].executor": "Run",
     "Gradle.enhe-endpoint [clean].executor": "Run",
+    "Gradle.enhe-endpoint [patchChangelog].executor": "Run",
+    "Gradle.enhe-endpoint [publishPlugin].executor": "Debug",
     "Gradle.enhe-endpoint [runIde].executor": "Debug",
     "Gradle.enhe-endpoint [setupDependencies].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -111,7 +113,29 @@
       <recent name="com.enhe.endpoint.util" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.enhe-endpoint [runIde]">
+  <component name="RunManager" selected="Gradle.发布">
+    <configuration name="发布" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="publishPlugin" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="enhe-endpoint [buildPlugin]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -156,12 +180,34 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="enhe-endpoint [runIde]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="enhe-endpoint [patchChangelog]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
         <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="patchChangelog" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="enhe-endpoint [runIde]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -178,8 +224,17 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Gradle.enhe-endpoint [buildPlugin]" />
+      <item itemvalue="Gradle.enhe-endpoint [clean]" />
+      <item itemvalue="Gradle.enhe-endpoint [patchChangelog]" />
+      <item itemvalue="Gradle.发布" />
+      <item itemvalue="Gradle.enhe-endpoint [runIde]" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.发布" />
+        <item itemvalue="Gradle.enhe-endpoint [patchChangelog]" />
         <item itemvalue="Gradle.enhe-endpoint [runIde]" />
         <item itemvalue="Gradle.enhe-endpoint [buildPlugin]" />
         <item itemvalue="Gradle.enhe-endpoint [clean]" />
@@ -209,7 +264,7 @@
       <workItem from="1705114547303" duration="1345000" />
       <workItem from="1705296738166" duration="1470000" />
       <workItem from="1705389951317" duration="123000" />
-      <workItem from="1705457498385" duration="9934000" />
+      <workItem from="1705457498385" duration="10417000" />
     </task>
     <task id="LOCAL-00001" summary="修复 Form Class 加载不到的问题">
       <option name="closed" value="true" />
@@ -267,7 +322,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705461138582</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="解析返回值类型的 get 方法">
+      <option name="closed" value="true" />
+      <created>1705474907605</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1705474907606</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -294,28 +357,7 @@
     <MESSAGE value="修复解析简单集合类型的问题" />
     <MESSAGE value="废弃注解解析" />
     <MESSAGE value="修改忽略配置" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改忽略配置" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt</url>
-          <line>110</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt</url>
-          <line>102</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="解析返回值类型的 get 方法" />
+    <option name="LAST_COMMIT_MESSAGE" value="解析返回值类型的 get 方法" />
   </component>
 </project>

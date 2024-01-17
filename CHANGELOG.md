@@ -14,6 +14,16 @@
 
 ### Security
 
+## 2.5.1
+
+### Added
+
+- API document show ( API 文档展示 )
+
+### Changed
+
+- Rewrite endpoint window ( 重写接口路径窗口 )
+
 ## 2.4.1
 
 ### Added
