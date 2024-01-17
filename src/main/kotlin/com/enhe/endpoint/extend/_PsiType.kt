@@ -41,7 +41,7 @@ fun PsiType.isJavaBaseList(): Boolean {
  * 是否是 Java 简单类型集合
  */
 fun PsiType.isJavaSimpleList(): Boolean {
-    return JavaSimpleType.entries.toTypedArray().any { it.qualifiedName == canonicalText }
+    return JavaSimpleType.entries.toTypedArray().any { it.listName == canonicalText }
 }
 
 /**
