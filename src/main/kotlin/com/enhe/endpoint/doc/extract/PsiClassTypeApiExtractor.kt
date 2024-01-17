@@ -121,7 +121,7 @@ object PsiClassTypeApiExtractor {
      * 属性是否需要忽略
      */
     private fun fieldIgnore(field: PsiField): Boolean {
-        return field.type.isJavaLogType() || field.hasAnnotation(JSON_IGNORE)
+        return field.type.isJavaLogType() || field.hasAnnotation(JSON_IGNORE) || field.isDeprecated
                 || field.hasAnnotation(TRANSIENT) || field.getAnnotation(SK_API_PROP)?.findAttributeRealValue("hidden") == "true" || field.hasModifierProperty("static")
     }
 

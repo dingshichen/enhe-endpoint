@@ -23,7 +23,7 @@ data class Api(
     // 访问URL
     val url: String,
     // 废弃信息
-    val deprecated: Boolean? = null,
+    val deprecated: Boolean = false,
     // HTTP 请求方式
     val httpMethod: HTTPMethod,
     // HTTP ContentType
@@ -40,6 +40,14 @@ data class Api(
 
     val fileName: String by lazy {
         url.splitToSmallHump("/")
+    }
+
+    val nameText: String by lazy {
+        if (deprecated) {
+            "~$name~"
+        } else {
+            name
+        }
     }
 
     val pathText: String by lazy {
@@ -103,7 +111,7 @@ data class Api(
     }
 
     val markdownText: String by lazy {
-        var text = "## $folder\n\n**$name**\n\n**URL:** `$url`\n\n**Method:** `${httpMethod.name}`\n\n**Content-Type:** `$contentType`\n\n"
+        var text = "## $folder\n\n**$nameText**\n\n**URL:** `$url`\n\n**Method:** `${httpMethod.name}`\n\n**Content-Type:** `$contentType`\n\n"
         if (description.isNotNullOrEmpty && description != name) {
             text = "$text**Description:** $description\n\n"
         }

@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af6cdfb0-0dc7-4fdb-a41c-205c1dfd42da" name="Changes" comment="继承重写方法的解析">
+    <list default="true" id="af6cdfb0-0dc7-4fdb-a41c-205c1dfd42da" name="Changes" comment="修复解析简单集合类型的问题">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/extend/_PsiType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/extend/_PsiType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/model/Api.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/model/Api.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +45,7 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="enhe-endpoint" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="intellij" type="c8890929:TasksNode$1" />
+                <item name="build" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -207,7 +208,7 @@
       <workItem from="1705114547303" duration="1345000" />
       <workItem from="1705296738166" duration="1470000" />
       <workItem from="1705389951317" duration="123000" />
-      <workItem from="1705457498385" duration="1133000" />
+      <workItem from="1705457498385" duration="3462000" />
     </task>
     <task id="LOCAL-00001" summary="修复 Form Class 加载不到的问题">
       <option name="closed" value="true" />
@@ -241,7 +242,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705298204211</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="修复解析简单集合类型的问题">
+      <option name="closed" value="true" />
+      <created>1705458807528</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1705458807529</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -265,7 +274,8 @@
     <MESSAGE value="接口路径处理" />
     <MESSAGE value="方法内容里都可以点击弹出文档" />
     <MESSAGE value="继承重写方法的解析" />
-    <option name="LAST_COMMIT_MESSAGE" value="继承重写方法的解析" />
+    <MESSAGE value="修复解析简单集合类型的问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="修复解析简单集合类型的问题" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
