@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af6cdfb0-0dc7-4fdb-a41c-205c1dfd42da" name="Changes" comment="废弃注解解析">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="af6cdfb0-0dc7-4fdb-a41c-205c1dfd42da" name="Changes" comment="修改忽略配置">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiMethodApiExtractor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiMethodApiExtractor.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,34 +76,36 @@
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.enhe-endpoint [buildPlugin].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.enhe-endpoint [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.enhe-endpoint [runIde].executor&quot;: &quot;Debug&quot;,
-    &quot;Gradle.enhe-endpoint [setupDependencies].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev-2.5&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2602546&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Download Sources.executor": "Run",
+    "Gradle.enhe-endpoint [buildPlugin].executor": "Run",
+    "Gradle.enhe-endpoint [clean].executor": "Run",
+    "Gradle.enhe-endpoint [runIde].executor": "Debug",
+    "Gradle.enhe-endpoint [setupDependencies].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "dev-2.5",
+    "jdk.selected.JAVA_MODULE": "11",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.stylelint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.stylelint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2602546",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.enhe.endpoint.util" />
@@ -206,7 +209,7 @@
       <workItem from="1705114547303" duration="1345000" />
       <workItem from="1705296738166" duration="1470000" />
       <workItem from="1705389951317" duration="123000" />
-      <workItem from="1705457498385" duration="3613000" />
+      <workItem from="1705457498385" duration="9934000" />
     </task>
     <task id="LOCAL-00001" summary="修复 Form Class 加载不到的问题">
       <option name="closed" value="true" />
@@ -256,7 +259,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705460993821</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="修改忽略配置">
+      <option name="closed" value="true" />
+      <created>1705461138582</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1705461138582</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,16 +293,27 @@
     <MESSAGE value="继承重写方法的解析" />
     <MESSAGE value="修复解析简单集合类型的问题" />
     <MESSAGE value="废弃注解解析" />
-    <option name="LAST_COMMIT_MESSAGE" value="废弃注解解析" />
+    <MESSAGE value="修改忽略配置" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改忽略配置" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <condition expression="psiField.name == &quot;names&quot;" language="kotlin" />
           <url>file://$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt</url>
-          <line>199</line>
-          <option name="timeStamp" value="4" />
+          <line>110</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/com/enhe/endpoint/doc/extract/PsiClassTypeApiExtractor.kt</url>
+          <line>102</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

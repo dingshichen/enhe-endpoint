@@ -9,7 +9,6 @@ import com.enhe.endpoint.consts.LB_SETTER
 import com.enhe.endpoint.consts.SK_API_PROP
 import com.enhe.endpoint.consts.TRANSIENT
 import com.enhe.endpoint.doc.JavaDataTypeConvertor
-import com.enhe.endpoint.doc.LangDataTypeConvertor
 import com.enhe.endpoint.doc.mock.LangDataTypeMocker
 import com.enhe.endpoint.doc.model.ApiParam
 import com.enhe.endpoint.doc.model.ApiParamWhere
@@ -18,11 +17,15 @@ import com.enhe.endpoint.extend.*
 import com.enhe.endpoint.util.ApiStringUtil
 import com.intellij.openapi.project.Project
 import com.intellij.psi.*
+import com.intellij.psi.impl.compiled.ClsMethodImpl
+import com.intellij.psi.impl.source.PsiMethodImpl
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiUtil
 import java.util.regex.Pattern
 
 object PsiClassTypeApiExtractor {
+
+    private val getMethodPattern: Pattern = Pattern.compile("^get[A-Z].*")
 
     /**
      * 递归查询其属性
@@ -50,6 +53,7 @@ object PsiClassTypeApiExtractor {
         }
         val generics = getGenericsType(psiClass, psiClassType)
         val fields = childrenFields ?: psiClass.fields
+        // 解析属性
         fields.forEach {
             if (fieldIgnore(it)) {
                 return@forEach
@@ -94,6 +98,47 @@ object PsiClassTypeApiExtractor {
                 )
             )
         }
+        if (paramWhere == ApiParamWhere.RETURN) {
+            // 解析 get 方法
+            psiClass.allMethods.filter {
+                (it is PsiMethodImpl || it is ClsMethodImpl)
+                        && getMethodPattern.matcher(it.name).matches()
+                        && it.name != "getClass"
+                        && !it.hasAnnotation(JSON_IGNORE)
+                        && !it.hasAnnotation(TRANSIENT)
+                        && !it.isDeprecated
+            }.forEach {
+                val propAn = it.getAnnotation(SK_API_PROP) ?: return@forEach
+                if (propAn.findAttributeRealValue("hidden") == "true") return@forEach
+                val psiType = it.returnType ?: return@forEach
+                val dataType = psiType.convertApiDataType()
+                val methodFieldName = if (it.name.length > 4) {
+                    it.name[3].lowercase() + it.name.substring(4)
+                } else it.name[3].lowercase()
+                val childNode = newFiledNode(psiType)
+                if (childNode.existFromDownToUp(fieldNode)) {
+                    // 防止无限递归
+                    return@forEach
+                }
+                childNode.parentNode = fieldNode
+                fieldNode += childNode
+                params += ApiParam(
+                    name = methodFieldName,
+                    type = dataType,
+                    where = paramWhere,
+                    required = resolveRequired(propAn, paramWhere = paramWhere),
+                    description = propAn.run { findValueAttributeRealValue() + findAttributeRealValue("notes").orEmpty() },
+                    example = LangDataTypeMocker.generateValue(dataType),
+                    children = getChildren(
+                        project = project,
+                        fieldType = psiType,
+                        generics = generics,
+                        parentNode = childNode,
+                        paramWhere = paramWhere
+                    )
+                )
+            }
+        }
         return params
     }
 
@@ -110,7 +155,7 @@ object PsiClassTypeApiExtractor {
         }
     }
 
-    private fun resolveRequired(propertyAn: PsiAnnotation?, setAn: PsiAnnotation?, paramWhere: ApiParamWhere): Boolean {
+    private fun resolveRequired(propertyAn: PsiAnnotation? = null, setAn: PsiAnnotation? = null, paramWhere: ApiParamWhere): Boolean {
         if (paramWhere == ApiParamWhere.RETURN && setAn != null) {
             return setAn.findRequiredAttributeRealValue()
         }
@@ -188,7 +233,7 @@ object PsiClassTypeApiExtractor {
      */
     private fun getChildren(
         project: Project,
-        psiField: PsiField,
+        psiField: PsiField? = null,
         fieldType: PsiType,
         generics: Map<String, PsiType>,
         parentNode: FieldNode,

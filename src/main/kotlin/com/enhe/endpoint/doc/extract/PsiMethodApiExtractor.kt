@@ -376,7 +376,7 @@ object PsiMethodApiExtractor {
                         required = true,
                         description = "业务响应数据",
                         example = ApiParamExample(JsonObject()),
-                        children = PsiClassTypeApiExtractor.extractApiParam(project = project, psiClassType = psiType, paramWhere = ApiParamWhere.URL)
+                        children = PsiClassTypeApiExtractor.extractApiParam(project = project, psiClassType = psiType, paramWhere = ApiParamWhere.RETURN)
                     )
                 }
             }
