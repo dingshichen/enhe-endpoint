@@ -14,6 +14,12 @@
 
 ### Security
 
+## 2.5.2
+
+### Fixed
+
+- Ignore Json type field in API document ( 在接口文档里忽略 Json 类型字段 )
+
 ## 2.5.1
 
 ### Added
