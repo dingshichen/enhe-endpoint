@@ -29,6 +29,7 @@ import com.intellij.ui.jcef.JBCefApp;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import org.intellij.plugins.markdown.settings.MarkdownApplicationSettings;
+import org.intellij.plugins.markdown.settings.MarkdownSettings;
 import org.intellij.plugins.markdown.ui.preview.MarkdownHtmlPanel;
 import org.intellij.plugins.markdown.ui.preview.MarkdownHtmlPanelProvider;
 import org.intellij.plugins.markdown.ui.preview.html.MarkdownUtil;
@@ -196,8 +197,8 @@ public class ApiDocPreviewForm {
     }
 
     private void initMarkdownHtmlPanel() {
-        MarkdownApplicationSettings settings = MarkdownApplicationSettings.getInstance();
-        MarkdownHtmlPanelProvider.ProviderInfo providerInfo = settings.getMarkdownPreviewSettings().getHtmlPanelProviderInfo();
+        MarkdownSettings settings = MarkdownSettings.getInstance(project);
+        MarkdownHtmlPanelProvider.ProviderInfo providerInfo = settings.getPreviewPanelProviderInfo();
         MarkdownHtmlPanelProvider provider = MarkdownHtmlPanelProvider.createFromInfo(providerInfo);
         // xx
         if (!JBCefApp.isSupported()) {
