@@ -39,6 +39,10 @@ object PsiClassTypeApiExtractor {
         paramWhere: ApiParamWhere
     ): List<ApiParam> {
         val params = mutableListOf<ApiParam>()
+        // json 类型不解析
+        if (psiClassType.isJsonType()) {
+            return params
+        }
         // 顺序查询父类属性，如果子类有相同名称的属性，把父类的属性给隐藏
         psiClassType.superTypes.filterIsInstance<PsiClassType>()
             .filter {
@@ -277,6 +281,7 @@ object PsiClassTypeApiExtractor {
     private fun tryGetCollectionGenericsType(psiClassType: PsiClassType): Array<PsiField>? {
         if (psiClassType.isJavaGenericList()) {
             psiClassType.parameters.first {
+                if (it.isJsonType()) return null
                 return PsiUtil.resolveClassInClassTypeOnly(it)?.allFields
             }
         }

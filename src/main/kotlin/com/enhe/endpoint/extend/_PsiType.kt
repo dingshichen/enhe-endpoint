@@ -96,3 +96,10 @@ fun PsiType.isMultipartFileType(): Boolean {
 fun PsiType.convertApiDataType(): LangDataType {
     return JavaDataTypeConvertor.convert(presentableText)
 }
+
+/**
+ * 是否是 JSON 类型
+ */
+fun PsiType.isJsonType(): Boolean {
+    return canonicalText.endsWith(".JsonObject", true) || canonicalText.endsWith(".JsonArray", true)
+}
