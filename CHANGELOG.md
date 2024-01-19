@@ -14,6 +14,12 @@
 
 ### Security
 
+## 2.5.3
+
+### Changed
+
+- Markdown API support 2024.1 ( Markdown API 支持 2024.1 )
+
 ## 2.5.2
 
 ### Fixed
