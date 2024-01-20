@@ -132,14 +132,15 @@ object PsiMethodApiExtractor {
      * 从 PATH 里提取参数
      */
     fun extractApiPathParams(project: Project, psiMethod: PsiMethod): List<ApiParam>? {
-        val method = psiMethod.findDeepestSuperMethod() ?: psiMethod
+        val method = extractMvcMethod(psiMethod)
         val apiParams = mutableListOf<ApiParam>()
+        val parameters = psiMethod.parameterList.parameters
         method.parameterList.parameters
             .filter { it.type.canonicalText !in listOf(HTTP_SER_REQ, HTTP_SER_RES) }
-            .forEach {
+            .forEachIndexed { i, it ->
                 if (it.hasAnnotation(PATH_VAR)) {
                     // 参数在 path 中，一定是简单类型
-                    val dataType = it.type.convertApiDataType()
+                    val dataType = if (psiMethod == method) it.type.convertApiDataType() else parameters[i].type.convertApiDataType()
                     apiParams += ApiParam(
                         name = it.name,
                         type = dataType,
@@ -157,11 +158,12 @@ object PsiMethodApiExtractor {
      * 从 url 里提取参数
      */
     fun extractApiUrlParams(project: Project, psiMethod: PsiMethod): List<ApiParam>? {
-        val method = psiMethod.findDeepestSuperMethod() ?: psiMethod
+        val method = extractMvcMethod(psiMethod)
         val apiParams = mutableListOf<ApiParam>()
+        val parameters = psiMethod.parameterList.parameters
         method.parameterList.parameters
             .filter { it.type.canonicalText !in listOf(HTTP_SER_REQ, HTTP_SER_RES) }
-            .forEach {
+            .forEachIndexed { i, it ->
                 if (!it.hasAnnotation(PATH_VAR) && !it.hasAnnotation(REQUEST_BODY)) {
                     if (it.hasAnnotation(MULTIPART_FILE)) {
                         // 参数是上传的文件流
@@ -177,18 +179,18 @@ object PsiMethodApiExtractor {
                     } else {
                         // 分两种情况。一种是标识了 @ApiParam 的简单类型，一种是没有添加标识但是一个自定义的对象类型
                         val paramAn = it.getAnnotation(REQUEST_PARAM)
-                        val dataType = it.type.convertApiDataType()
+                        val psiType = if (psiMethod == method) it.type else parameters[i].type
+                        val dataType = psiType.convertApiDataType()
                         if (paramAn == null) {
                             // 判断是一个自定义的对象类型，递归查询其属性的类型
-                            if (dataType == LangDataType.OBJECT && it.type is PsiClassType) {
+                            if (dataType == LangDataType.OBJECT && psiType is PsiClassType) {
                                 apiParams += PsiClassTypeApiExtractor.extractApiParam(
                                     project = project,
-                                    psiClassType = it.type as PsiClassType,
+                                    psiClassType = psiType,
                                     paramWhere = ApiParamWhere.URL,
                                 )
                             }
                         } else {
-                            // TODO 需要排除掉 HttpRequest HttpResponse 这种直接注入的
                             apiParams += ApiParam(
                                 name = paramAn.findValueAttributeRealValue(),
                                 type = dataType,
@@ -208,17 +210,14 @@ object PsiMethodApiExtractor {
      * 从 body 里提取参数
      */
     fun extractApiBodyParams(project: Project, psiMethod: PsiMethod): List<ApiParam>? {
-        val method = if (psiMethod.hasAnnotation(POST_MAPPING) || psiMethod.hasAnnotation(DELETE_MAPPING) || psiMethod.hasAnnotation(PUT_MAPPING) || psiMethod.hasAnnotation(GET_MAPPING)) {
-            psiMethod
-        } else {
-            psiMethod.findDeepestSuperMethod() ?: psiMethod
-        }
+        val method = extractMvcMethod(psiMethod)
         val apiParams = mutableListOf<ApiParam>()
+        val parameters = psiMethod.parameterList.parameters
         method.parameterList.parameters
             .filter { it.type.canonicalText !in listOf(HTTP_SER_REQ, HTTP_SER_RES) }
-            .forEach {
+            .forEachIndexed { i, it ->
                 if (it.hasAnnotation(REQUEST_BODY)) {
-                    val psiType = it.type
+                    val psiType = if (psiMethod == method) it.type else parameters[i].type
                     // 参数在 body 中，一定是一个集合带泛型的类型或者是一个自定义的类型
                     val dataType = psiType.convertApiDataType()
                     if (psiType.isJavaGenericList() && psiType is PsiClassReferenceType) {
@@ -380,6 +379,17 @@ object PsiMethodApiExtractor {
                     )
                 }
             }
+        }
+    }
+
+    /**
+     * 获取带注解的 Method
+     */
+    private fun extractMvcMethod(psiMethod: PsiMethod): PsiMethod {
+        return if (psiMethod.hasAnnotation(POST_MAPPING) || psiMethod.hasAnnotation(DELETE_MAPPING) || psiMethod.hasAnnotation(PUT_MAPPING) || psiMethod.hasAnnotation(GET_MAPPING)) {
+            psiMethod
+        } else {
+            psiMethod.findDeepestSuperMethod() ?: psiMethod
         }
     }
 }

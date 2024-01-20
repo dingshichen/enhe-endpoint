@@ -110,12 +110,14 @@
             <add-to-group group-id="enhe.endpoint.editor.group" anchor="last"/>
             <add-to-group group-id="enhe.endpoint.window.toolbar.action" anchor="last"/>"
         </action>
+
         <action id="endpoint.window.toolbar.action.pluginDoc"
                 class="com.enhe.endpoint.action.PluginDocAction"
                 text="插件教程" description="Plugin document" icon="AllIcons.Xml.Browsers.Chrome">
             <add-to-group group-id="enhe.endpoint.editor.group" anchor="last"/>
             <add-to-group group-id="enhe.endpoint.window.toolbar.action" anchor="last"/>"
         </action>
+
         <action id="endpoint.window.toolbar.action.github"
                 class="com.enhe.endpoint.action.PluginDocAction"
                 text="Star" description="Github" icon="AllIcons.Vcs.Vendors.Github">
