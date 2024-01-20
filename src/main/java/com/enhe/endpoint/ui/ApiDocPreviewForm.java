@@ -161,13 +161,13 @@ public class ApiDocPreviewForm {
 
         ActionToolbarImpl toolbar = (ActionToolbarImpl) ActionManager.getInstance()
                 .createActionToolbar("DocViewRootToolbar", group, true);
-        toolbar.setTargetComponent(previewToolbarPanel);
+        toolbar.setTargetComponent(headPanel);
 
         toolbar.setForceMinimumSize(true);
         toolbar.setLayoutPolicy(ActionToolbar.NOWRAP_LAYOUT_POLICY);
         Utils.setSmallerFontForChildren(toolbar);
 
-        previewToolbarPanel.add(toolbar.getComponent(), BorderLayout.EAST);
+        headPanel.add(toolbar.getComponent(), BorderLayout.EAST);
         docNameLabel.setText("恩核星码");
     }
 
