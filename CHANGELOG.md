@@ -14,6 +14,22 @@
 
 ### Security
 
+## 3.0.0
+
+### Added
+
+- Document Action ( 增加文档按钮 )
+- API document PIN Action ( 增加 API 文档固定按钮 )
+
+### Changed
+
+- Mybatis code generator auto mapping module ( Mybatis 代码生成器自动匹配模块 )
+
+### Fixed
+
+- Some API document field type bugs ( API 文档属性类型的 bug )
+- API document get function fields bug ( API 文档 get 方法属性 bug )
+
 ## 2.5.3
 
 ### Changed
