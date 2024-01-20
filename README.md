@@ -6,17 +6,13 @@
 
 ### Required
 - Code JDK 11
-- Build JDK 17
-- Gradle 7.5.1
+- Gradle 8.2.1 ( Build JDK 17 )
 
 ### Target
-- IntelliJ IDEA 212+
+- IntelliJ IDEA 222+
 
 ### Run
-1. Gradle `RunIde` Add Environment variable `APP_PATH={Your IDEA path}`
-
-![img_1.png](imgs/img_1.png)
-![img.png](imgs/img.png)
+Gradle `RunIde`
 
 
 ### Thanks
