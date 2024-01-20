@@ -1,5 +1,7 @@
 package com.enhe.endpoint.ui;
 
+import com.enhe.endpoint.consts.DagpModule;
+import com.enhe.endpoint.consts.DagpModuleKt;
 import com.enhe.endpoint.database.model.*;
 import com.enhe.endpoint.extend.ModuleItem;
 import com.google.common.base.CaseFormat;
@@ -156,6 +158,40 @@ public class MybatisGeneratorForm {
         modules.stream()
                 .filter(m -> !m.toString().contains(".") && modules.stream().anyMatch(m2 -> m2.toString().equals(m + ".service")))
                 .forEach(m -> moduleComboBox.addItem(m));
+        modules.stream()
+                .filter(m -> {
+                    DagpModule dagpModule = DagpModuleKt.ofDagpModule(m.toString());
+                    if (dagpModule == null) {
+                        return false;
+                    }
+                    switch (dagpModule) {
+                        case ASSESSMENT:
+                            return table.getName().startsWith(DagpModule.ASSESSMENT.tableNamePrefix());
+                        case ASSET:
+                            return table.getName().startsWith(DagpModule.ASSET.tableNamePrefix());
+                        case MASTER:
+                            return table.getName().startsWith(DagpModule.MASTER.tableNamePrefix());
+                        case METADATA:
+                            return table.getName().startsWith(DagpModule.METADATA.tableNamePrefix());
+                        case MODEL2:
+                            return table.getName().startsWith(DagpModule.MODEL2.tableNamePrefix()) || table.getName().startsWith("ar_") || table.getName().startsWith("ar2_");
+                        case QUALITY:
+                            return table.getName().startsWith(DagpModule.QUALITY.tableNamePrefix());
+                        case REQUIREMENT:
+                            return table.getName().startsWith(DagpModule.REQUIREMENT.tableNamePrefix());
+                        case STANDARD:
+                            return table.getName().startsWith(DagpModule.STANDARD.tableNamePrefix());
+                        case PROFILE:
+                            return table.getName().startsWith(DagpModule.PROFILE.tableNamePrefix());
+                        case SYSTEM:
+                            return table.getName().startsWith(DagpModule.SYSTEM.tableNamePrefix());
+                        default:
+                            return false;
+                    }
+                })
+                .findFirst()
+                .ifPresent(m -> moduleComboBox.setSelectedItem(m));
+
         // 持久层模块
         modules.stream()
                 .filter(m -> m.toString().contains(".service"))
