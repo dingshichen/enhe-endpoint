@@ -284,7 +284,7 @@ object PsiMethodApiExtractor {
                 genericPsiType?.let {
                     listType = psiType.convertApiDataType()
                     if (!it.isJavaBaseType() && !it.isJavaSimpleType()) {
-                        listChildren = PsiClassTypeApiExtractor.extractApiParam(project = project, psiClassType = it as PsiClassType, paramWhere = ApiParamWhere.URL)
+                        listChildren = PsiClassTypeApiExtractor.extractApiParam(project = project, psiClassType = it as PsiClassType, paramWhere = ApiParamWhere.RETURN)
                     }
                     // TODO 有可能有泛型里面是集合还有泛型
                 }

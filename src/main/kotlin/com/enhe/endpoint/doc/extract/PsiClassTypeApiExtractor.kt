@@ -73,6 +73,9 @@ object PsiClassTypeApiExtractor {
                 fieldType = pt
             }
             val fieldName = it.getFieldSerialName()
+            if (params.any { p -> p.name == fieldName }) {
+                return@forEach
+            }
             val propertyAn = it.getAnnotation(SK_API_PROP)
             val setAn = it.getAnnotation(LB_SETTER)
             // 解析定义的数据类型
@@ -119,6 +122,9 @@ object PsiClassTypeApiExtractor {
                 val methodFieldName = if (it.name.length > 4) {
                     it.name[3].lowercase() + it.name.substring(4)
                 } else it.name[3].lowercase()
+                if (params.any { p -> p.name == methodFieldName }) {
+                    return@forEach
+                }
                 val childNode = newFiledNode(psiType)
                 if (childNode.existFromDownToUp(fieldNode)) {
                     // 防止无限递归
