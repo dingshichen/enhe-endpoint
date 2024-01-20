@@ -65,9 +65,6 @@
                     text="刷新" description="Refresh" icon="AllIcons.Actions.Refresh"/>
             <separator />
             <reference ref="SearchEverywhere" />
-            <action id="endpoint.window.toolbar.action.pluginDoc"
-                    class="com.enhe.endpoint.action.PluginDocAction"
-                    text="文档" description="Document" icon="AllIcons.Xml.Browsers.Chrome" />
         </group>
 
         <group id="enhe.endpoint.window.tree.popup.action" class="com.intellij.openapi.actionSystem.DefaultActionGroup"
@@ -83,6 +80,7 @@
         </action>
 
         <group id="enhe.endpoint.editor.group" popup="true" text="恩核星码" description="Enhe editor popup group" icon="MyIcons.Logo">
+            <separator />
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </group>
 
@@ -104,6 +102,25 @@
                 description="Popup API markdown document" icon="AllIcons.Actions.Preview">
             <add-to-group group-id="enhe.endpoint.window.tree.popup.action" anchor="first"/>
             <add-to-group group-id="enhe.endpoint.editor.group" anchor="first"/>
+        </action>
+
+        <action id="endpoint.window.toolbar.action.developDoc"
+                class="com.enhe.endpoint.action.PluginDocAction"
+                text="开发指南" description="Develop document" icon="AllIcons.Xml.Browsers.Chromium">
+            <add-to-group group-id="enhe.endpoint.editor.group" anchor="last"/>
+            <add-to-group group-id="enhe.endpoint.window.toolbar.action" anchor="last"/>"
+        </action>
+        <action id="endpoint.window.toolbar.action.pluginDoc"
+                class="com.enhe.endpoint.action.PluginDocAction"
+                text="插件教程" description="Plugin document" icon="AllIcons.Xml.Browsers.Chrome">
+            <add-to-group group-id="enhe.endpoint.editor.group" anchor="last"/>
+            <add-to-group group-id="enhe.endpoint.window.toolbar.action" anchor="last"/>"
+        </action>
+        <action id="endpoint.window.toolbar.action.github"
+                class="com.enhe.endpoint.action.PluginDocAction"
+                text="Star" description="Github" icon="AllIcons.Vcs.Vendors.Github">
+            <add-to-group group-id="enhe.endpoint.editor.group" anchor="last"/>
+            <add-to-group group-id="enhe.endpoint.window.toolbar.action" anchor="last"/>"
         </action>
     </actions>
 </idea-plugin>

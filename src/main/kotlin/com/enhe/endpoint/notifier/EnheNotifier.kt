@@ -4,6 +4,8 @@
 
 package com.enhe.endpoint.notifier
 
+import com.enhe.endpoint.consts.DING_PLUGIN_BACKEND
+import com.enhe.endpoint.consts.GITHUB_BACKEND
 import com.intellij.notification.BrowseNotificationAction
 import com.intellij.notification.NotificationAction
 import com.intellij.notification.NotificationGroupManager
@@ -36,8 +38,8 @@ object EnheNotifier {
         NOTIFIER.createNotification("如果遇到麻烦、或者有什么需求和建议，可以直接联系开发者", NotificationType.INFORMATION)
             .setTitle("Enhe Endpoint Java 开发者工具")
             .setIcon(icon)
-            .addAction(BrowseNotificationAction("帮助文档", "https://alidocs.dingtalk.com/i/nodes/93NwLYZXWygladDATyXz6nbrJkyEqBQm"))
-            .addAction(BrowseNotificationAction("Star", "https://github.com/dingshichen/enhe-endpoint"))
+            .addAction(BrowseNotificationAction("帮助文档", DING_PLUGIN_BACKEND))
+            .addAction(BrowseNotificationAction("Star", GITHUB_BACKEND))
             .notify(project)
     }
 }
